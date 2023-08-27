@@ -100,7 +100,7 @@ float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 1.3,k2 = 1.5,k3 = 1.5,k41 = 2,k42 = 2;
+float k1 = 1.3,k2 = 1.5,k3 = 0.1,k41 = 2,k42 = 2;
 float V, w;
 float width = 0.13, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -212,6 +212,8 @@ float ycd(float time){
 }
 float thetad(float time){
 	double temp = atan2(_ycd - y, _xcd - x);
+	if(temp < -pi) temp+=2*pi;
+	if(temp > pi)  temp-=2*pi;
 	return temp;
 	/*
 	float theta = atan2(cos(time), -0.8*sin(time));
@@ -355,7 +357,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
   * @retval int
   */
 int main(void)
-{
+ {
   /* USER CODE BEGIN 1 */
 //	int a = 0;
 	lPWM = 0;
@@ -493,6 +495,8 @@ int main(void)
 			got_angle = Rx_data[4];
 			got_angle |= Rx_data[5]<<8;
 			angle = ((float) got_angle) * pi / 180;
+			if(angle < -pi) angle+=2*pi;
+			if(angle > pi)  angle-=2*pi;
 		//	HAL_UART_Transmit(&huart1, Rx_data, sizeof(Rx_data), 10);
 			HAL_UART_Receive_IT(&huart1, Rx_data, 6);
 			locFlag = 0;
