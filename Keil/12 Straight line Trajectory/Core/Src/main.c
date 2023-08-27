@@ -201,7 +201,7 @@ void Motor_PWM_Left(int PWM){
 
 }
 float xcd(float time){
-	return time *0.3;
+	return time * 2.0;
 	//return 0.2 * cos(time);// + 2.2;
 
 }
@@ -211,7 +211,8 @@ float ycd(float time){
 
 }
 float thetad(float time){
-	return 0;
+	double temp = atan2(_ycd - y, _xcd - x);
+	return temp;
 	/*
 	float theta = atan2(cos(time), -0.8*sin(time));
 	if(theta < 0){
