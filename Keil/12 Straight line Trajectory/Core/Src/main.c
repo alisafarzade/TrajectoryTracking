@@ -100,7 +100,7 @@ float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 1.3,k2 = 1.5,k3 = 0.1,k41 = 2,k42 = 2;
+float k1 = 1.3,k2 = 1.5,k3 = 3.1,k41 = 2,k42 = 2;
 float V, w;
 float width = 0.13, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -201,7 +201,7 @@ void Motor_PWM_Left(int PWM){
 
 }
 float xcd(float time){
-	return time * 2.0;
+	return time * 0.6;
 	//return 0.2 * cos(time);// + 2.2;
 	
 }
