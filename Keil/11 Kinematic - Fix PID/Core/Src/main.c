@@ -37,7 +37,7 @@
 #define PWM_PERIOD 	499
 #define TIM4_PERIOD 199
 
-#define NUM_OF_HOLES    12000
+#define NUM_OF_HOLES    12100
 
 /* USER CODE END PD */
 
@@ -110,7 +110,7 @@ double integralError_r = 0, difrentialError_r = 0, lastErrorRight = 0;
 double integralError_l = 0, difrentialError_l = 0, lastErrorLeftt = 0;
 double dest_angle = 0;
 double dest_distance = 0;
-
+uint8_t arived_to_dest = 0;
 int gox,goy;
 struct position{
 	int x;
@@ -202,12 +202,12 @@ void Motor_PWM_Left(int PWM){
 }
 float xcd(float time){
 	
-	return 0.3 * cos(time);// + 2.2;
+	return 0.2 * cos(time);// + 2.2;
 
 }
 float ycd(float time){
 	
-	return 0.3 * sin(time);// + 1.7;
+	return 0.2 * sin(time);// + 1.7;
 
 }
 float thetad(float time){
@@ -453,17 +453,17 @@ int main(void)
 
 			//60000/(TIM1_PERIOD+1)
 			if(forwardR){	
-			rpmRight = (counterRight * 60000/(TIM1_PERIOD+1))/NUM_OF_HOLES;
+				rpmRight = (counterRight * 60000/(TIM1_PERIOD+1))/NUM_OF_HOLES;
 			}
 			if(forwardL){
-			rpmLeft = (counterLeft *  60000/(TIM1_PERIOD+1))/NUM_OF_HOLES;	
+				rpmLeft = (counterLeft *  60000/(TIM1_PERIOD+1))/NUM_OF_HOLES;	
 			}
 			
 			if(!forwardR){	
-			rpmRight = -(counterBackRight *  60000/(TIM1_PERIOD+1))/NUM_OF_HOLES;
+				rpmRight = -(counterBackRight *  60000/(TIM1_PERIOD+1))/NUM_OF_HOLES;
 			}
 			if(!forwardL){
-			rpmLeft = -(counterBackLeft *  60000/(TIM1_PERIOD+1))/NUM_OF_HOLES;	
+				rpmLeft = -(counterBackLeft *  60000/(TIM1_PERIOD+1))/NUM_OF_HOLES;	
 			}		
 			
 			
@@ -479,11 +479,11 @@ int main(void)
 
 			got_x = Rx_data[0];
 			got_x |= Rx_data[1]<<8;
-			x = (got_x/100.0) - 1.9;
+			x = (got_x/100.0) - 1.41;
 		//	x -= 543;
 			got_y = Rx_data[2];
 			got_y |= Rx_data[3]<<8;
-			y = (got_y/100.0) - 1.2;
+			y = (got_y/100.0) - 1.03;
 		//	y -= 328;
 			got_angle = Rx_data[4];
 			got_angle |= Rx_data[5]<<8;
@@ -587,23 +587,35 @@ int main(void)
 		
 		/*
 		// Farhan - move in path		(OK)
-		
+		_xcd = 0;
+		_ycd = 0;
+		_thetad = pi/2;
 		dest_angle = atan2(_ycd - y, _xcd - x) - angle;
 		if(dest_angle < -pi) dest_angle += 2*pi;
 		dest_distance = sqrt(pow(_xcd - x, 2) + pow(_ycd - y, 2));
 		
 		//rpmRightD = (V + (width*w))/r;
 		//rpmLeftD = (V - (width*w))/r;
-		if(dest_distance < 0.3){
-			//rpmRightD	= 0;
-			//rpmLeftD	= 0;
+		if(arived_to_dest < 0.15 && dest_distance < 0.3){
+			dest_angle = _thetad - angle;
+			if(dest_angle < 0.2 && dest_angle > -0.2){
+				rpmRightD	= 0;
+				rpmLeftD	= 0;
+			}
+			else{
+				if(dest_angle < -pi) dest_angle += 2*pi;
+				rpmRightD	= -1 -dest_angle*2;
+				rpmLeftD	= -1 +dest_angle*2;
+			}
 			time += 0.1;
 		}
-		rpmRightD	= 10 - dest_angle * 5;
-		rpmLeftD	= 10 + dest_angle * 5;
+		if(dest_distance < 0.15) arived_to_dest = 1;
+		else{
+			rpmRightD	= 10*dest_distance - dest_angle * 5;
+			rpmLeftD	= 10*dest_distance + dest_angle * 5;
+		}
+		
 		*/
-		
-		
 		
 		
 		//rpmRightD *= 0.105;
@@ -611,6 +623,7 @@ int main(void)
 
 		rpmRightD *= 9.55;
 		rpmLeftD *= 9.55;
+		
 		/////////////////// Speed Control ///////////////////////////////
 		//Motor_PWM_Right(250);
 		//Motor_PWM_Left(250);
@@ -896,7 +909,7 @@ static void MX_TIM2_Init(void)
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
-  TIM_OC_InitTypeDef sConfigOC = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0}; 
 
   /* USER CODE BEGIN TIM2_Init 1 */
 
