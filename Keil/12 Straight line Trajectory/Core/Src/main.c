@@ -90,7 +90,7 @@ int allError[totalError];
 char locFlag = 0;
 //uint8_t x, y, angle;
 int got_x, got_y, got_angle;
-float x = 0.5, y = 0, angle=0;
+float x = 0, y = 0, angle=0;
 int dangle =0;
 char locState = 's';
 
@@ -201,13 +201,13 @@ void Motor_PWM_Left(int PWM){
 
 }
 float xcd(float time){
-	//return time * 0.6;
-	return 0.5 * cos(time);// + 2.2;
+	return time * 0.6;
+	//return 0.2 * cos(time);// + 2.2;
 	
 }
 float ycd(float time){
-	//return time * 0.0;
-	return 0.5 * sin(time);// + 1.7;
+	return time * 0.0;
+	//return 0.2 * sin(time);// + 1.7;
 
 }
 float thetad(float time){
@@ -486,11 +486,11 @@ int main(void)
 
 			got_x = Rx_data[0];
 			got_x |= Rx_data[1]<<8;
-			x = (got_x/100.0) - 1.45;
+			x = (got_x/100.0) - 0.35;
 		//	x -= 543;
 			got_y = Rx_data[2];
 			got_y |= Rx_data[3]<<8;
-			y = (got_y/100.0) - 1.25;
+			y = (got_y/100.0) - 1.36;
 		//	y -= 328;
 			got_angle = Rx_data[4];
 			got_angle |= Rx_data[5]<<8;

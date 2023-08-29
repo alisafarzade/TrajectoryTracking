@@ -40,8 +40,8 @@ x13 = zeros(1, length(tspan));
 
 
 
-xc1d = tspan * 2.0;%0.3 * cos(tspan);
-yc1d = 0;%0.3 * sin(tspan);
+xc1d = tspan * 0.6;%0.3 * cos(tspan);
+yc1d = tspan * 0.6;%0.3 * sin(tspan);
 theta1d = zeros(1, length(tspan));%unwrap(atan2(cos(tspan), -0.8 * sin(tspan)));
 
 % v1d = sqrt((-0.8*sin(tspan)).^2 + (cos(tspan)).^2);
@@ -69,7 +69,7 @@ alpha1(1) = 0;
 
 
 for q = 1 : length(tspan)
-    x11d(q) = atan2((yc1d - yc1(q)), (xc1d(q) - xc1(q)));
+    x11d(q) = atan2((yc1d(q) - yc1(q)), (xc1d(q) - xc1(q)));
     Xi11(q + 1) = w1d(q) + (k3 * (x11d(q) - x11(q)));
     
     z11(q) = x13d(q) - x13(q);

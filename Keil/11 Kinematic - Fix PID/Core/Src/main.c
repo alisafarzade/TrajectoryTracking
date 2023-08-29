@@ -90,7 +90,7 @@ int allError[totalError];
 char locFlag = 0;
 //uint8_t x, y, angle;
 int got_x, got_y, got_angle;
-float x = 0.3, y = 0, angle=3.14/2;
+float x = 0.2, y = 0, angle=3.14/2;
 int dangle =0;
 char locState = 's';
 
@@ -100,7 +100,7 @@ float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 1.3,k2 = 1.5,k3 = 1.5,k41 = 2,k42 = 2;
+float k1 = 0.1,k2 = 0.1,k3 = 0.4,k41 = 2,k42 = 2;
 float V, w;
 float width = 0.13, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -483,7 +483,7 @@ int main(void)
 		//	x -= 543;
 			got_y = Rx_data[2];
 			got_y |= Rx_data[3]<<8;
-			y = (got_y/100.0) - 1.03;
+			y = (got_y/100.0) - 1.35;
 		//	y -= 328;
 			got_angle = Rx_data[4];
 			got_angle |= Rx_data[5]<<8;
