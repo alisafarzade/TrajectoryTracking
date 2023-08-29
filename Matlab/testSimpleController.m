@@ -11,12 +11,9 @@ le2 = 0.35;
 le31 = 1.5;
 le32 = 1.2;
 
-% k1 = 1.3;
-% k2 = 2.5;
-% k3 = 1.5;
 k1 = 1.3;
 k2 = 2.5;
-k3 = 10;
+k3 = 0.1;
 k41 = 2;
 k42 = 2;
 Kv1 = diag([50 50]);
@@ -24,8 +21,8 @@ ks1 = 0.1;
 
 
 
-dt = 0.1;
-tspan = 0:dt:700;
+dt = 0.2;
+tspan = 0:dt:100;
 
 
 Xi11 = zeros(1, length(tspan));
@@ -54,7 +51,7 @@ x11d = theta1d;
 x12d = xc1d .* cos(theta1d) + yc1d .* sin(theta1d);
 x13d = xc1d .* sin(theta1d) - yc1d .* cos(theta1d);
 
-NoiseRatio = 2;
+NoiseRatio = 1;
 xNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
 yNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
 wNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
@@ -62,9 +59,9 @@ wNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
 
 x11(1) = 0;
 x12(1) = 0;
-x13(1) = 0;
+x13(1) = -1;
 
-yc1(1) = 0;
+yc1(1) = 1;
 xc1(1) = 0;
 Xi11(1) = 0;
 Xi12(1) = 0;
@@ -83,11 +80,16 @@ for q = 1 : length(tspan)
     Xi12(q + 1) = ((alpha1(q + 1) - alpha1(q))/dt) + (le2^2 - z12(q)^2) * k2 * z12(q) * w1d(q)^2 + ((le2^2 - z12(q)^2)/(le1^2 - z11(q)^2)) * z11(q) * w1d(q);
 
     
-    v1(q) = ((x13(q) * Xi11(q + 1)) + Xi12(q + 1));
-    w1(q) = Xi11(q + 1);
+
+    v1(q) = sqrt(((xc1(q) - xc1d(q)).^2 + (yc1(q) - yc1d).^2));
+    w1(q) = (atan2((yc1d - yc1(q)), (xc1d(q) - xc1(q))) - x11(q));
     
-    xc1(q + 1) = xc1(q) + dt * v1(q) * cos(x11(q));% + xNoise(q);
-    yc1(q + 1) = yc1(q) + dt * v1(q) * sin(x11(q));% + yNoise(q);    
+%     v1(q) = ((x13(q) * Xi11(q + 1)) + Xi12(q + 1));
+%     w1(q) = Xi11(q + 1);
+    
+    
+    xc1(q + 1) = xc1(q) + dt * v1(q) * cos(x11(q)) + xNoise(q);
+    yc1(q + 1) = yc1(q) + dt * v1(q) * sin(x11(q)) + yNoise(q);    
     x11(q + 1) = x11(q) + dt * w1(q) + wNoise(q);
     
     
