@@ -206,7 +206,7 @@ float xcd(float time){
 	
 }
 float ycd(float time){
-	return time * 0.6;
+	return time * 0.0;
 	//return 0.2 * sin(time);// + 1.7;
 
 }
@@ -486,11 +486,11 @@ int main(void)
 
 			got_x = Rx_data[0];
 			got_x |= Rx_data[1]<<8;
-			x = (got_x/100.0) - 0.65;
+			x = (got_x/100.0) - 0.35;
 		//	x -= 543;
 			got_y = Rx_data[2];
 			got_y |= Rx_data[3]<<8;
-			y = (got_y/100.0) - 0.65;
+			y = (got_y/100.0) - 1.36;
 		//	y -= 328;
 			got_angle = Rx_data[4];
 			got_angle |= Rx_data[5]<<8;
