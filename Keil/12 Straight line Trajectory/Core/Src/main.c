@@ -100,7 +100,7 @@ float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 1.3, k2 = 1.5, k3 = 8.1, k41 = 2, k42 = 2;
+float k1 = 0.3, k2 = 0.5, k3 = 1.1, k41 = 2, k42 = 2;
 float V, w;
 float width = 0.13, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -201,12 +201,12 @@ void Motor_PWM_Left(int PWM){
 
 }
 float xcd(float time){
-	return time * 0.6;
+	return time * 0.1;
 	//return 0.2 * cos(time);// + 2.2;
 	
 }
 float ycd(float time){
-	return time * 0.6;
+	return time * 0.0;
 	//return 0.2 * sin(time);// + 1.7;
 
 }
@@ -488,11 +488,11 @@ int main(void)
 
 			got_x = Rx_data[0];
 			got_x |= Rx_data[1]<<8;
-			x = (got_x/100.0) - 0.66;
+			x = (got_x/100.0) - 0.35;
 		//	x -= 543;
 			got_y = Rx_data[2];
 			got_y |= Rx_data[3]<<8;
-			y = (got_y/100.0) - 0.58;
+			y = (got_y/100.0) - 1.45;
 		//	y -= 328;
 			got_angle = Rx_data[4];
 			got_angle |= Rx_data[5]<<8;

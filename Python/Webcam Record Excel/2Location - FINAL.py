@@ -15,8 +15,8 @@ beginTime = time.time()
 last_step_time = time.time()
 circle_x = 138
 circle_y = 134
-Line_x = 66
-Line_y = 58
+Line_x = 35
+Line_y = 145
 with open("data.json", "r") as openfile:
     # Reading from json file
     hsvColors = json.load(openfile)
@@ -236,8 +236,8 @@ while 1:
                     x_Center1, 
                     y_Center1, 
                     green_angle,
-                    60 * (time.time() - last_step_time)+Line_x, 
-                    60 * (time.time() - last_step_time)+Line_y])
+                    10 * (time.time() - beginTime) + Line_x, 
+                    0  * (time.time() - beginTime) + Line_y])
                 last_step_time = time.time()
 
             
