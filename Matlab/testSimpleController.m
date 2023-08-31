@@ -58,11 +58,11 @@ wNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
 
 
 x11(1) = 0;
-x12(1) = 0;
-x13(1) = -1;
+x12(1) = -1;
+x13(1) = 0;
 
-yc1(1) = 1;
-xc1(1) = 0;
+yc1(1) = 0;
+xc1(1) = -1;
 Xi11(1) = 0;
 Xi12(1) = 0;
 alpha1(1) = 0;
