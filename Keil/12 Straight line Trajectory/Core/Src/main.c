@@ -100,7 +100,7 @@ float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 0.3, k2 = 0.5, k3 = 1.1, k41 = 2, k42 = 2;
+float k1 = 1.3, k2 = 1.5, k3 = 1.1, k4 = 0.65, k41 = 2, k42 = 2;
 float V, w;
 float width = 0.13, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -202,7 +202,7 @@ void Motor_PWM_Left(int PWM){
 
 }
 float xcd(float time){
-	return time * 0.1;
+	return time * 0.2;
 	//return 0.2 * cos(time);// + 2.2;
 	
 }
@@ -475,8 +475,7 @@ int main(void)
 			}
 			if(!forwardL){
 				rpmLeft = -(counterBackLeft *  60000/(TIM1_PERIOD+1))/NUM_OF_HOLES;	
-			}		
-			
+			}
 			
 			counterBackRight = 0;
 			counterBackLeft = 0;
@@ -588,7 +587,7 @@ int main(void)
 			lastalpha = alpha;
 		}	
 		Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * z1 * _wd);
-		V = _x3 * Xi1 + Xi2;
+		V = _x3 * Xi1 + k4 * Xi2;
 		w = Xi1;
 		if(V==0)
 			V=0;
