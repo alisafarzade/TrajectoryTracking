@@ -3606,11 +3606,11 @@
       <ActiveTab>0</ActiveTab>
       <Doc>
         <Name>../Core/Src/main.c</Name>
-        <ColumnNumber>32</ColumnNumber>
-        <TopLine>85</TopLine>
+        <ColumnNumber>45</ColumnNumber>
+        <TopLine>91</TopLine>
         <CurrentLine>103</CurrentLine>
         <Folding>1</Folding>
-        <ContractedFolders>150,164,184,260,265,274,321</ContractedFolders>
+        <ContractedFolders>137,150,164,184,260,265,274,321</ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
     </MDIGroup>

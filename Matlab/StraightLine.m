@@ -41,7 +41,7 @@ x13 = zeros(1, length(tspan));
 
 
 xc1d = tspan * 0.05;%0.3 * cos(tspan);
-yc1d = 0;%tspan * 0.6;%0.3 * sin(tspan);
+yc1d = tspan * 0.05;%tspan * 0.6;%0.3 * sin(tspan);
 theta1d = zeros(1, length(tspan));%unwrap(atan2(cos(tspan), -0.8 * sin(tspan)));
 
 % v1d = sqrt((-0.8*sin(tspan)).^2 + (cos(tspan)).^2);
