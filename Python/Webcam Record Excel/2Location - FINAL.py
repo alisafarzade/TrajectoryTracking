@@ -1,7 +1,7 @@
 # Python code for Multiple Color Detection
 import numpy as np
 import cv2
-from math import atan2, degrees
+from math import *
 import urllib
 import urllib.request
 import json
@@ -9,9 +9,14 @@ import time
 import serial
 import pandas as pd
 
-df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta'])
+df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd'])
+robot_data = []
 beginTime = time.time()
 last_step_time = time.time()
+circle_x = 138
+circle_y = 134
+Line_x = 66
+Line_y = 58
 with open("data.json", "r") as openfile:
     # Reading from json file
     hsvColors = json.load(openfile)
@@ -147,7 +152,7 @@ while 1:
 
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
-        if area > 50:#and area<50000:
+        if area > 50 and area<50000:
             rect = cv2.minAreaRect(contour)
             box = cv2.boxPoints(rect)
             box = np.intp(box)
@@ -174,7 +179,7 @@ while 1:
     )
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
-        if area > 50:# and area<50000:
+        if area > 50 and area<50000:
             rect = cv2.minAreaRect(contour)
             box = cv2.boxPoints(rect)
             box = np.intp(box)
@@ -226,10 +231,13 @@ while 1:
             packet_green[5] = int(green_angle).to_bytes(2, "little")[1]
             if time.time() - last_step_time > 0.1:
                 df2 = pd.DataFrame([[time.time() - beginTime, x_Center1, y_Center1, green_angle]], columns=['time', 'X', 'Y', 'theta'])
-                df = pd.concat([df, pd.DataFrame([[
+                robot_data.append([
                     time.time() - beginTime, 
-                    x_Center1, y_Center1, 
-                    green_angle]], columns=['time', 'X', 'Y', 'theta'])], ignore_index=True)
+                    x_Center1, 
+                    y_Center1, 
+                    green_angle,
+                    60 * (time.time() - last_step_time)+Line_x, 
+                    60 * (time.time() - last_step_time)+Line_y])
                 last_step_time = time.time()
 
             
@@ -245,7 +253,7 @@ while 1:
         if area > 300:
             rect = cv2.minAreaRect(contour)
             box = cv2.boxPoints(rect)
-            box = np.int0(box)
+            box = np.intp(box)
             x_blue, y_blue, w_blue, h_blue = cv2.boundingRect(contour)
             cv2.drawContours(imageFrame, [box], 0, (255, 0, 0), 2)
 
@@ -271,7 +279,7 @@ while 1:
         if area > 600 and area<900:
             rect = cv2.minAreaRect(contour)
             box = cv2.boxPoints(rect)
-            box = np.int0(box)
+            box = np.intp(box)
             x_yellow, y_yellow, w_yellow, h_yellow = cv2.boundingRect(contour)
             cv2.drawContours(imageFrame, [box], 0, (0, 255, 255), 2)
             # red_angle = int(rect[2])
@@ -310,7 +318,7 @@ while 1:
         if area > 300:
             rect = cv2.minAreaRect(contour)
             box = cv2.boxPoints(rect)
-            box = np.int0(box)
+            box = np.intp(box)
             x_orange, y_orange, w_orange, h_orange = cv2.boundingRect(contour)
             cv2.drawContours(imageFrame, [box], 0, (0, 188, 255), 2)
             # red_angle = int(rect[2])
@@ -338,7 +346,7 @@ while 1:
         if area > 300:
             rect = cv2.minAreaRect(contour)
             box = cv2.boxPoints(rect)
-            box = np.int0(box)
+            box = np.intp(box)
             x_pink, y_pink, w_pink, h_pink = cv2.boundingRect(contour)
             cv2.drawContours(imageFrame, [box], 0, (127, 157, 255), 2)
             # red_angle = int(rect[2])
@@ -372,10 +380,20 @@ while 1:
     if key & 0xff == 27:
         break
     if key == 115:
+        if len(robot_data) > 0:
+            dt = (2*pi)/len(robot_data)
+            for i in range(len(robot_data)):
+                # robot_data[i][4] = cos(i*dt) * 20 + circle_x
+                # robot_data[i][5] = sin(i*dt) * 20 + circle_y
+                # robot_data[i][4] = i*2 + Line_x
+                # robot_data[i][5] = i*2 + Line_y
+                pass
+                
+        df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd'])
         df.to_excel('./recordings/data.xlsx', sheet_name='Robot Positions')
         print('Excel Saved')
     if key == 114:
-        df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta'])
+        robot_data = []
         beginTime = time.time()
         print('Recording Started!!')
 #cap.release()
