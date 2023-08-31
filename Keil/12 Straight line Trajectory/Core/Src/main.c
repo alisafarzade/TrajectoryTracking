@@ -112,6 +112,7 @@ double dest_angle = 0;
 double dest_distance = 0;
 uint8_t arived_to_dest = 0;
 int gox,goy;
+uint32_t start_time = 0;
 struct position{
 	int x;
 	int y;
@@ -307,7 +308,7 @@ if(htim -> Instance == TIM1){
 if(htim -> Instance == TIM4){
 
 	timerCounter++;
-	time += 0.2;
+	//time += 0.2;
 	derivationFlag = 1;
 		
 }
@@ -418,13 +419,14 @@ int main(void)
 	
 	
 	HAL_UART_Receive_IT(&huart1, Rx_data, 6);
+	start_time = HAL_GetTick();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+		time = (HAL_GetTick() - start_time)/1000.0;
 		ADC_Select_CHA3();
  		HAL_ADC_Start(&hadc1);
 		HAL_ADC_PollForConversion(&hadc1, 1);
@@ -588,6 +590,8 @@ int main(void)
 		Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * z1 * _wd);
 		V = _x3 * Xi1 + Xi2;
 		w = Xi1;
+		if(V==0)
+			V=0;
 		//x = x + 0.002 * V * cos(angle);
 		//y = y + 0.002 * V * sin(angle);
 		//angle = angle + 0.002 * w;
