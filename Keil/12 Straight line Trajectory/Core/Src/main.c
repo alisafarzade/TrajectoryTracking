@@ -100,7 +100,7 @@ float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 1.3,k2 = 1.5,k3 = 8.1,k41 = 2,k42 = 2;
+float k1 = 0.3, k2 = 0.5, k3 = 1.1, k41 = 2, k42 = 2;
 float V, w;
 float width = 0.13, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -112,6 +112,7 @@ double dest_angle = 0;
 double dest_distance = 0;
 uint8_t arived_to_dest = 0;
 int gox,goy;
+uint32_t start_time = 0;
 struct position{
 	int x;
 	int y;
@@ -201,7 +202,7 @@ void Motor_PWM_Left(int PWM){
 
 }
 float xcd(float time){
-	return time * 0.6;
+	return time * 0.1;
 	//return 0.2 * cos(time);// + 2.2;
 	
 }
@@ -307,7 +308,7 @@ if(htim -> Instance == TIM1){
 if(htim -> Instance == TIM4){
 
 	timerCounter++;
-	time += 0.2;
+	//time += 0.2;
 	derivationFlag = 1;
 		
 }
@@ -397,6 +398,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
+	uint8_t temp_data;
+	HAL_UART_Receive(&huart1, &temp_data, 6, HAL_MAX_DELAY);
 	
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
@@ -416,13 +419,14 @@ int main(void)
 	
 	
 	HAL_UART_Receive_IT(&huart1, Rx_data, 6);
+	start_time = HAL_GetTick();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+		time = (HAL_GetTick() - start_time)/1000.0;
 		ADC_Select_CHA3();
  		HAL_ADC_Start(&hadc1);
 		HAL_ADC_PollForConversion(&hadc1, 1);
@@ -490,7 +494,7 @@ int main(void)
 		//	x -= 543;
 			got_y = Rx_data[2];
 			got_y |= Rx_data[3]<<8;
-			y = (got_y/100.0) - 1.36;
+			y = (got_y/100.0) - 1.45;
 		//	y -= 328;
 			got_angle = Rx_data[4];
 			got_angle |= Rx_data[5]<<8;
@@ -586,6 +590,8 @@ int main(void)
 		Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * z1 * _wd);
 		V = _x3 * Xi1 + Xi2;
 		w = Xi1;
+		if(V==0)
+			V=0;
 		//x = x + 0.002 * V * cos(angle);
 		//y = y + 0.002 * V * sin(angle);
 		//angle = angle + 0.002 * w;
