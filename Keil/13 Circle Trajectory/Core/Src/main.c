@@ -100,7 +100,7 @@ float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 1.0,k2 = 1.0,k3 = 0.05, k4 = 0.25,k41 = 2,k42 = 2;
+float k1 = 10.0,k2 = 1.0,k3 = 0.01, k4 = 1.0,k41 = 2,k42 = 2;
 float V, w;
 float width = 0.13, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -211,7 +211,7 @@ float ycd(float time){
 
 }
 float thetad(float time){
-	float theta = atan2(cos(time), -0.8*sin(time));
+	float theta = atan2(cos(time), -sin(time));
 	if(theta < 0){
 		theta += 2 * pi;
 		return theta;
@@ -300,7 +300,7 @@ if(htim -> Instance == TIM1){
 if(htim -> Instance == TIM4){
 
 	timerCounter++;
-	time += 0.02;
+	time += 0.2;
 	derivationFlag = 1;
 		
 }
@@ -572,12 +572,12 @@ int main(void)
 		B = pow(le2,2) - pow(z2,2);
 
 		if(derivationFlag){
-			alphadot = (alpha - lastalpha)/0.2;
+			alphadot = (alpha - lastalpha)/0.2;//((TIM4_PERIOD+1)/1000);
 			derivationFlag = 0;
 			lastalpha = alpha;
 		}	
 		Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * z1 * _wd);
-		V = _x3 * Xi1 + k4 * Xi2;
+		V = _x3 * Xi1 + 0.24 * Xi2;
 		w = Xi1;
 		//x = x + 0.002 * V * cos(angle);
 		//y = y + 0.002 * V * sin(angle);
@@ -586,7 +586,6 @@ int main(void)
 		
 		rpmRightD = (V - (width*w))/r;
 		rpmLeftD = (V + (width*w))/r;
-		
 		/*
 		// Farhan - move in path		(OK)
 		_xcd = 0;

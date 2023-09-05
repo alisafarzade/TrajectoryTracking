@@ -9,7 +9,7 @@ import time
 import serial
 import pandas as pd
 
-df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd'])
+df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y'])
 robot_data = []
 beginTime = time.time()
 last_step_time = time.time()
@@ -231,13 +231,17 @@ while 1:
             packet_green[5] = int(green_angle).to_bytes(2, "little")[1]
             if time.time() - last_step_time > 0.1:
                 df2 = pd.DataFrame([[time.time() - beginTime, x_Center1, y_Center1, green_angle]], columns=['time', 'X', 'Y', 'theta'])
+                Xd = 30 * cos(time.time() - beginTime) + circle_x
+                Yd = 30 * sin(time.time() - beginTime) + circle_y
                 robot_data.append([
                     time.time() - beginTime, 
                     x_Center1, 
                     y_Center1, 
                     green_angle,
-                    30 * cos(time.time() - beginTime) + circle_x, 
-                    30 * sin(time.time() - beginTime) + circle_y])
+                    Xd, 
+                    Yd,
+                    x_Center1 - Xd,
+                    y_Center1 - Yd])
                 last_step_time = time.time()
 
             
@@ -379,17 +383,8 @@ while 1:
     # Program Termination
     if key & 0xff == 27:
         break
-    if key == 115:
-        if len(robot_data) > 0:
-            dt = (2*pi)/len(robot_data)
-            for i in range(len(robot_data)):
-                # robot_data[i][4] = cos(i*dt) * 20 + circle_x
-                # robot_data[i][5] = sin(i*dt) * 20 + circle_y
-                # robot_data[i][4] = i*2 + Line_x
-                # robot_data[i][5] = i*2 + Line_y
-                pass
-                
-        df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd'])
+    if key == 115:                
+        df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y'])
         df.to_excel('./recordings/data.xlsx', sheet_name='Robot Positions')
         print('Excel Saved')
     if key == 114:
