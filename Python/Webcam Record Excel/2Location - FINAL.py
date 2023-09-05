@@ -13,8 +13,8 @@ df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd'])
 robot_data = []
 beginTime = time.time()
 last_step_time = time.time()
-circle_x = 138
-circle_y = 134
+circle_x = 140
+circle_y = 130
 Line_x = 35
 Line_y = 145
 with open("data.json", "r") as openfile:
@@ -236,8 +236,8 @@ while 1:
                     x_Center1, 
                     y_Center1, 
                     green_angle,
-                    10 * (time.time() - beginTime) + Line_x, 
-                    0  * (time.time() - beginTime) + Line_y])
+                    30 * cos(time.time() - beginTime) + circle_x, 
+                    30 * sin(time.time() - beginTime) + circle_y])
                 last_step_time = time.time()
 
             

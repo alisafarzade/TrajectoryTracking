@@ -90,7 +90,7 @@ int allError[totalError];
 char locFlag = 0;
 //uint8_t x, y, angle;
 int got_x, got_y, got_angle;
-float x = 0.2, y = 0, angle=3.14/2;
+float x = 0.4, y = 0, angle=3.14/2;
 int dangle =0;
 char locState = 's';
 
@@ -100,7 +100,7 @@ float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 0.05,k2 = 0.05,k3 = 2.0,k41 = 2,k42 = 2;
+float k1 = 1.0,k2 = 1.0,k3 = 0.05, k4 = 0.25,k41 = 2,k42 = 2;
 float V, w;
 float width = 0.13, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -202,12 +202,12 @@ void Motor_PWM_Left(int PWM){
 }
 float xcd(float time){
 	
-	return 0.2 * cos(time);// + 2.2;
+	return 0.3 * cos(time);// + 2.2;
 
 }
 float ycd(float time){
 	
-	return 0.2 * sin(time);// + 1.7;
+	return 0.3 * sin(time);// + 1.7;
 
 }
 float thetad(float time){
@@ -220,8 +220,8 @@ float thetad(float time){
 		return theta;
 }
 float wd(float time){
-	
-	return ( (-sin(time) * (-0.8*sin(time))) - (-0.8*cos(time) * cos(time)) ) / ( pow(-0.8*sin(time), 2) + pow(cos(time), 2) );
+	return 1;
+	//return ( (-sin(time) * (-0.8*sin(time))) - (-0.8*cos(time) * cos(time)) ) / ( pow(-0.8*sin(time), 2) + pow(cos(time), 2) );
 		
 }
 float x2d(float time){
@@ -390,7 +390,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-	
+	uint8_t temp_data;
+	HAL_UART_Receive(&huart1, &temp_data, 6, HAL_MAX_DELAY);
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 	
@@ -478,11 +479,11 @@ int main(void)
 		if(locFlag){
 			got_x = Rx_data[0];
 			got_x |= Rx_data[1]<<8;
-			x = (got_x/100.0) - 1.38;
+			x = (got_x/100.0) - 1.40;
 		//	x -= 543;
 			got_y = Rx_data[2];
 			got_y |= Rx_data[3]<<8;
-			y = (got_y/100.0) - 1.34;
+			y = (got_y/100.0) - 1.30;
 		//	y -= 328;
 			got_angle = Rx_data[4];
 			got_angle |= Rx_data[5]<<8;
@@ -576,7 +577,7 @@ int main(void)
 			lastalpha = alpha;
 		}	
 		Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * z1 * _wd);
-		V = _x3 * Xi1 + Xi2;
+		V = _x3 * Xi1 + k4 * Xi2;
 		w = Xi1;
 		//x = x + 0.002 * V * cos(angle);
 		//y = y + 0.002 * V * sin(angle);
