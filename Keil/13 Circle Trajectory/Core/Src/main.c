@@ -619,11 +619,13 @@ int main(void)
 		*/
 		
 		
-		//rpmRightD *= 0.105;
-		//rpmLeftD *= 0.105;
+		
 
 		rpmRightD *= 9.55;
 		rpmLeftD *= 9.55;
+		
+		//rpmRightD = 60;
+		//rpmLeftD = -60;
 		
 		/////////////////// Speed Control ///////////////////////////////
 		//Motor_PWM_Right(250);
