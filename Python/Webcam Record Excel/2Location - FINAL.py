@@ -62,7 +62,7 @@ def colorSetHSV(color, upperOrLower):
 
 # Start a while loop
 while 1:
-    # Reading the video from the
+    # Reading the video from theس
     # webcam in image frames
     # _, imageFrame = webcam.read()
 
