@@ -210,6 +210,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>rpmLeft,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>turn,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>13</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>turn</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

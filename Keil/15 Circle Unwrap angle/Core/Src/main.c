@@ -94,13 +94,15 @@ float x = 0.4, y = 0, angle=3.14/2;
 int dangle =0;
 char locState = 's';
 
-#define pi 3.142 
+#define pi 3.14159265359 //3.142 
+#define M_PI pi
+#define M_2PI 2*pi
 char derivationFlag=0;
 float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 1.0,k2 = 1.0,k3 = 1.0, k4 = 1.0,k41 = 2,k42 = 2;
+float k1 = 15.0,k2 = 1.0,k3 = 8.0, k4 = 1.0,k41 = 2,k42 = 2;
 float V, w;
 float width = 0.125, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -200,11 +202,31 @@ void Motor_PWM_Left(int PWM){
 	}
 
 }
-
-float unwrap(float previous_angle, float new_angle) {
-    float d = new_angle - previous_angle;
-    d = d > pi ? d - 2 * pi : (d < -pi ? d + 2 * pi : d);
-    return previous_angle + d;
+int turn;
+/*float unwrap(float previous_angle, float new_angle) {
+	turn = (previous_angle / (pi)) + 1;
+	float d = new_angle - previous_angle;
+	d = d > pi ? d - turn * pi : (d < -pi ? d + turn * pi : d);
+	return previous_angle + d;
+}*/
+//Normalize to [-180,180):
+inline double constrainAngle(double x){
+    x = fmod(x + M_PI,M_2PI);
+    if (x < 0) x += M_2PI;
+    return x - M_PI;
+}
+// convert to [-360,360]
+inline double angleConv(double angle){
+    return fmod(constrainAngle(angle),M_2PI);
+}
+inline double angleDiff(double a,double b){
+    double dif = fmod(b - a + M_PI,M_2PI);
+    if (dif < 0)
+        dif += M_2PI;
+    return dif - M_PI;
+}
+inline double unwrap(double previousAngle,double newAngle){
+    return previousAngle - angleDiff(newAngle,angleConv(previousAngle));
 }
 float xcd(float time){
 	return 0.3 * cos(time);// + 2.2;
@@ -278,11 +300,9 @@ if(htim -> Instance == TIM1){
 }
 
 if(htim -> Instance == TIM4){
-
 	timerCounter++;
 	time += 0.2;
 	derivationFlag = 1;
-		
 }
 
 }

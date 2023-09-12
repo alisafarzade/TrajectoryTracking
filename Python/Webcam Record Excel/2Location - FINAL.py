@@ -9,7 +9,7 @@ import time
 import serial
 import pandas as pd
 
-df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y'])
+df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta'])
 robot_data = []
 beginTime = time.time()
 last_step_time = time.time()
@@ -233,15 +233,21 @@ while 1:
                 df2 = pd.DataFrame([[time.time() - beginTime, x_Center1, y_Center1, green_angle]], columns=['time', 'X', 'Y', 'theta'])
                 Xd = 30 * cos(time.time() - beginTime) + circle_x
                 Yd = 30 * sin(time.time() - beginTime) + circle_y
+                t1 = time.time() - beginTime
+                thetaD = atan2(cos(t1), -sin(t1))
+                if thetaD < 0: thetaD += 2*pi
                 robot_data.append([
-                    time.time() - beginTime, 
+                    t1, 
                     x_Center1, 
                     y_Center1, 
                     green_angle,
                     Xd, 
                     Yd,
                     x_Center1 - Xd,
-                    y_Center1 - Yd])
+                    y_Center1 - Yd,
+                    radians(green_angle),
+                    thetaD,
+                    radians(green_angle) - thetaD])
                 last_step_time = time.time()
 
             
@@ -384,7 +390,7 @@ while 1:
     if key & 0xff == 27:
         break
     if key == 115:                
-        df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y'])
+        df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta'])
         df.to_excel('./recordings/data.xlsx', sheet_name='Robot Positions')
         print('Excel Saved')
     if key == 114:
