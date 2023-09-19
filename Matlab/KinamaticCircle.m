@@ -20,7 +20,7 @@ ks1 = 0.1;
 
 
 
-dt = 0.001;
+dt = 0.2;
 tspan = 0:dt:400;
 
 
@@ -84,9 +84,9 @@ for q = 1 : length(tspan)
     v1(q) = (x13(q) * Xi11(q + 1)) + Xi12(q + 1);
     w1(q) = Xi11(q + 1);
     
-    xc1(q + 1) = xc1(q) + dt * v1(q) * cos(x11(q));%+ xNoise(q);
-    yc1(q + 1) = yc1(q) + dt * v1(q) * sin(x11(q));%+ yNoise(q);    
-    x11(q + 1) = x11(q) + dt * w1(q);% + wNoise(q);
+    xc1(q + 1) = xc1(q) + dt * v1(q) * cos(x11(q))+ xNoise(q);
+    yc1(q + 1) = yc1(q) + dt * v1(q) * sin(x11(q))+ yNoise(q);    
+    x11(q + 1) = x11(q) + dt * w1(q) + wNoise(q);
     
     
     x12(q + 1) = xc1(q + 1) * cos(x11(q + 1)) + yc1(q + 1) * sin(x11(q + 1));
