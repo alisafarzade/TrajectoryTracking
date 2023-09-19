@@ -26,6 +26,7 @@ GAMAofbeta = [0.000001 , 0;
                 0 , 0.000005];
 neurons = 2160;
 centers = cartesian(linspace(-1.5, 1.5, 4), linspace(-2, 2, 5), linspace(0, 2, 3), linspace(-1.5, 1.5, 4), linspace(-1, 1, 3), linspace(0, 2, 3));
+
 % LANDA = [x13(q), 1; 1, 0];
 
 m = 9;
@@ -39,8 +40,8 @@ ra= 1.6;
 ku1 = (ng*kt)/ra;
 ku2 = ng*kb*ku1;
              
-dt = 0.01;
-tspan = 0:dt:500;
+dt = 0.1;
+tspan = 0:dt:100;
 
 %% i = 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
