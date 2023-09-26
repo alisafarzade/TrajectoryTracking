@@ -1,0 +1,386 @@
+T1024 000:007.601   SEGGER J-Link V7.22b Log File
+T1024 000:007.808   DLL Compiled: Jun 17 2021 17:22:49
+T1024 000:007.867   Logging started @ 2023-09-21 08:25
+T1024 000:007.879 - 7.884ms
+T1024 000:007.904 JLINK_SetWarnOutHandler(...)
+T1024 000:007.927 - 0.028ms
+T1024 000:007.943 JLINK_OpenEx(...)
+T1024 000:010.221   Firmware: J-Link ARM V8 compiled Nov 28 2014 13:44:46
+T1024 000:010.602   Firmware: J-Link ARM V8 compiled Nov 28 2014 13:44:46
+T1024 000:013.230   Hardware: V8.00
+T1024 000:013.266   S/N: 58004321
+T1024 000:013.292   OEM: SEGGER
+T1024 000:013.311   Feature(s): RDI, FlashBP, FlashDL, JFlash, GDB
+T1024 000:014.750   TELNET listener socket opened on port 19021
+T1024 000:014.919   WEBSRV Starting webserver
+T1024 000:015.095   WEBSRV Webserver running on local port 19080
+T1024 000:015.119 - 7.181ms returns "O.K."
+T1024 000:015.147 JLINK_GetEmuCaps()
+T1024 000:015.158 - 0.016ms returns 0xB9FF7BBF
+T1024 000:015.179 JLINK_TIF_GetAvailable(...)
+T1024 000:015.367 - 0.202ms
+T1024 000:015.400 JLINK_SetErrorOutHandler(...)
+T1024 000:015.412 - 0.017ms
+T1024 000:015.443 JLINK_ExecCommand("ProjectFile = "C:\Users\Farhan\Documents\GitHub\TrajectoryTracking\Keil\15 Circle Unwrap angle\MDK-ARM\JLinkSettings.ini"", ...). 
+T1024 000:028.887 - 13.463ms returns 0x00
+T1024 000:032.899 JLINK_ExecCommand("Device = STM32F103RE", ...). 
+T1024 000:037.336   Device "STM32F103RE" selected.
+T1024 000:037.786 - 4.858ms returns 0x00
+T1024 000:037.837 JLINK_GetHardwareVersion()
+T1024 000:037.849 - 0.017ms returns 80000
+T1024 000:037.864 JLINK_GetDLLVersion()
+T1024 000:037.874 - 0.015ms returns 72202
+T1024 000:037.887 JLINK_GetOEMString(...)
+T1024 000:037.900 JLINK_GetFirmwareString(...)
+T1024 000:037.918 - 0.023ms
+T1024 000:050.888 JLINK_GetDLLVersion()
+T1024 000:050.916 - 0.031ms returns 72202
+T1024 000:050.927 JLINK_GetCompileDateTime()
+T1024 000:050.935 - 0.011ms
+T1024 000:053.863 JLINK_GetFirmwareString(...)
+T1024 000:053.893 - 0.036ms
+T1024 000:057.374 JLINK_GetHardwareVersion()
+T1024 000:057.409 - 0.041ms returns 80000
+T1024 000:060.827 JLINK_GetSN()
+T1024 000:060.855 - 0.032ms returns 58004321
+T1024 000:065.070 JLINK_GetOEMString(...)
+T1024 000:071.344 JLINK_TIF_Select(JLINKARM_TIF_JTAG)
+T1024 000:072.212 - 0.882ms returns 0x00
+T1024 000:072.250 JLINK_HasError()
+T1024 000:072.271 JLINK_SetSpeed(5000)
+T1024 000:072.363 - 0.101ms
+T1024 000:072.385 JLINK_GetIdData(pIdData)
+T1024 000:076.807   InitTarget() start
+T1024 000:076.851    J-Link Script File: Executing InitTarget()
+T1024 000:081.438   Could not measure total IR len. TDO is constant high.
+T1024 000:086.532   Could not measure total IR len. TDO is constant high.
+T1024 000:092.033   Could not measure total IR len. TDO is constant high.
+T1024 000:097.605   Could not measure total IR len. TDO is constant high.
+T1024 000:103.850   Could not measure total IR len. TDO is constant high.
+T1024 000:109.496   Could not measure total IR len. TDO is constant high.
+T1024 000:115.707   Could not measure total IR len. TDO is constant high.
+T1024 000:120.866   Could not measure total IR len. TDO is constant high.
+T1024 000:127.096   Could not measure total IR len. TDO is constant high.
+T1024 000:131.810   Could not measure total IR len. TDO is constant high.
+T1024 000:136.519   Could not measure total IR len. TDO is constant high.
+T1024 000:142.458   Could not measure total IR len. TDO is constant high.
+T1024 000:147.447   Could not measure total IR len. TDO is constant high.
+T1024 000:152.553   Could not measure total IR len. TDO is constant high.
+T1024 000:158.014   Could not measure total IR len. TDO is constant high.
+T1024 000:162.758   Could not measure total IR len. TDO is constant high.
+T1024 000:167.479   Could not measure total IR len. TDO is constant high.
+T1024 000:172.552   Could not measure total IR len. TDO is constant high.
+T1024 000:178.152   Could not measure total IR len. TDO is constant high.
+T1024 000:183.716   Could not measure total IR len. TDO is constant high.
+T1024 000:189.571   Could not measure total IR len. TDO is constant high.
+T1024 000:195.326   Could not measure total IR len. TDO is constant high.
+T1024 000:200.044   Could not measure total IR len. TDO is constant high.
+T1024 000:205.068   Could not measure total IR len. TDO is constant high.
+T1024 000:210.602   Could not measure total IR len. TDO is constant high.
+T1024 000:215.900   Could not measure total IR len. TDO is constant high.
+T1024 000:221.165   Could not measure total IR len. TDO is constant high.
+T1024 000:227.085   Could not measure total IR len. TDO is constant high.
+T1024 000:232.175   Could not measure total IR len. TDO is constant high.
+T1024 000:237.388   Could not measure total IR len. TDO is constant high.
+T1024 000:242.892   Could not measure total IR len. TDO is constant high.
+T1024 000:248.684   Could not measure total IR len. TDO is constant high.
+T1024 000:255.431   Could not measure total IR len. TDO is constant high.
+T1024 000:261.015   Could not measure total IR len. TDO is constant high.
+T1024 000:266.156   Could not measure total IR len. TDO is constant high.
+T1024 000:270.838   Could not measure total IR len. TDO is constant high.
+T1024 000:276.866   Could not measure total IR len. TDO is constant high.
+T1024 000:282.028   Could not measure total IR len. TDO is constant high.
+T1024 000:286.848   Could not measure total IR len. TDO is constant high.
+T1024 000:292.751   Could not measure total IR len. TDO is constant high.
+T1024 000:297.517   Could not measure total IR len. TDO is constant high.
+T1024 000:302.120   Could not measure total IR len. TDO is constant high.
+T1024 000:309.391   Could not measure total IR len. TDO is constant high.
+T1024 000:314.191   Could not measure total IR len. TDO is constant high.
+T1024 000:319.546   Could not measure total IR len. TDO is constant high.
+T1024 000:325.274   Could not measure total IR len. TDO is constant high.
+T1024 000:330.244   Could not measure total IR len. TDO is constant high.
+T1024 000:335.737   Could not measure total IR len. TDO is constant high.
+T1024 000:341.033   Could not measure total IR len. TDO is constant high.
+T1024 000:346.571   Could not measure total IR len. TDO is constant high.
+T1024 000:351.604   Could not measure total IR len. TDO is constant high.
+T1024 000:356.731   Could not measure total IR len. TDO is constant high.
+T1024 000:361.758   Could not measure total IR len. TDO is constant high.
+T1024 000:366.758   Could not measure total IR len. TDO is constant high.
+T1024 000:371.729   Could not measure total IR len. TDO is constant high.
+T1024 000:377.573   Could not measure total IR len. TDO is constant high.
+T1024 000:382.969   Could not measure total IR len. TDO is constant high.
+T1024 000:387.852   Could not measure total IR len. TDO is constant high.
+T1024 000:393.989   Could not measure total IR len. TDO is constant high.
+T1024 000:400.335   Could not measure total IR len. TDO is constant high.
+T1024 000:405.596   Could not measure total IR len. TDO is constant high.
+T1024 000:410.655   Could not measure total IR len. TDO is constant high.
+T1024 000:415.464   Could not measure total IR len. TDO is constant high.
+T1024 000:423.159   Could not measure total IR len. TDO is constant high.
+T1024 000:428.143   Could not measure total IR len. TDO is constant high.
+T1024 000:433.103   Could not measure total IR len. TDO is constant high.
+T1024 000:438.255   Could not measure total IR len. TDO is constant high.
+T1024 000:443.581   Could not measure total IR len. TDO is constant high.
+T1024 000:449.007   Could not measure total IR len. TDO is constant high.
+T1024 000:455.400   Could not measure total IR len. TDO is constant high.
+T1024 000:462.569   Could not measure total IR len. TDO is constant high.
+T1024 000:467.430   Could not measure total IR len. TDO is constant high.
+T1024 000:472.394   Could not measure total IR len. TDO is constant high.
+T1024 000:477.419   Could not measure total IR len. TDO is constant high.
+T1024 000:482.536   Could not measure total IR len. TDO is constant high.
+T1024 000:487.903   Could not measure total IR len. TDO is constant high.
+T1024 000:493.075   Could not measure total IR len. TDO is constant high.
+T1024 000:498.055   Could not measure total IR len. TDO is constant high.
+T1024 000:503.075   Could not measure total IR len. TDO is constant high.
+T1024 000:509.086   Could not measure total IR len. TDO is constant high.
+T1024 000:514.633   Could not measure total IR len. TDO is constant high.
+T1024 000:519.781   Could not measure total IR len. TDO is constant high.
+T1024 000:525.816   Could not measure total IR len. TDO is constant high.
+T1024 000:531.266   Could not measure total IR len. TDO is constant high.
+T1024 000:537.096   Could not measure total IR len. TDO is constant high.
+T1024 000:543.628   Could not measure total IR len. TDO is constant high.
+T1024 000:548.976   Could not measure total IR len. TDO is constant high.
+T1024 000:554.652   Could not measure total IR len. TDO is constant high.
+T1024 000:560.592   Could not measure total IR len. TDO is constant high.
+T1024 000:566.867   Could not measure total IR len. TDO is constant high.
+T1024 000:572.819   Could not measure total IR len. TDO is constant high.
+T1024 000:578.506   Could not measure total IR len. TDO is constant high.
+T1024 000:584.748   Could not measure total IR len. TDO is constant high.
+T1024 000:591.019   Could not measure total IR len. TDO is constant high.
+T1024 000:596.586   Could not measure total IR len. TDO is constant high.
+T1024 000:602.150   Could not measure total IR len. TDO is constant high.
+T1024 000:608.357   Could not measure total IR len. TDO is constant high.
+T1024 000:614.177   Could not measure total IR len. TDO is constant high.
+T1024 000:619.512   Could not measure total IR len. TDO is constant high.
+T1024 000:626.036   Could not measure total IR len. TDO is constant high.
+T1024 000:631.889   Could not measure total IR len. TDO is constant high.
+T1024 000:638.035   Could not measure total IR len. TDO is constant high.
+T1024 000:644.364   Could not measure total IR len. TDO is constant high.
+T1024 000:649.934   Could not measure total IR len. TDO is constant high.
+T1024 000:654.895   Could not measure total IR len. TDO is constant high.
+T1024 000:660.810   Could not measure total IR len. TDO is constant high.
+T1024 000:666.381   Could not measure total IR len. TDO is constant high.
+T1024 000:671.671   Could not measure total IR len. TDO is constant high.
+T1024 000:677.739   Could not measure total IR len. TDO is constant high.
+T1024 000:682.417   Could not measure total IR len. TDO is constant high.
+T1024 000:688.246   Could not measure total IR len. TDO is constant high.
+T1024 000:693.447   Could not measure total IR len. TDO is constant high.
+T1024 000:698.222   Could not measure total IR len. TDO is constant high.
+T1024 000:703.676   Could not measure total IR len. TDO is constant high.
+T1024 000:709.217   Could not measure total IR len. TDO is constant high.
+T1024 000:714.714   Could not measure total IR len. TDO is constant high.
+T1024 000:719.817   Could not measure total IR len. TDO is constant high.
+T1024 000:725.315   Could not measure total IR len. TDO is constant high.
+T1024 000:730.568   Could not measure total IR len. TDO is constant high.
+T1024 000:735.889   Could not measure total IR len. TDO is constant high.
+T1024 000:741.437   Could not measure total IR len. TDO is constant high.
+T1024 000:746.173   Could not measure total IR len. TDO is constant high.
+T1024 000:751.877   Could not measure total IR len. TDO is constant high.
+T1024 000:757.666   Could not measure total IR len. TDO is constant high.
+T1024 000:762.384   Could not measure total IR len. TDO is constant high.
+T1024 000:767.573   Could not measure total IR len. TDO is constant high.
+T1024 000:772.661   Could not measure total IR len. TDO is constant high.
+T1024 000:777.714   Could not measure total IR len. TDO is constant high.
+T1024 000:782.952   Could not measure total IR len. TDO is constant high.
+T1024 000:788.829   Could not measure total IR len. TDO is constant high.
+T1024 000:794.150   Could not measure total IR len. TDO is constant high.
+T1024 000:798.999   Could not measure total IR len. TDO is constant high.
+T1024 000:803.784   Could not measure total IR len. TDO is constant high.
+T1024 000:809.245   Could not measure total IR len. TDO is constant high.
+T1024 000:814.181   Could not measure total IR len. TDO is constant high.
+T1024 000:819.957   Could not measure total IR len. TDO is constant high.
+T1024 000:826.229   Could not measure total IR len. TDO is constant high.
+T1024 000:831.765   Could not measure total IR len. TDO is constant high.
+T1024 000:837.756   Could not measure total IR len. TDO is constant high.
+T1024 000:843.715   Could not measure total IR len. TDO is constant high.
+T1024 000:848.609   Could not measure total IR len. TDO is constant high.
+T1024 000:853.319   Could not measure total IR len. TDO is constant high.
+T1024 000:859.197   Could not measure total IR len. TDO is constant high.
+T1024 000:863.985   Could not measure total IR len. TDO is constant high.
+T1024 000:868.901   Could not measure total IR len. TDO is constant high.
+T1024 000:874.420   Could not measure total IR len. TDO is constant high.
+T1024 000:879.311   Could not measure total IR len. TDO is constant high.
+T1024 000:884.381   Could not measure total IR len. TDO is constant high.
+T1024 000:889.863   Could not measure total IR len. TDO is constant high.
+T1024 000:894.718   Could not measure total IR len. TDO is constant high.
+T1024 000:899.390   Could not measure total IR len. TDO is constant high.
+T1024 000:904.276   Could not measure total IR len. TDO is constant high.
+T1024 000:909.868   Could not measure total IR len. TDO is constant high.
+T1024 000:914.786   Could not measure total IR len. TDO is constant high.
+T1024 000:919.994   Could not measure total IR len. TDO is constant high.
+T1024 000:925.498   Could not measure total IR len. TDO is constant high.
+T1024 000:930.280   Could not measure total IR len. TDO is constant high.
+T1024 000:935.454   Could not measure total IR len. TDO is constant high.
+T1024 000:940.783   Could not measure total IR len. TDO is constant high.
+T1024 000:946.277   Could not measure total IR len. TDO is constant high.
+T1024 000:950.982   Could not measure total IR len. TDO is constant high.
+T1024 000:956.605   Could not measure total IR len. TDO is constant high.
+T1024 000:961.595   Could not measure total IR len. TDO is constant high.
+T1024 000:966.607   Could not measure total IR len. TDO is constant high.
+T1024 000:971.407   Could not measure total IR len. TDO is constant high.
+T1024 000:977.133   Could not measure total IR len. TDO is constant high.
+T1024 000:982.415   Could not measure total IR len. TDO is constant high.
+T1024 000:987.161   Could not measure total IR len. TDO is constant high.
+T1024 000:993.168   Could not measure total IR len. TDO is constant high.
+T1024 000:998.551   Could not measure total IR len. TDO is constant high.
+T1024 001:003.453   Could not measure total IR len. TDO is constant high.
+T1024 001:009.601   Could not measure total IR len. TDO is constant high.
+T1024 001:015.693   Could not measure total IR len. TDO is constant high.
+T1024 001:020.662   Could not measure total IR len. TDO is constant high.
+T1024 001:026.267   Could not measure total IR len. TDO is constant high.
+T1024 001:031.443   Could not measure total IR len. TDO is constant high.
+T1024 001:037.013   Could not measure total IR len. TDO is constant high.
+T1024 001:042.587   Could not measure total IR len. TDO is constant high.
+T1024 001:047.461   Could not measure total IR len. TDO is constant high.
+T1024 001:052.908   Could not measure total IR len. TDO is constant high.
+T1024 001:058.427   Could not measure total IR len. TDO is constant high.
+T1024 001:065.310   Could not measure total IR len. TDO is constant high.
+T1024 001:071.309   Could not measure total IR len. TDO is constant high.
+T1024 001:077.885   Could not measure total IR len. TDO is constant high.
+T1024 001:083.602   Could not measure total IR len. TDO is constant high.
+T1024 001:091.660   Could not measure total IR len. TDO is constant high.
+T1024 001:096.672   Could not measure total IR len. TDO is constant high.
+T1024 001:101.593   Could not measure total IR len. TDO is constant high.
+T1024 001:107.220   Could not measure total IR len. TDO is constant high.
+T1024 001:112.151   Could not measure total IR len. TDO is constant high.
+T1024 001:117.035   Could not measure total IR len. TDO is constant high.
+T1024 001:122.328   Could not measure total IR len. TDO is constant high.
+T1024 001:127.360   Could not measure total IR len. TDO is constant high.
+T1024 001:132.255   Could not measure total IR len. TDO is constant high.
+T1024 001:137.296   Could not measure total IR len. TDO is constant high.
+T1024 001:143.247   Could not measure total IR len. TDO is constant high.
+T1024 001:148.614   Could not measure total IR len. TDO is constant high.
+T1024 001:154.255   Could not measure total IR len. TDO is constant high.
+T1024 001:160.125   Could not measure total IR len. TDO is constant high.
+T1024 001:165.597   Could not measure total IR len. TDO is constant high.
+T1024 001:170.657   Could not measure total IR len. TDO is constant high.
+T1024 001:176.067   Could not measure total IR len. TDO is constant high.
+T1024 001:181.215   Could not measure total IR len. TDO is constant high.
+T1024 001:186.347   Could not measure total IR len. TDO is constant high.
+T1024 001:192.096   Could not measure total IR len. TDO is constant high.
+T1024 001:197.274   Could not measure total IR len. TDO is constant high.
+T1024 001:202.475   Could not measure total IR len. TDO is constant high.
+T1024 001:208.450   Could not measure total IR len. TDO is constant high.
+T1024 001:213.973   Could not measure total IR len. TDO is constant high.
+T1024 001:219.961   Could not measure total IR len. TDO is constant high.
+T1024 001:225.760   Could not measure total IR len. TDO is constant high.
+T1024 001:230.710   Could not measure total IR len. TDO is constant high.
+T1024 001:236.191   Could not measure total IR len. TDO is constant high.
+T1024 001:242.027   Could not measure total IR len. TDO is constant high.
+T1024 001:246.944   Could not measure total IR len. TDO is constant high.
+T1024 001:252.073   Could not measure total IR len. TDO is constant high.
+T1024 001:257.721   Could not measure total IR len. TDO is constant high.
+T1024 001:262.684   Could not measure total IR len. TDO is constant high.
+T1024 001:267.779   Could not measure total IR len. TDO is constant high.
+T1024 001:273.080   Could not measure total IR len. TDO is constant high.
+T1024 001:278.575   Could not measure total IR len. TDO is constant high.
+T1024 001:284.308   Could not measure total IR len. TDO is constant high.
+T1024 001:289.564   Could not measure total IR len. TDO is constant high.
+T1024 001:294.596   Could not measure total IR len. TDO is constant high.
+T1024 001:299.893   Could not measure total IR len. TDO is constant high.
+T1024 001:305.201   Could not measure total IR len. TDO is constant high.
+T1024 001:310.565   Could not measure total IR len. TDO is constant high.
+T1024 001:316.241   Could not measure total IR len. TDO is constant high.
+T1024 001:321.107   Could not measure total IR len. TDO is constant high.
+T1024 001:326.758   Could not measure total IR len. TDO is constant high.
+T1024 001:331.982   Could not measure total IR len. TDO is constant high.
+T1024 001:336.809   Could not measure total IR len. TDO is constant high.
+T1024 001:343.001   Could not measure total IR len. TDO is constant high.
+T1024 001:348.163   Could not measure total IR len. TDO is constant high.
+T1024 001:353.796   Could not measure total IR len. TDO is constant high.
+T1024 001:359.564   Could not measure total IR len. TDO is constant high.
+T1024 001:364.737   Could not measure total IR len. TDO is constant high.
+T1024 001:369.700   Could not measure total IR len. TDO is constant high.
+T1024 001:375.388   Could not measure total IR len. TDO is constant high.
+T1024 001:380.579   Could not measure total IR len. TDO is constant high.
+T1024 001:385.993   Could not measure total IR len. TDO is constant high.
+T1024 001:391.955   Could not measure total IR len. TDO is constant high.
+T1024 001:397.718   Could not measure total IR len. TDO is constant high.
+T1024 001:403.502   Could not measure total IR len. TDO is constant high.
+T1024 001:409.594   Could not measure total IR len. TDO is constant high.
+T1024 001:417.134   Could not measure total IR len. TDO is constant high.
+T1024 001:423.182   Could not measure total IR len. TDO is constant high.
+T1024 001:428.619   Could not measure total IR len. TDO is constant high.
+T1024 001:433.896   Could not measure total IR len. TDO is constant high.
+T1024 001:440.321   Could not measure total IR len. TDO is constant high.
+T1024 001:446.021   Could not measure total IR len. TDO is constant high.
+T1024 001:451.894   Could not measure total IR len. TDO is constant high.
+T1024 001:458.568   Could not measure total IR len. TDO is constant high.
+T1024 001:464.553   Could not measure total IR len. TDO is constant high.
+T1024 001:472.335   Could not measure total IR len. TDO is constant high.
+T1024 001:480.636   Could not measure total IR len. TDO is constant high.
+T1024 001:486.313   Could not measure total IR len. TDO is constant high.
+T1024 001:492.430   Could not measure total IR len. TDO is constant high.
+T1024 001:497.820   Could not measure total IR len. TDO is constant high.
+T1024 001:502.966   Could not measure total IR len. TDO is constant high.
+T1024 001:508.963   Could not measure total IR len. TDO is constant high.
+T1024 001:513.691   Could not measure total IR len. TDO is constant high.
+T1024 001:519.096   Could not measure total IR len. TDO is constant high.
+T1024 001:524.547   Could not measure total IR len. TDO is constant high.
+T1024 001:529.566   Could not measure total IR len. TDO is constant high.
+T1024 001:534.456   Could not measure total IR len. TDO is constant high.
+T1024 001:539.892   Could not measure total IR len. TDO is constant high.
+T1024 001:544.499   Could not measure total IR len. TDO is constant high.
+T1024 001:549.333   Could not measure total IR len. TDO is constant high.
+T1024 001:554.283   Could not measure total IR len. TDO is constant high.
+T1024 001:560.134   Could not measure total IR len. TDO is constant high.
+T1024 001:564.938   Could not measure total IR len. TDO is constant high.
+T1024 001:569.478   Could not measure total IR len. TDO is constant high.
+T1024 001:575.373   Could not measure total IR len. TDO is constant high.
+T1024 001:580.283   Could not measure total IR len. TDO is constant high.
+T1024 001:585.390   Could not measure total IR len. TDO is constant high.
+T1024 001:590.607   Could not measure total IR len. TDO is constant high.
+T1024 001:595.886   Could not measure total IR len. TDO is constant high.
+T1024 001:601.651   Could not measure total IR len. TDO is constant high.
+T1024 001:607.042   Could not measure total IR len. TDO is constant high.
+T1024 001:611.901   Could not measure total IR len. TDO is constant high.
+T1024 001:617.403   Could not measure total IR len. TDO is constant high.
+T1024 001:622.197   Could not measure total IR len. TDO is constant high.
+T1024 001:627.241   Could not measure total IR len. TDO is constant high.
+T1024 001:631.763   Could not measure total IR len. TDO is constant high.
+T1024 001:637.467   Could not measure total IR len. TDO is constant high.
+T1024 001:642.889   Could not measure total IR len. TDO is constant high.
+T1024 001:647.451   Could not measure total IR len. TDO is constant high.
+T1024 001:651.974   Could not measure total IR len. TDO is constant high.
+T1024 001:657.941   Could not measure total IR len. TDO is constant high.
+T1024 001:664.405   Could not measure total IR len. TDO is constant high.
+T1024 001:669.315   Could not measure total IR len. TDO is constant high.
+T1024 001:675.327   Could not measure total IR len. TDO is constant high.
+T1024 001:680.973   Could not measure total IR len. TDO is constant high.
+T1024 001:685.804   Could not measure total IR len. TDO is constant high.
+T1024 001:691.658   Could not measure total IR len. TDO is constant high.
+T1024 001:696.409   Could not measure total IR len. TDO is constant high.
+T1024 001:701.153   Could not measure total IR len. TDO is constant high.
+T1024 001:707.258   Could not measure total IR len. TDO is constant high.
+T1024 001:711.861   Could not measure total IR len. TDO is constant high.
+T1024 001:716.704   Could not measure total IR len. TDO is constant high.
+T1024 001:721.669   Could not measure total IR len. TDO is constant high.
+T1024 001:727.665   Could not measure total IR len. TDO is constant high.
+T1024 001:732.519   Could not measure total IR len. TDO is constant high.
+T1024 001:738.152   Could not measure total IR len. TDO is constant high.
+T1024 001:743.813   Can not attach to CPU. Trying connect under reset.
+T1024 001:822.587   TotalIRLen = 9, IRPrint = 0x0011
+T1024 001:826.325   JTAG chain detection found 2 devices:
+T1024 001:830.398    #0 Id: 0x3BA00477, IRLen: 04, CoreSight JTAG-DP
+T1024 001:833.864    #1 Id: 0x06414041, IRLen: 05, STM32 Boundary Scan
+T1024 002:022.651   
+  ***** Error: 
+T1024 002:022.679   Bad JTAG communication: Write to IR: Expected 0x1, got 0xf (TAP Command : 11) @ Off 0x5.
+T1024 002:026.165   InitTarget() end
+T1024 002:231.146   RESET (pin 15) high, but should be low. Please check target hardware.
+T1024 002:385.443   InitTarget() start
+T1024 002:385.471    J-Link Script File: Executing InitTarget()
+T1024 002:889.191   Can not attach to CPU. Trying connect under reset.
+T1024 003:443.433   Connecting to CPU via connect under reset failed.
+T1024 003:497.372   InitTarget() end
+T1024 003:562.598   InitTarget() start
+T1024 003:562.634    J-Link Script File: Executing InitTarget()
+T1024 004:067.416   Can not attach to CPU. Trying connect under reset.
+T1024 004:273.492   RESET (pin 15) high, but should be low. Please check target hardware.
+T1024 004:826.973   Connecting to CPU via connect under reset failed.
+T1024 005:082.862   RESET (pin 15) high, but should be low. Please check target hardware.
+T1024 005:087.222   InitTarget() end
+T1024 005:087.255 - 5014.873ms
+T1024 006:444.315 JLINK_Close()
+T1024 006:460.939 - 16.699ms
+T1024 006:461.026   
+T1024 006:461.037   Closed
