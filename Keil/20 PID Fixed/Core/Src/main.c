@@ -103,7 +103,7 @@ float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 30.0,k2 = 1.0,k3 = 8.0, k4 = 0.3,k41 = 2,k42 = 2;
+float k1 = 0.1,k2 = 0.1,k3 = 0.1, k4 = 0.3, k5 = 1.0, k41 = 2, k42 = 2;
 float V, w;
 float width = 0.125, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -255,11 +255,11 @@ float x3d(float time){
 	//return (xcd(time) * sin(thetad(time))) - (ycd(time) * cos(thetad(time)));
 	return (_xcd * sin(_thetad)) - (_ycd * cos(_thetad));
 }
-float x2(int xc, int yc, float time){
+float x2(float xc, float yc, float time){
 	//return (xc * cos(thetad(time))) + (yc * sin(thetad(time)));
 	return (xc * cos(angle)) + (yc * sin(angle));
 }
-float x3(int xc, int yc, float time){
+float x3(float xc, float yc, float time){
 	//return (xc * sin(thetad(time))) - (yc * cos(thetad(time)));
 	return (xc * sin(angle)) - (yc * cos(angle));
 }
@@ -500,7 +500,10 @@ int main(void)
 		//	HAL_UART_Transmit(&huart1, Rx_data, sizeof(Rx_data), 10);
 			HAL_UART_Receive_IT(&huart1, Rx_data, 6);
 			locFlag = 0;
-		}	
+		}
+		
+		
+		
 		/*
 
 
@@ -575,7 +578,7 @@ int main(void)
 			theta_pid_last_time = HAL_GetTick();
 		}
 		
-		Xi1 = _wd + (k3 * (_thetad - angle)) + K_I_theta * theta_Integral_Error;
+		Xi1 = _wd + (k3 * (_thetad - angle));// + K_I_theta * theta_Integral_Error;
 		z1 = _x3d - _x3;
 		A = pow(le1,2) - pow(z1,2);
 		alpha = _x2d + (A * k1 * z1 * _wd);
@@ -587,7 +590,7 @@ int main(void)
 			derivationFlag = 0;
 			lastalpha = alpha;
 		}	
-		Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * z1 * _wd);
+		Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * k5 * z1 * _wd);
 		V = _x3 * Xi1 + k4 * Xi2;
 		w = Xi1;
 		//x = x + 0.002 * V * cos(angle);
