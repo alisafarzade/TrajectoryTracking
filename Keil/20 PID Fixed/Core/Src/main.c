@@ -103,7 +103,7 @@ float Xi1, Xi2;
 float lastalpha=0, alpha, z1, z2;
 float alphadot=0;
 float ls1 = 0.55,ls2 = 1.35,ls31 = 2.75,ls32 = 1.65,le1 = 0.35,le2 = 0.35,le31 = 1.5,le32 = 1.2;
-float k1 = 0.1,k2 = 0.1,k3 = 0.1, k4 = 0.3, k5 = 1.0, k41 = 2, k42 = 2;
+float k1 = 1.5,k2 = 1.5,k3 = 1.3, k4 = 1.0, k5 = 1.0, k41 = 2, k42 = 2;
 float V, w;
 float width = 0.125, r = 0.06;
 float _xcd, _ycd, _thetad, _wd, _x2d, _x3d, _x2, _x3;
@@ -501,6 +501,9 @@ int main(void)
 			HAL_UART_Receive_IT(&huart1, Rx_data, 6);
 			locFlag = 0;
 		}
+		x = _xcd - 0.1;
+		y = _ycd;
+		angle = _thetad - 0.2;
 		
 		
 		
@@ -597,7 +600,8 @@ int main(void)
 		//y = y + 0.002 * V * sin(angle);
 		//angle = angle + 0.002 * w;
 		
-		
+		if(_thetad > 3.7)
+			_thetad = _thetad;
 		rpmRightD = (V + (width*w))/r;
 		rpmLeftD = (V - (width*w))/r;
 		/*
