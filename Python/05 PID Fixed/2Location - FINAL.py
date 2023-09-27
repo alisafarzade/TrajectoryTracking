@@ -233,10 +233,10 @@ while 1:
             packet_green[5] = int(green_angle).to_bytes(2, "little")[1]
             if time.time() - last_step_time > 0.1:
                 df2 = pd.DataFrame([[time.time() - beginTime, x_Center1, y_Center1, green_angle]], columns=['time', 'X', 'Y', 'theta'])
-                Xd = 30 * cos(time.time() - beginTime) + circle_x
-                Yd = 30 * sin(time.time() - beginTime) + circle_y
+                Xd = 30 * cos((time.time() - beginTime)*0.5) + circle_x
+                Yd = 30 * sin((time.time() - beginTime)*0.5) + circle_y
                 t1 = time.time() - beginTime
-                thetaD = atan2(cos(t1), -sin(t1))
+                thetaD = atan2(cos(t1*0.5), -sin(t1*0.5))
                 if thetaD < 0: thetaD += 2*pi
                 robot_data.append([
                     t1, 

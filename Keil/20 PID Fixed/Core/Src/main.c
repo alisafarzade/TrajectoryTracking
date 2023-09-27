@@ -600,8 +600,7 @@ int main(void)
 		//y = y + 0.002 * V * sin(angle);
 		//angle = angle + 0.002 * w;
 		
-		if(_thetad > 3.7)
-			_thetad = _thetad;
+		
 		rpmRightD = (V + (width*w))/r;
 		rpmLeftD = (V - (width*w))/r;
 		/*
