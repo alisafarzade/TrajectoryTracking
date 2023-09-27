@@ -10,9 +10,9 @@ le2 = 0.35;
 le31 = 1.5;
 le32 = 1.2;
 
-k1 = 1.3;
+k1 = 1.5;
 k2 = 1.5;
-k3 = 1.5;
+k3 = 1.3;
 k41 = 2;
 k42 = 2;
 Kv1 = diag([50 50]);
@@ -20,8 +20,8 @@ ks1 = 0.1;
 
 
 
-dt = 0.2;
-tspan = 0:dt:400;
+dt = 0.001;
+tspan = 0:dt:200;
 
 
 Xi11 = zeros(1, length(tspan));
@@ -39,12 +39,13 @@ x13 = zeros(1, length(tspan));
 
 
 
-xc1d = 0.3 * cos(tspan*0.5);
-yc1d = 0.3 * sin(tspan*0.5);
-theta1d = unwrap(atan2(cos(tspan*0.5), -sin(tspan*0.5)));
+xc1d = 0.45 * cos(tspan);
+yc1d = 0.3 * sin(tspan);
+theta1d = unwrap(atan2(0.3 * cos(tspan), -0.45 * sin(tspan)));
 
 % v1d = sqrt((-0.8*sin(tspan)).^2 + (cos(tspan)).^2);
-w1d = ones(1, length(tspan));%(-sin(tspan).*(-0.8 * sin(tspan)) - (-0.8 * cos(tspan)).*cos(tspan))./((-0.8*sin(tspan)).^2 + (cos(tspan)).^2);
+% w1d = (-sin(tspan).*(-0.8 * sin(tspan)) - (-0.8 * cos(tspan)).*cos(tspan))./((-0.8*sin(tspan)).^2 + (cos(tspan)).^2);
+w1d = 6 *( ((sin(tspan).^2) + (cos(tspan).^2))./(9*(sin(tspan)).^2 + 4*(cos(tspan)).^2) );
 
 x11d = theta1d;
 x12d = xc1d .* cos(theta1d) + yc1d .* sin(theta1d);
@@ -52,7 +53,7 @@ x13d = xc1d .* sin(theta1d) - yc1d .* cos(theta1d);
 
 
 
-NoiseRatio = 2;
+NoiseRatio = 1;
 xNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
 yNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
 wNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
@@ -60,10 +61,10 @@ wNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
 
 x11(1) = pi/2;
 x12(1) = 0;
-x13(1) = 0.5;
+x13(1) = 0.65;
 
 yc1(1) = 0;
-xc1(1) = 0.5;
+xc1(1) = 0.65;
 Xi11(1) = 0;
 Xi12(1) = 0;
 alpha1(1) = 0;
@@ -84,9 +85,9 @@ for q = 1 : length(tspan)
     v1(q) = (x13(q) * Xi11(q + 1)) + Xi12(q + 1);
     w1(q) = Xi11(q + 1);
     
-    xc1(q + 1) = xc1(q) + dt * v1(q) * cos(x11(q))+ xNoise(q);
-    yc1(q + 1) = yc1(q) + dt * v1(q) * sin(x11(q))+ yNoise(q);    
-    x11(q + 1) = x11(q) + dt * w1(q) + wNoise(q);
+    xc1(q + 1) = xc1(q) + dt * v1(q) * cos(x11(q));%+ xNoise(q);
+    yc1(q + 1) = yc1(q) + dt * v1(q) * sin(x11(q));%+ yNoise(q);    
+    x11(q + 1) = x11(q) + dt * w1(q);% + wNoise(q);
     
     
     x12(q + 1) = xc1(q + 1) * cos(x11(q + 1)) + yc1(q + 1) * sin(x11(q + 1));
