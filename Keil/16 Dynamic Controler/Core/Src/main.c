@@ -299,9 +299,6 @@ double absf(double input){
 	if(input >= 0) return input;
 	return -input;
 }
-void Phi(){
-	
-}
 void createCenters(){
 	float A1[] = {-1.5, -0.5, 0.5, 1.5};
 	float A2[] = {-2.0, -1.0, 0.0, 1.0, 2.0};

@@ -14,12 +14,13 @@ robot_data = []
 beginTime = time.time()
 last_step_time = time.time()
 circle_x = 155
-circle_y = 90
+circle_y = 115
 Line_x = 35
 Line_y = 145
-speed = 0.4
-circle_radius_x = 45
+speed = 0.15
+circle_radius_x = 60
 circle_radius_y = 30
+
 with open("data.json", "r") as openfile:
     # Reading from json file
     hsvColors = json.load(openfile)
@@ -238,10 +239,10 @@ while 1:
             packet_green[5] = int(green_angle).to_bytes(2, "little")[1]
             if time.time() - last_step_time > 0.1:
                 df2 = pd.DataFrame([[time.time() - beginTime, x_Center1, y_Center1, green_angle]], columns=['time', 'X', 'Y', 'theta'])
-                Xd = circle_radius_x * cos((time.time() - beginTime)*speed) + circle_x
-                Yd = circle_radius_y * sin((time.time() - beginTime)*speed) + circle_y
+                Xd = circle_radius_x * sin((time.time() - beginTime)*speed) + circle_x
+                Yd = circle_radius_y * sin(2*(time.time() - beginTime)*speed) + circle_y
                 t1 = time.time() - beginTime
-                thetaD = atan2(circle_radius_y*cos(t1*speed), -circle_radius_x*sin(t1*speed))
+                thetaD = atan2(2*circle_radius_y*cos(2*t1*speed), circle_radius_x*cos(t1*speed))
                 if thetaD < 0: thetaD += 2*pi
                 robot_data.append([
                     t1, 
