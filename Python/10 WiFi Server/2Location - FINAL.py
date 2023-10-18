@@ -10,7 +10,7 @@ import serial
 import pandas as pd
 import socket
 
-useServer = True
+useServer = False
 
 HOST = '192.168.127.148'
 PORT = 3000
