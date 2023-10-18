@@ -58,8 +58,8 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 
-volatile int counterRight, counterLeft, rpmRight, rpmLeft, counterBackRight, counterBackLeft;
-int rpmRightD, rpmLeftD, errorRight, errorLeft;
+float counterRight, counterLeft, rpmRight, rpmLeft, counterBackRight, counterBackLeft;
+float rpmRightD, rpmLeftD, errorRight, errorLeft;
 //char flagARight, flagBRight, flagALeft, flagBLeft;
 int rPWM = 0;
 int lPWM = 0;
@@ -623,6 +623,7 @@ int main(void)
 		Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * k5 * z1 * _wd);
 		V = _x3 * Xi1 + k4 * Xi2;
 		w = Xi1;
+		
 		//x = x + 0.002 * V * cos(angle);
 		//y = y + 0.002 * V * sin(angle);
 		//angle = angle + 0.002 * w;

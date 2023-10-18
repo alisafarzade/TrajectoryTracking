@@ -225,6 +225,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>while_run_time,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>time</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -356,6 +361,11 @@
           <count>25</count>
           <WinNumber>2</WinNumber>
           <ItemText>k4</ItemText>
+        </Ww>
+        <Ww>
+          <count>26</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>time</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>
