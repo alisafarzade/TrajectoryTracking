@@ -17,7 +17,7 @@ circle_x = 155
 circle_y = 90
 Line_x = 35
 Line_y = 145
-speed = 0.4
+speed = 0.1
 circle_radius_x = 45
 circle_radius_y = 30
 with open("data.json", "r") as openfile:

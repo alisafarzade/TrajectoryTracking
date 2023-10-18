@@ -129,7 +129,7 @@ struct position{
 #define LED_RED_OFF 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, 0)
 #define LED_GREEN_ON 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 1)
 #define LED_RED_ON 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, 1)
-float speed = 0.4;
+float speed = 0.1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
