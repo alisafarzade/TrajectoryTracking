@@ -8,6 +8,7 @@ import json
 import time
 import serial
 import pandas as pd
+from itertools import product
 
 df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d'])
 robot_data = []
@@ -69,6 +70,24 @@ speed = 0.1
 M_PI = pi
 M_2PI = 2*pi
 
+# --------- Dynamic Variables
+dim1_range = np.linspace(-1.5, 1.5, 4)
+dim2_range = np.linspace(-2, 2, 5)
+dim3_range = np.linspace(0, 2, 3)
+dim4_range = np.linspace(-1.5, 1.5, 4)
+dim5_range = np.linspace(-1, 1, 3)
+dim6_range = np.linspace(0, 2, 3)
+centers = np.array(list(product(dim1_range, dim2_range, dim3_range, dim4_range, dim5_range, dim6_range)))
+Xi11_dot = 0
+Xi12_dot = 0
+x13_dot = 0
+last_Xi11 = Xi1
+last_Xi12 = Xi2
+last_x3 = _x3
+XiVirtual1 = [Xi1, Xi2]
+Xidotvirtual1 = [Xi11_dot, Xi12_dot]
+neurons = 2160
+PHIvec1 = [0]*neurons
 # --------- Math Additional Functions
 def constrainAngle(x):
     x = fmod(x + M_PI,M_2PI)
@@ -111,6 +130,11 @@ def x2(xc, yc):
 def x3(xc, yc):
 	return (xc * sin(angle)) - (yc * cos(angle))
 
+# --------- Dynamic Function
+def PHI(inputVec, C):
+    squared_distance = np.linalg.norm(inputVec - C) ** 2
+    a = np.exp(-squared_distance / (1.4**2))
+    return a
 
     
 
@@ -400,17 +424,33 @@ while 1:
 
     if(derivationFlag):
         alphadot = (alpha - lastalpha)/0.1
-        derivationFlag = 0
         lastalpha = alpha
 
     Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * k5 * z1 * _wd)
+    if(derivationFlag):
+        Xi11_dot = (Xi1 - last_Xi11)/0.1
+        Xi12_dot = (Xi2 - last_Xi12)/0.1
+        x13_dot  = (_x3 - last_x3 )/0.1
+        last_Xi11 = Xi1
+        last_Xi12 = Xi2
+        last_x3 = _x3
+        derivationFlag = 0
+    
+    XiVirtual1 = [Xi1, Xi2]
+    Xidotvirtual1 = [Xi11_dot, Xi12_dot]
+    inputVec1 = np.array(Xidotvirtual1 + XiVirtual1 + [x13_dot, _x3])
+    
+    for i in range(neurons):
+        PHIvec1[i] = PHI(inputVec1, centers)
+    
     V = _x3 * Xi1 + k4 * Xi2
     w = Xi1
 
     RPM_Right = ((V + (width*w))/r) * 9.55
     RPM_Left = ((V - (width*w))/r) * 9.55
 
-    print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
+    # print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
+    print(PHIvec1[1])
 
     # -------------- Sending Data To MCU
     Send_RPM_to_Robot()
