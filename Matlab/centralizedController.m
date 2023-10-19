@@ -281,7 +281,7 @@ for q = 1 : length(tspan)
     U1 = [u1(1,q) + u1(2,q),     0;
          0                 ,     u1(1,q) - u1(2,q)];
     U2 = [u2(1,q) + u2(2,q),     0;
-         0                 ,     u2(1,q) - u2(2,q)];
+         0                   ,     u2(1,q) - u2(2,q)];
     U3 = [u3(1,q) + u3(2,q),     0;
          0                 ,     u3(1,q) - u3(2,q)];
     beta1(:,q + 1) = beta1(:,q) + dt * (GAMAofbeta *   U1 * z13(:,q));
