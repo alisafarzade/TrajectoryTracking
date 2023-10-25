@@ -143,9 +143,7 @@ def PHI(inputVec, C):
 
 
 with open("data.json", "r") as openfile:
-    # Reading from json file
     hsvColors = json.load(openfile)
-# Capturing video through webcam
 webcam = cv2.VideoCapture(0)
 
 ser = serial.Serial()
@@ -203,7 +201,6 @@ def Send_RPM_to_Robot():
     ser.write(packet_green)
     ser.close()
 
-# Start a while loop
 while 1:
     start = time.time()
     ret, imageFrame = webcam.read()#cv2.imdecode(imgNp, -1)
