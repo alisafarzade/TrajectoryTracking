@@ -10,6 +10,8 @@ import serial
 import pandas as pd
 from itertools import product
 
+
+manualControl = False
 df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d'])
 robot_data = []
 beginTime = time.time()
@@ -56,6 +58,7 @@ V = 0
 w = 0
 width = 0.125
 r = 0.06
+R = 0.1375
 _xcd = 0
 _ycd = 0
 _thetad = 0
@@ -86,8 +89,36 @@ last_Xi12 = Xi2
 last_x3 = _x3
 XiVirtual1 = [Xi1, Xi2]
 Xidotvirtual1 = [Xi11_dot, Xi12_dot]
-neurons = 2160
-PHIvec1 = [0]*neurons
+XiActual1 = np.zeros((2, 1), float)
+XidotActual1 = np.zeros((2,1), float)
+neurons = 200
+PHIvec1 = np.zeros((neurons, 1), float)
+z13 = np.array([[0], [0]])
+U1 = 0
+u1 = np.array([[0], [0]])
+beta1 = np.array([[1/r], [R/r]])
+GAMAofbeta = np.array([[0.000001 , 0],[0 , 0.000005]])
+dt = 0.01
+GAMAofW = np.zeros((neurons, neurons), int)
+np.fill_diagonal(GAMAofW, 50)
+Kv1 = np.zeros((2, 2), int)
+np.fill_diagonal(Kv1, 50)
+W1 = np.zeros((neurons, 1), float)
+NNoutput1 = np.zeros((2, 1))
+ks1 = 0.1
+le31 = 1.5
+le32 = 1.2
+k41 = 2
+k42 = 2
+ng = 60.5#10
+kt = 0.2639
+kb = 0.019
+ra= 27.0
+ku1 = (ng*kt)/ra
+ku2 = ng*kb*ku1
+m = 4.3
+J = 5
+
 # --------- Math Additional Functions
 def constrainAngle(x):
     x = fmod(x + M_PI,M_2PI)
@@ -146,13 +177,13 @@ with open("data.json", "r") as openfile:
     hsvColors = json.load(openfile)
 webcam = cv2.VideoCapture(0)
 
-ser = serial.Serial()
+ser = serial.Serial(timeout=0.1)
 ser.baudrate = 115200
 ser.port = 'COM22'
 
 url = "http://192.168.18.77:8080/shot.jpg"
 
-packet_green = [0, 0, 0, 0]
+packet_green = [0, 0, 0, 0, 0, 0]
 x_Center1, x_orange_center, y_orange_center, x_red_center, x_blue_center, y_red_center = (
     0,
     0,
@@ -183,27 +214,41 @@ def colorSetHSV(color, upperOrLower):
         np.uint8,
     )
     return output
-def Send_RPM_to_Robot():
-    global RPM_Left, RPM_Right, packet_green
-    if RPM_Left > 90: RPM_Left = 90
-    if RPM_Left <-90: RPM_Left = -90
-    if RPM_Right > 90: RPM_Right = 90
-    if RPM_Right <-90: RPM_Right = -90
-    RPM_Left  = round(RPM_Left, 2) * 100 + 9000
-    RPM_Right = round(RPM_Right, 2 ) * 100 + 9000
-    packet_green[0] = int(RPM_Left).to_bytes(2, "little",signed=True)[0]
-    packet_green[1] = int(RPM_Left).to_bytes(2, "little",signed=True)[1]
-
-    packet_green[2] = int(RPM_Right).to_bytes(2, "little",signed=True)[0]
-    packet_green[3] = int(RPM_Right).to_bytes(2, "little",signed=True)[1]
-
+def Send_RPM_to_Robot(u1_1, u1_2): # (right, left)
+    global packet_green, XiActual1, t1
+    if u1_1 >= 0:
+        packet_green[0] = 0
+    else:
+        packet_green[0] = 1
+    packet_green[1] = int(abs(u1_1)).to_bytes(2, "little",signed=True)[0]
+    packet_green[2] = int(abs(u1_1)).to_bytes(2, "little",signed=True)[1]
+    if u1_2 >= 0:
+        packet_green[3] = 0
+    else:
+        packet_green[3] = 1
+    packet_green[4] = int(abs(u1_2)).to_bytes(2, "little",signed=True)[0]
+    packet_green[5] = int(abs(u1_2)).to_bytes(2, "little",signed=True)[1]
     ser.open()
     ser.write(packet_green)
+    data = ser.read(6)
+    w_rec = 0
+    V_rec = 0
+    if len(data) >= 6:
+        w_rec = (data[1] | (data[2]<<8))/100.0
+        V_rec = (data[4] | (data[5]<<8))/100.0
+        if data[0] == 1:
+            w_rec = -w_rec
+        if data[3] == 1:
+            V_rec = -V_rec
+    Xi1_Actual1 = w_rec
+    Xi2_Actual1 = V_rec - _x3*w_rec
+    XiActual1 = np.array([[Xi1_Actual1], [Xi2_Actual1]])
     ser.close()
+    # print(f"V: {V_rec}   w: {w_rec}")
 
 while 1:
     start = time.time()
-    ret, imageFrame = webcam.read()#cv2.imdecode(imgNp, -1)
+    ret, imageFrame = webcam.read() #cv2.imdecode(imgNp, -1)
     hsvFrame    = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV)
     red_mask    = cv2.inRange(hsvFrame, colorSetHSV("red", "lower"), colorSetHSV("red", "upper"))
     green_mask  = cv2.inRange(hsvFrame, colorSetHSV("green", "lower"), colorSetHSV("green", "upper"))
@@ -396,13 +441,11 @@ while 1:
                 (127, 157, 255),
             )
 
-
     # -------------- Controller
     x = (x_Center1 - center_x)/100
     y = (y_Center1 - center_y)/100
     angle = unwrap(angle, radians(green_angle))
     t1 = time.time() - beginTime
-
     _xcd = xcd()
     _ycd = ycd()
     _thetad = thetad()
@@ -419,38 +462,68 @@ while 1:
     z2 = alpha - _x2
     B = pow(le2,2) - pow(z2,2)
 
-    if(derivationFlag):
-        alphadot = (alpha - lastalpha)/0.1
-        lastalpha = alpha
-
+    # if(derivationFlag):
+    #     alphadot = (alpha - lastalpha)/0.1
+    #     lastalpha = alpha
+    alphadot = (alpha - lastalpha)/dt
     Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * k5 * z1 * _wd)
-    if(derivationFlag):
-        Xi11_dot = (Xi1 - last_Xi11)/0.1
-        Xi12_dot = (Xi2 - last_Xi12)/0.1
-        x13_dot  = (_x3 - last_x3 )/0.1
-        last_Xi11 = Xi1
-        last_Xi12 = Xi2
-        last_x3 = _x3
-        derivationFlag = 0
+    # if(derivationFlag):
+    #     Xi11_dot = (Xi1 - last_Xi11)/0.1
+    #     Xi12_dot = (Xi2 - last_Xi12)/0.1
+    #     x13_dot  = (_x3 - last_x3 )/0.1
+    #     last_Xi11 = Xi1
+    #     last_Xi12 = Xi2
+    #     last_x3 = _x3
+    #     derivationFlag = 0
+    Xi11_dot = (Xi1 - last_Xi11)/dt
+    Xi12_dot = (Xi2 - last_Xi12)/dt
+    x13_dot  = (_x3 - last_x3 )/dt
+    XiVirtual1 = np.array([[Xi1], [Xi2]])
+    Xidotvirtual1 = np.array([[Xi11_dot], [Xi12_dot]])
+    inputVec1 = np.array([Xi1, Xi2, Xi11_dot, Xi12_dot, x13_dot, _x3])
     
-    XiVirtual1 = [Xi1, Xi2]
-    Xidotvirtual1 = [Xi11_dot, Xi12_dot]
-    inputVec1 = np.array(Xidotvirtual1 + XiVirtual1 + [x13_dot, _x3])
+    z13 = XiVirtual1 - XiActual1
+    U1 = [[ u1[0][0] + u1[1][0], 0                   ],
+          [ 0                  , u1[0][0] - u1[1][0] ]]
+    beta1 = beta1 + dt * np.matmul(np.matmul(GAMAofbeta, U1), z13)
+    es_r1 = 1/beta1[0][0]
+    es_R1 = es_r1 * beta1[1][0]
+    
+    B1hat1 = np.array([[ (_x3 + es_R1)/es_r1, (_x3 - es_R1)/es_r1 ],
+                       [ 1/es_r1            , 1/es_r1             ]])
     
     for i in range(neurons):
         PHIvec1[i] = PHI(inputVec1, centers)
+    PHIvec1 = np.array(PHIvec1)
     
-    V = _x3 * Xi1 + k4 * Xi2
-    w = Xi1
+    W1 = W1 + dt * (np.matmul(np.matmul(GAMAofW, PHIvec1), z13.transpose())) # - (RHO * ((W1 - W2)))
+    NNoutput1 = np.matmul(W1.transpose(), PHIvec1)
+    u1 = np.matmul(np.linalg.inv(B1hat1), 
+        ( NNoutput1 + np.matmul(Kv1, z13) + ks1*np.sign(z13) + (
+            (np.linalg.pinv(z13.transpose())) * (
+                (z13[0][0]*(Xidotvirtual1[0][0] - XidotActual1[0][0])/(le31**2 - z13[0][0]**2)) + 
+                (z13[1][0]*(Xidotvirtual1[1][0] - XidotActual1[1][0])/(le32**2 - z13[1][0]**2)) + 
+                ((k41*z13[0][0]**2)/(le31**2 - z13[0][0]**2)) + 
+                ((k42*z13[1][0]**2)/(le32**2 - z13[1][0]**2))  
+            )
+        )))
+    # print(u1)
+    # XiActual1 =  XiActual1 + dt * np.matmul(np.linalg.inv((1/ku1) * np.array([[m * _x3**2 + J, m * _x3], [m * _x3, m]])) , (np.matmul(np.array([[(_x3 + R)/r, (_x3 - R)/r], [1/r, 1/r]]), u1) - (1/ku1) * np.matmul(np.array([[m * _x3 * x13_dot, 0], [m * x13_dot, 0]]), XiActual1) - ((2*ku2)/(ku1*r**2)) * np.matmul(np.array([[_x3**2 + R**2, _x3], [_x3, 1]]), XiActual1) - np.matmul(np.array([[_x3, 1], [1, 0]]), np.array([[30 * V + 4 * np.sign(V)], [30 * w + 4 * np.sign(w)]])) - (1/ku1) * np.matmul(np.array([[_x3, 1], [1, 0]]), np.array([[0.1*sin(t1)], [0.1*cos(t1)]]))))
+    
 
-    RPM_Right = ((V + (width*w))/r) * 9.55
-    RPM_Left = ((V - (width*w))/r) * 9.55
 
-    # print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
-    print(PHIvec1[1])
-
+    lastalpha = alpha
+    last_Xi11 = Xi1
+    last_Xi12 = Xi2
+    last_x3 = _x3
+    print(f"V:{V}\t w:{w}\t theta:{round(angle, 2)}\t thetaD:{round(_thetad, 2)}\t dt:{round(dt, 2)}\t u1[0]:{round(u1[0][0], 2)}\t u1[1]:{round(u1[1][0],2)}")
+    # print(XiActual1)
     # -------------- Sending Data To MCU
-    Send_RPM_to_Robot()
+    if not manualControl:
+        Send_RPM_to_Robot(u1[0][0], u1[1][0])
+    
+    end = time.time()
+    dt = end - start
 
     # -------------- Record Robot Data
     if time.time() - last_step_time > 0.1:
@@ -459,7 +532,8 @@ while 1:
         Yd = _ycd*100 + center_y
         thetaD = _thetad
         
-        if thetaD < 0: thetaD += 2*pi
+        if thetaD < 0: 
+            thetaD += 2*pi
         robot_data.append([
             t1, 
             x_Center1, 
@@ -479,8 +553,8 @@ while 1:
         ])
         last_step_time = time.time()
     
-    end = time.time()
-    # print((end - start))
+    
+    # print()
 
 
     # -------------- Event Handlers
@@ -489,7 +563,7 @@ while 1:
     # Program Termination
     if key & 0xff == 27:
         break
-    if key == 115:                
+    if key == ord('s') and not manualControl:
         df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d'])
         try:
             df.to_excel('./recordings/data.xlsx', sheet_name='Robot Positions')
@@ -497,6 +571,19 @@ while 1:
             break
         except:
             print('Can not save file. Permission denied !!!!!!!')
-
+    if key == ord('w') and manualControl:
+        Send_RPM_to_Robot(12, 12)
+    if key == ord('s') and manualControl:
+        Send_RPM_to_Robot(-12, -12)
+    if key == ord('a') and manualControl:
+        Send_RPM_to_Robot(12, -12)
+    if key == ord('d') and manualControl:
+        Send_RPM_to_Robot(-12, 12)
+    if key == ord(' ') and manualControl:
+        Send_RPM_to_Robot(0, 0)
+    if key == ord('m'):
+        manualControl = not manualControl
+        Send_RPM_to_Robot(0, 0)
+    
 #cap.release()
 cv2.destroyAllWindows()
