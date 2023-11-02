@@ -76,8 +76,8 @@ float sumL = 0, sumR = 0, currentL, currentR;
 uint32_t AD_RES=0;
 
 // ------- Motor PID Variables
-float kpR  = 0.6  , kpL = 0.6;
-float ki_R = 0.01 , ki_L = 0.01;
+float kpR  = 0.6  , kpL = 0.3;
+float ki_R = 0.01 , ki_L = 0.03;
 float kd_R = 5.5, kd_L = 5.5;
 char forwardR, forwardL, backwardR, backwardL, increasingSpeed=1;
 char speedFlag=0, currentFlag=0;
@@ -429,8 +429,8 @@ int main(void)
 		}
 
 		if(locFlag){
-			rPWM = ((Rx_data[1] | (Rx_data[2]<<8))/24.0)*1000.0;
-			lPWM= ((Rx_data[4] | (Rx_data[5]<<8))/24.0)*1000.0;
+			rPWM = (((Rx_data[1] | (Rx_data[2]<<8))/100.0)/24.0)*1000.0;
+			lPWM= (((Rx_data[4] | (Rx_data[5]<<8))/100.0)/24.0)*1000.0;
 			if(Rx_data[0] == 1) rPWM = -rPWM;
 			if(Rx_data[3] == 1) lPWM = -lPWM;
 			Motor_PWM_Right(rPWM);

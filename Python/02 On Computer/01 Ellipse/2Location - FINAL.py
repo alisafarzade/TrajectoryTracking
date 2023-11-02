@@ -124,7 +124,7 @@ webcam = cv2.VideoCapture(0)
 
 ser = serial.Serial()
 ser.baudrate = 115200
-ser.port = 'COM22'
+ser.port = 'COM13'
 
 url = "http://192.168.18.77:8080/shot.jpg"
 
@@ -409,7 +409,7 @@ while 1:
     RPM_Right = ((V + (width*w))/r) * 9.55
     RPM_Left = ((V - (width*w))/r) * 9.55
 
-    # print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
+    print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
 
     # -------------- Sending Data To MCU
     Send_RPM_to_Robot()
@@ -426,7 +426,7 @@ while 1:
             t1, 
             x_Center1, 
             y_Center1, 
-            green_angle,
+            angle,
             Xd, 
             Yd,
             x_Center1 - Xd,

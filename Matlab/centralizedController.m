@@ -191,7 +191,7 @@ XidotActual1(1:2, 1) = [0; 0];
 alpha1(1) = 0;
 beta1(1:2, 1) = [1/r; R/r];
 u1(1:2, 1) = [0; 0];
-W1{1} = ones(neurons, 2);
+W1{ } = ones(neurons, 2);
 
 % i = 2
 x21(1) = pi/2;

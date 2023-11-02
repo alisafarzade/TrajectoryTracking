@@ -52,8 +52,8 @@ k2 = 50.0
 k3 = 2.0
 k4 = 1.0
 k5 = 1.0
-k41 = 2
-k42 = 2
+k41 = 5                             #####
+k42 = 5                             #####
 V = 0
 w = 0
 width = 0.125
@@ -74,10 +74,16 @@ M_PI = pi
 M_2PI = 2*pi
 
 # --------- Dynamic Variables
-dim1_range = np.linspace(-1.5, 1.5, 4)
-dim2_range = np.linspace(-2, 2, 5)
-dim3_range = np.linspace(0, 2, 3)
-dim4_range = np.linspace(-1.5, 1.5, 4)
+# dim1_range = np.linspace(-1.5, 1.5, 4)
+# dim2_range = np.linspace(-2, 2, 5)
+# dim3_range = np.linspace(0, 2, 3)
+# dim4_range = np.linspace(-1.5, 1.5, 4)
+# dim5_range = np.linspace(-1, 1, 3)
+# dim6_range = np.linspace(0, 2, 3)
+dim1_range = np.linspace(-2, 2, 4)                     ######
+dim2_range = np.linspace(-5, 5, 5)                     ######
+dim3_range = np.linspace(-0.5, 0.5, 3)                 ######
+dim4_range = np.linspace(-0.5, 0.5, 4)                 ######
 dim5_range = np.linspace(-1, 1, 3)
 dim6_range = np.linspace(0, 2, 3)
 centers = np.array(list(product(dim1_range, dim2_range, dim3_range, dim4_range, dim5_range, dim6_range)))
@@ -101,9 +107,9 @@ GAMAofbeta = np.array([[0.000001 , 0],[0 , 0.000005]])
 dt = 0.01
 GAMAofW = np.zeros((neurons, neurons), int)
 np.fill_diagonal(GAMAofW, 50)
-Kv1 = np.zeros((2, 2), int)
-np.fill_diagonal(Kv1, 50)
-W1 = np.zeros((neurons, 1), float)
+Kv1 = np.zeros((2, 2), int)                     ######
+np.fill_diagonal(Kv1, 100)
+W1 = np.zeros((neurons, 2), float)
 NNoutput1 = np.zeros((2, 1))
 ks1 = 0.1
 le31 = 1.5
@@ -163,14 +169,9 @@ def x3(xc, yc):
 
 # --------- Dynamic Function
 def PHI(inputVec, C):
-    squared_distance = np.linalg.norm(inputVec - C) ** 2
-    a = np.exp(-squared_distance / (1.4**2))
+    squared_distance = np.linalg.norm(inputVec - C)
+    a = exp(-squared_distance / (1.4**2))
     return a
-
-    
-
-
-
 
 
 with open("data.json", "r") as openfile:
@@ -179,7 +180,7 @@ webcam = cv2.VideoCapture(0)
 
 ser = serial.Serial(timeout=0.1)
 ser.baudrate = 115200
-ser.port = 'COM22'
+ser.port = 'COM18'
 
 url = "http://192.168.18.77:8080/shot.jpg"
 
@@ -216,16 +217,27 @@ def colorSetHSV(color, upperOrLower):
     return output
 def Send_RPM_to_Robot(u1_1, u1_2): # (right, left)
     global packet_green, XiActual1, t1
+    if u1_1 > 30:
+        u1_1 = 30
+    if u1_2 > 30:
+        u1_2 = 30
+    if u1_1 < -30:
+        u1_1 = -30
+    if u1_2 < -30:
+        u1_2 = -30
+    
     if u1_1 >= 0:
         packet_green[0] = 0
     else:
         packet_green[0] = 1
+    u1_1 *= 100
     packet_green[1] = int(abs(u1_1)).to_bytes(2, "little",signed=True)[0]
     packet_green[2] = int(abs(u1_1)).to_bytes(2, "little",signed=True)[1]
     if u1_2 >= 0:
         packet_green[3] = 0
     else:
         packet_green[3] = 1
+    u1_2 *= 100
     packet_green[4] = int(abs(u1_2)).to_bytes(2, "little",signed=True)[0]
     packet_green[5] = int(abs(u1_2)).to_bytes(2, "little",signed=True)[1]
     ser.open()
@@ -491,14 +503,15 @@ while 1:
     
     B1hat1 = np.array([[ (_x3 + es_R1)/es_r1, (_x3 - es_R1)/es_r1 ],
                        [ 1/es_r1            , 1/es_r1             ]])
-    
+    B1     = np.array([[ (_x3 + R)/r, (_x3 - R)/r ],
+                       [ 1/r            , 1/r             ]])
     for i in range(neurons):
-        PHIvec1[i] = PHI(inputVec1, centers)
+        PHIvec1[i] = PHI(inputVec1, centers[i])
     PHIvec1 = np.array(PHIvec1)
     
     W1 = W1 + dt * (np.matmul(np.matmul(GAMAofW, PHIvec1), z13.transpose())) # - (RHO * ((W1 - W2)))
     NNoutput1 = np.matmul(W1.transpose(), PHIvec1)
-    u1 = np.matmul(np.linalg.inv(B1hat1), 
+    u1 = np.matmul(np.linalg.inv(B1), 
         ( NNoutput1 + np.matmul(Kv1, z13) + ks1*np.sign(z13) + (
             (np.linalg.pinv(z13.transpose())) * (
                 (z13[0][0]*(Xidotvirtual1[0][0] - XidotActual1[0][0])/(le31**2 - z13[0][0]**2)) + 
@@ -515,9 +528,10 @@ while 1:
     lastalpha = alpha
     last_Xi11 = Xi1
     last_Xi12 = Xi2
-    last_x3 = _x3
-    print(f"V:{V}\t w:{w}\t theta:{round(angle, 2)}\t thetaD:{round(_thetad, 2)}\t dt:{round(dt, 2)}\t u1[0]:{round(u1[0][0], 2)}\t u1[1]:{round(u1[1][0],2)}")
-    # print(XiActual1)
+    last_x3   = _x3
+    # print(f"V:{V}\t w:{w}\t theta:{round(angle, 2)}\t thetaD:{round(_thetad, 2)}\t dt:{round(dt, 2)}\t u1[0]:{round(u1[0][0], 2)}\t u1[1]:{round(u1[1][0],2)}")
+    # print(f"z1:{round(z1, 2)}  \tz2:{round(z2, 2)}  \tz13:[{round(z13[0][0], 2)}, {round(z13[1][0], 2)}]")
+    print(f"Xidotvirtual1:[{round(Xidotvirtual1[0][0],2)}, {round(Xidotvirtual1[1][0],2)}] \t XiVirtual1:[{round(XiVirtual1[0][0],2)}, {round(XiVirtual1[1][0],2)}]")
     # -------------- Sending Data To MCU
     if not manualControl:
         Send_RPM_to_Robot(u1[0][0], u1[1][0])
@@ -538,7 +552,7 @@ while 1:
             t1, 
             x_Center1, 
             y_Center1, 
-            green_angle,
+            angle,
             Xd, 
             Yd,
             x_Center1 - Xd,
@@ -549,7 +563,9 @@ while 1:
             _x2,
             _x3,
             _x2d,
-            _x3d
+            _x3d,
+            NNoutput1[0][0],
+            NNoutput1[1][0]
         ])
         last_step_time = time.time()
     
@@ -562,12 +578,14 @@ while 1:
     key = cv2.waitKey(1)
     # Program Termination
     if key & 0xff == 27:
+        Send_RPM_to_Robot(0, 0)
         break
     if key == ord('s') and not manualControl:
-        df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d'])
+        df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d', 'NN(0)', 'NN(1)'])
         try:
             df.to_excel('./recordings/data.xlsx', sheet_name='Robot Positions')
             print('Excel Saved')
+            Send_RPM_to_Robot(0, 0)
             break
         except:
             print('Can not save file. Permission denied !!!!!!!')
