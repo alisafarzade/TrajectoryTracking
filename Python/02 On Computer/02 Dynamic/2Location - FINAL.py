@@ -178,10 +178,14 @@ with open("data.json", "r") as openfile:
     hsvColors = json.load(openfile)
 webcam = cv2.VideoCapture(0)
 
-ser = serial.Serial(timeout=0.1)
-ser.baudrate = 115200
-ser.port = 'COM18'
-
+ser = [serial.Serial(timeout=0.1), serial.Serial(timeout=0.1), serial.Serial(timeout=0.1),]
+ser[0].baudrate = 115200
+ser[1].baudrate = 115200
+ser[2].baudrate = 115200
+ser[0].port = 'COM13'
+ser[1].port = 'COM20'
+ser[2].port = 'COM19'
+robot_id = 0
 url = "http://192.168.18.77:8080/shot.jpg"
 
 packet_green = [0, 0, 0, 0, 0, 0]
@@ -215,7 +219,7 @@ def colorSetHSV(color, upperOrLower):
         np.uint8,
     )
     return output
-def Send_RPM_to_Robot(u1_1, u1_2): # (right, left)
+def Send_RPM_to_Robot(u1_1, u1_2, robot_id): # (right, left)
     global packet_green, XiActual1, t1
     if u1_1 > 30:
         u1_1 = 30
@@ -240,22 +244,29 @@ def Send_RPM_to_Robot(u1_1, u1_2): # (right, left)
     u1_2 *= 100
     packet_green[4] = int(abs(u1_2)).to_bytes(2, "little",signed=True)[0]
     packet_green[5] = int(abs(u1_2)).to_bytes(2, "little",signed=True)[1]
-    ser.open()
-    ser.write(packet_green)
-    data = ser.read(6)
-    w_rec = 0
-    V_rec = 0
-    if len(data) >= 6:
-        w_rec = (data[1] | (data[2]<<8))/100.0
-        V_rec = (data[4] | (data[5]<<8))/100.0
-        if data[0] == 1:
-            w_rec = -w_rec
-        if data[3] == 1:
-            V_rec = -V_rec
-    Xi1_Actual1 = w_rec
-    Xi2_Actual1 = V_rec - _x3*w_rec
-    XiActual1 = np.array([[Xi1_Actual1], [Xi2_Actual1]])
-    ser.close()
+    try:
+        ser[robot_id].open()
+        ser[robot_id].write(packet_green)
+    except:
+        print(f'Robot {robot_id+1} is not connected !!')
+    if not manualControl:
+        data = ser[robot_id].read(6)
+        w_rec = 0
+        V_rec = 0
+        if len(data) >= 6:
+            w_rec = (data[1] | (data[2]<<8))/100.0
+            V_rec = (data[4] | (data[5]<<8))/100.0
+            if data[0] == 1:
+                w_rec = -w_rec
+            if data[3] == 1:
+                V_rec = -V_rec
+        Xi1_Actual1 = w_rec
+        Xi2_Actual1 = V_rec - _x3*w_rec
+        XiActual1 = np.array([[Xi1_Actual1], [Xi2_Actual1]])
+    try:
+        ser[robot_id].close()
+    except:
+        pass
     # print(f"V: {V_rec}   w: {w_rec}")
 
 while 1:
@@ -529,12 +540,15 @@ while 1:
     last_Xi11 = Xi1
     last_Xi12 = Xi2
     last_x3   = _x3
+    # -------------- Prints:
+
     # print(f"V:{V}\t w:{w}\t theta:{round(angle, 2)}\t thetaD:{round(_thetad, 2)}\t dt:{round(dt, 2)}\t u1[0]:{round(u1[0][0], 2)}\t u1[1]:{round(u1[1][0],2)}")
     # print(f"z1:{round(z1, 2)}  \tz2:{round(z2, 2)}  \tz13:[{round(z13[0][0], 2)}, {round(z13[1][0], 2)}]")
-    print(f"Xidotvirtual1:[{round(Xidotvirtual1[0][0],2)}, {round(Xidotvirtual1[1][0],2)}] \t XiVirtual1:[{round(XiVirtual1[0][0],2)}, {round(XiVirtual1[1][0],2)}]")
+    # print(f"Xidotvirtual1:[{round(Xidotvirtual1[0][0],2)}, {round(Xidotvirtual1[1][0],2)}] \t XiVirtual1:[{round(XiVirtual1[0][0],2)}, {round(XiVirtual1[1][0],2)}]")
+    
     # -------------- Sending Data To MCU
     if not manualControl:
-        Send_RPM_to_Robot(u1[0][0], u1[1][0])
+        Send_RPM_to_Robot(u1[0][0], u1[1][0], robot_id)
     
     end = time.time()
     dt = end - start
@@ -578,7 +592,7 @@ while 1:
     key = cv2.waitKey(1)
     # Program Termination
     if key & 0xff == 27:
-        Send_RPM_to_Robot(0, 0)
+        Send_RPM_to_Robot(0, 0, robot_id)
         break
     if key == ord('s') and not manualControl:
         df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d', 'NN(0)', 'NN(1)'])
@@ -590,18 +604,24 @@ while 1:
         except:
             print('Can not save file. Permission denied !!!!!!!')
     if key == ord('w') and manualControl:
-        Send_RPM_to_Robot(12, 12)
+        Send_RPM_to_Robot(12, 12, robot_id)
     if key == ord('s') and manualControl:
-        Send_RPM_to_Robot(-12, -12)
+        Send_RPM_to_Robot(-12, -12, robot_id)
     if key == ord('a') and manualControl:
-        Send_RPM_to_Robot(12, -12)
+        Send_RPM_to_Robot(12, -12, robot_id)
     if key == ord('d') and manualControl:
-        Send_RPM_to_Robot(-12, 12)
+        Send_RPM_to_Robot(-12, 12, robot_id)
     if key == ord(' ') and manualControl:
-        Send_RPM_to_Robot(0, 0)
+        Send_RPM_to_Robot(0, 0, robot_id)
     if key == ord('m'):
         manualControl = not manualControl
-        Send_RPM_to_Robot(0, 0)
+        Send_RPM_to_Robot(0, 0, robot_id)
+    if key == ord('1'):
+        robot_id = 0
+    if key == ord('2'):
+        robot_id = 1
+    if key == ord('3'):
+        robot_id = 2
     
 #cap.release()
 cv2.destroyAllWindows()

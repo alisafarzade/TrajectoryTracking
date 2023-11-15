@@ -10,6 +10,7 @@ import serial
 import pandas as pd
 from itertools import product
 
+manualControl = False
 df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d'])
 robot_data = []
 beginTime = time.time()
@@ -122,9 +123,21 @@ with open("data.json", "r") as openfile:
 # Capturing video through webcam
 webcam = cv2.VideoCapture(0)
 
-ser = serial.Serial()
-ser.baudrate = 115200
-ser.port = 'COM13'
+# ser = serial.Serial()
+# ser.baudrate = 115200
+# ser.port = 'COM11'
+ser = [
+    serial.Serial(timeout=0.1), 
+    serial.Serial(timeout=0.1), 
+    serial.Serial(timeout=0.1),
+]
+ser[0].baudrate = 115200
+ser[1].baudrate = 115200
+ser[2].baudrate = 115200
+ser[0].port = 'COM13'
+ser[1].port = 'COM20'
+ser[2].port = 'COM19'
+robot_id = 0
 
 url = "http://192.168.18.77:8080/shot.jpg"
 
@@ -160,7 +173,7 @@ def colorSetHSV(color, upperOrLower):
     )
     return output
 def Send_RPM_to_Robot():
-    global RPM_Left, RPM_Right, packet_green
+    global RPM_Left, RPM_Right, packet_green, robot_id
     if RPM_Left > 90: RPM_Left = 90
     if RPM_Left <-90: RPM_Left = -90
     if RPM_Right > 90: RPM_Right = 90
@@ -173,9 +186,12 @@ def Send_RPM_to_Robot():
     packet_green[2] = int(RPM_Right).to_bytes(2, "little",signed=True)[0]
     packet_green[3] = int(RPM_Right).to_bytes(2, "little",signed=True)[1]
 
-    ser.open()
-    ser.write(packet_green)
-    ser.close()
+    try:
+        ser[robot_id].open()
+        ser[robot_id].write(packet_green)
+        ser[robot_id].close()
+    except:
+        print(f'Robot {robot_id+1} is not connected !!')
 
 # Start a while loop
 while 1:
@@ -409,10 +425,11 @@ while 1:
     RPM_Right = ((V + (width*w))/r) * 9.55
     RPM_Left = ((V - (width*w))/r) * 9.55
 
-    print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
+    # print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
 
     # -------------- Sending Data To MCU
-    Send_RPM_to_Robot()
+    if not manualControl:
+        Send_RPM_to_Robot()
 
     # -------------- Record Robot Data
     if time.time() - last_step_time > 0.1:
@@ -450,15 +467,70 @@ while 1:
     key = cv2.waitKey(1)
     # Program Termination
     if key & 0xff == 27:
+        robot_id = 0
+        RPM_Left = 0
+        RPM_Right = 0
+        Send_RPM_to_Robot()
+        robot_id = 1
+        RPM_Left = 0
+        RPM_Right = 0
+        Send_RPM_to_Robot()
+        robot_id = 2
+        RPM_Left = 0
+        RPM_Right = 0
+        Send_RPM_to_Robot()
         break
-    if key == 115:                
+    if key == ord('s') and not manualControl:
         df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d'])
         try:
             df.to_excel('./recordings/data.xlsx', sheet_name='Robot Positions')
             print('Excel Saved')
+            robot_id = 0
+            RPM_Left = 0
+            RPM_Right = 0
+            Send_RPM_to_Robot()
+            robot_id = 1
+            RPM_Left = 0
+            RPM_Right = 0
+            Send_RPM_to_Robot()
+            robot_id = 2
+            RPM_Left = 0
+            RPM_Right = 0
+            Send_RPM_to_Robot()
             break
         except:
             print('Can not save file. Permission denied !!!!!!!')
-
+    if key == ord('w') and manualControl:
+        RPM_Right = 40
+        RPM_Left = 40
+        Send_RPM_to_Robot()
+    if key == ord('s') and manualControl:
+        RPM_Right= -40
+        RPM_Left = -40
+        Send_RPM_to_Robot()
+    if key == ord('a') and manualControl:
+        RPM_Right = 40
+        RPM_Left = -40
+        Send_RPM_to_Robot()
+    if key == ord('d') and manualControl:
+        RPM_Right= -40
+        RPM_Left = 40
+        Send_RPM_to_Robot()
+    if key == ord(' ') and manualControl:
+        RPM_Right= 0
+        RPM_Left = 0
+        Send_RPM_to_Robot()
+    if key == ord('m'):
+        manualControl = not manualControl
+        RPM_Right= 0
+        RPM_Left = 0
+        Send_RPM_to_Robot()
+    if key == ord('1'):
+        robot_id = 0
+    if key == ord('2'):
+        robot_id = 1
+    if key == ord('3'):
+        robot_id = 2
+    
 #cap.release()
 cv2.destroyAllWindows()
