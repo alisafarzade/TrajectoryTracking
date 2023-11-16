@@ -28,16 +28,6 @@ green_angle = 0
 # --------- Kinematic Variables
 t1 = 0
 derivationFlag = 0
-x = 0.55
-y = 0
-angle = 3.14/2
-Xi1 = 0
-Xi2 = 0
-lastalpha=0
-alpha = 0
-z1 = 0
-z2 = 0
-alphadot=0
 ls1 = 0.55
 ls2 = 1.35
 ls31 = 2.75
@@ -53,23 +43,75 @@ k4 = 1.0
 k5 = 1.0
 k41 = 2
 k42 = 2
-V = 0
-w = 0
 width = 0.125
 r = 0.06
-_xcd = 0
-_ycd = 0
-_thetad = 0
-_wd = 0
-_x2d = 0
-_x3d = 0
-_x2 = 0
-_x3 = 0
 A = 0
 B = 0
 speed = 0.1
 M_PI = pi
 M_2PI = 2*pi
+
+
+x_1 = 0.55
+x_2 = 0.55
+x_3 = 0.55
+y_1 = 0
+y_2 = 0
+y_3 = 0
+angle_1 = 3.14/2
+angle_2 = 3.14/2
+angle_3 = 3.14/2
+Xi1_1 = 0
+Xi1_2 = 0
+Xi1_3 = 0
+Xi2_1 = 0
+Xi2_2 = 0
+Xi2_3 = 0
+lastalpha_1 = 0
+lastalpha_2 = 0
+lastalpha_3 = 0
+alpha_1 = 0
+alpha_2 = 0
+alpha_3 = 0
+z1_1 = 0
+z1_2 = 0
+z1_3 = 0
+z2_1 = 0
+z2_2 = 0
+z2_3 = 0
+alphadot_1 = 0
+alphadot_2 = 0
+alphadot_3 = 0
+V_1 = 0
+V_2 = 0
+V_3 = 0
+w_1 = 0
+w_2 = 0
+w_3 = 0
+_xcd_1 = 0
+_xcd_2 = 0
+_xcd_3 = 0
+_ycd_1 = 0
+_ycd_2 = 0
+_ycd_3 = 0
+_thetad_1 = 0
+_thetad_2 = 0
+_thetad_3 = 0
+_wd_1 = 0
+_wd_2 = 0
+_wd_3 = 0
+_x2d_1 = 0
+_x2d_2 = 0
+_x2d_3 = 0
+_x3d_1 = 0
+_x3d_2 = 0
+_x3d_3 = 0
+_x2_1 = 0
+_x2_2 = 0
+_x2_3 = 0
+_x3_1 = 0
+_x3_2 = 0
+_x3_3 = 0
 
 
 # --------- Math Additional Functions
@@ -96,23 +138,31 @@ def absf(input):
 	return -input
 
 # --------- Kinematic Functions
-def xcd():
+def xcd1():
 	return 0.45 * cos(t1*speed)
-def ycd():
+def ycd1():
+	return 0.30 * sin(t1*speed)
+def xcd2():
+	return 0.45 * cos(t1*speed)
+def ycd2():
+	return 0.30 * sin(t1*speed)
+def xcd3():
+	return 0.45 * cos(t1*speed)
+def ycd3():
 	return 0.30 * sin(t1*speed)
 def thetad():
 	theta = atan2(0.30*cos(t1*speed), -0.45*sin(t1*speed))
-	return unwrap(_thetad, theta)
+	return unwrap(_thetad_1, theta)
 def wd():
 	return (6*speed * (sin2(t1*speed) +   cos2(t1*speed))) /	(9*sin2(t1*speed) + 4*cos2(t1*speed))
 def x2d():
-	return (_xcd * cos(_thetad)) + (_ycd * sin(_thetad))
+	return (_xcd_1 * cos(_thetad_1)) + (_ycd_1 * sin(_thetad_1))
 def x3d():
-	return (_xcd * sin(_thetad)) - (_ycd * cos(_thetad))
+	return (_xcd_1 * sin(_thetad_1)) - (_ycd_1 * cos(_thetad_1))
 def x2(xc, yc):
-	return (xc * cos(angle)) + (yc * sin(angle))
+	return (xc * cos(angle_1)) + (yc * sin(angle_1))
 def x3(xc, yc):
-	return (xc * sin(angle)) - (yc * cos(angle))
+	return (xc * sin(angle_1)) - (yc * cos(angle_1))
 
 
 
@@ -127,16 +177,16 @@ webcam = cv2.VideoCapture(0)
 # ser.baudrate = 115200
 # ser.port = 'COM11'
 ser = [
-    serial.Serial(timeout=0.1), 
-    serial.Serial(timeout=0.1), 
-    serial.Serial(timeout=0.1),
+    serial.Serial(timeout=0.5), 
+    serial.Serial(timeout=0.5), 
+    serial.Serial(timeout=0.5),
 ]
 ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
-ser[0].port = 'COM13'
+ser[0].port = 'COM21'
 ser[1].port = 'COM18'
-ser[2].port = 'COM21'
+ser[2].port = 'COM29'
 robot_id = 0
 
 url = "http://192.168.18.77:8080/shot.jpg"
@@ -391,39 +441,39 @@ while 1:
 
 
     # -------------- Controller
-    x = (x_Center1 - center_x)/100
-    y = (y_Center1 - center_y)/100
-    angle = unwrap(angle, radians(green_angle))
+    x_1 = (x_Center1 - center_x)/100
+    y_1 = (y_Center1 - center_y)/100
+    angle_1 = unwrap(angle_1, radians(green_angle))
     t1 = time.time() - beginTime
 
-    _xcd = xcd()
-    _ycd = ycd()
-    _thetad = thetad()
-    _wd = wd()
-    _x2d = x2d()
-    _x3d = x3d()
-    _x2 = x2(x, y)
-    _x3 = x3(x, y)
+    _xcd_1 = xcd1()
+    _ycd_1 = ycd1()
+    _thetad_1 = thetad()
+    _wd_1 = wd()
+    _x2d_1 = x2d()
+    _x3d_1 = x3d()
+    _x2_1 = x2(x_1, y_1)
+    _x3_1 = x3(x_1, y_1)
 
-    Xi1 = _wd + (k3 * (_thetad - angle))
-    z1 = _x3d - _x3
-    A = pow(le1,2) - pow(z1,2)
-    alpha = _x2d + (A * k1 * z1 * _wd)
-    z2 = alpha - _x2
-    B = pow(le2,2) - pow(z2,2)
+    Xi1_1 = _wd_1 + (k3 * (_thetad_1 - angle_1))
+    z1_1 = _x3d_1 - _x3_1
+    A = pow(le1,2) - pow(z1_1,2)
+    alpha = _x2d_1 + (A * k1 * z1_1 * _wd_1)
+    z2_1 = alpha_1 - _x2_1
+    B = pow(le2,2) - pow(z2_1,2)
 
     if(derivationFlag):
-        alphadot = (alpha - lastalpha)/0.1
-        lastalpha = alpha
+        alphadot_1 = (alpha_1 - lastalpha_1)/0.1
+        lastalpha_1 = alpha_1
         derivationFlag = 0
 
-    Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * k5 * z1 * _wd)
+    Xi2_1 = alphadot_1 + (B * k2 * z2_1 * pow(_wd_1,2)) + ((B / A) * k5 * z1_1 * _wd_1)
     
-    V = _x3 * Xi1 + k4 * Xi2
-    w = Xi1
+    V_1 = _x3_1 * Xi1_1 + k4 * Xi2_1
+    w_1 = Xi1_1
 
-    RPM_Right = ((V + (width*w))/r) * 9.55
-    RPM_Left = ((V - (width*w))/r) * 9.55
+    RPM_Right = ((V_1 + (width*w_1))/r) * 9.55
+    RPM_Left = ((V_1 - (width*w_1))/r) * 9.55
 
     # print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
 
@@ -434,16 +484,16 @@ while 1:
     # -------------- Record Robot Data
     if time.time() - last_step_time > 0.1:
         derivationFlag = 1
-        Xd = _xcd*100 + center_x
-        Yd = _ycd*100 + center_y
-        thetaD = _thetad
+        Xd = _xcd_1*100 + center_x
+        Yd = _ycd_1*100 + center_y
+        thetaD = _thetad_1
         
         if thetaD < 0: thetaD += 2*pi
         robot_data.append([
             t1, 
             x_Center1, 
             y_Center1, 
-            angle,
+            angle_1,
             Xd, 
             Yd,
             x_Center1 - Xd,
@@ -451,10 +501,10 @@ while 1:
             radians(green_angle),
             thetaD,
             radians(green_angle) - thetaD,
-            _x2,
-            _x3,
-            _x2d,
-            _x3d
+            _x2_1,
+            _x3_1,
+            _x2d_1,
+            _x3d_1
         ])
         last_step_time = time.time()
     

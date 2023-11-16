@@ -448,8 +448,6 @@ int main(void)
 		if(rpmLeftD > 90)  LED1_ON;
 		else							 LED1_OFF;
 		
-		
-		
 		/////////////////////////////////////////////////// PID Farhan
 		if(HAL_GetTick() - pid_last_time > 5){
 			errorRight = rpmRightD - rpmRight;
