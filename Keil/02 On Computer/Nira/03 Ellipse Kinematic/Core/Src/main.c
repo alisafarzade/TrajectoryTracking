@@ -342,15 +342,10 @@ int main(void)
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
 	
 	
-	HAL_UART_Receive_IT(&huart1, Rx_data, USART_BUFFER_SIZE);
+	HAL_UART_Receive_IT(&huart5, Rx_data, USART_BUFFER_SIZE);
 	
 	LED1_OFF;
 	LED2_OFF;
-	for(int i=0; i<65535; i+=10){
-		TIM5->CCR2 = 65535 - i;			//G
-		TIM5->CCR3 = 65535;			//R
-		TIM5->CCR4 = 65535; //B
-	}
 	TIM5->CCR2 = 65535;			//G
 	TIM5->CCR3 = 65535;			//R
 	TIM5->CCR4 = 65535; //B
@@ -403,7 +398,7 @@ int main(void)
 			got_angle |= Rx_data[5]<<8;
 			angle = unwrap(angle, ((float) got_angle) * pi / 180);
 			*/
-			HAL_UART_Receive_IT(&huart1, Rx_data, USART_BUFFER_SIZE);
+			HAL_UART_Receive_IT(&huart5, Rx_data, USART_BUFFER_SIZE);
 			locFlag = 0;
 		}
 		
@@ -443,6 +438,7 @@ int main(void)
 		
 
 //		
+		
 		if(rpmRightD > 90) LED2_ON;
 		else							 LED2_OFF;
 		if(rpmLeftD > 90)  LED1_ON;

@@ -184,7 +184,7 @@ ser = [
 ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
-ser[0].port = 'COM21'
+ser[0].port = 'COM20'
 ser[1].port = 'COM18'
 ser[2].port = 'COM29'
 robot_id = 0
@@ -222,26 +222,27 @@ def colorSetHSV(color, upperOrLower):
         np.uint8,
     )
     return output
-def Send_RPM_to_Robot():
-    global RPM_Left, RPM_Right, packet_green, robot_id
-    if RPM_Left > 90: RPM_Left = 90
-    if RPM_Left <-90: RPM_Left = -90
-    if RPM_Right > 90: RPM_Right = 90
-    if RPM_Right <-90: RPM_Right = -90
-    RPM_Left  = round(RPM_Left, 2) * 100 + 9000
-    RPM_Right = round(RPM_Right, 2 ) * 100 + 9000
-    packet_green[0] = int(RPM_Left).to_bytes(2, "little",signed=True)[0]
-    packet_green[1] = int(RPM_Left).to_bytes(2, "little",signed=True)[1]
+def Send_RPM_to_Robot(rpmLeft, rpmRight, id):
+    global packet_green
+    if rpmLeft > 90: rpmLeft = 90
+    if rpmLeft <-90: rpmLeft = -90
+    if rpmRight > 90: rpmRight = 90
+    if rpmRight <-90: rpmRight = -90
+    rpmLeft  = round(rpmLeft, 2) * 100 + 9000
+    rpmRight = round(rpmRight, 2 ) * 100 + 9000
+    packet_green[0] = int(rpmLeft).to_bytes(2, "little",signed=True)[0]
+    packet_green[1] = int(rpmLeft).to_bytes(2, "little",signed=True)[1]
 
-    packet_green[2] = int(RPM_Right).to_bytes(2, "little",signed=True)[0]
-    packet_green[3] = int(RPM_Right).to_bytes(2, "little",signed=True)[1]
+    packet_green[2] = int(rpmRight).to_bytes(2, "little",signed=True)[0]
+    packet_green[3] = int(rpmRight).to_bytes(2, "little",signed=True)[1]
 
     try:
-        ser[robot_id].open()
-        ser[robot_id].write(packet_green)
-        ser[robot_id].close()
+        ser[id].open()
+        ser[id].write(packet_green)
+        ser[id].close()
     except:
-        print(f'Robot {robot_id+1} is not connected !!')
+        print(f'Robot {id+1} is not connected !!')
+
 
 # Start a while loop
 while 1:
@@ -479,7 +480,7 @@ while 1:
 
     # -------------- Sending Data To MCU
     if not manualControl:
-        Send_RPM_to_Robot()
+        Send_RPM_to_Robot(RPM_Left, RPM_Right, robot_id)
 
     # -------------- Record Robot Data
     if time.time() - last_step_time > 0.1:
@@ -498,9 +499,9 @@ while 1:
             Yd,
             x_Center1 - Xd,
             y_Center1 - Yd,
-            radians(green_angle),
+            radians(angle_1),
             thetaD,
-            radians(green_angle) - thetaD,
+            radians(angle_1) - thetaD,
             _x2_1,
             _x3_1,
             _x2d_1,
@@ -517,64 +518,36 @@ while 1:
     key = cv2.waitKey(1)
     # Program Termination
     if key & 0xff == 27:
-        robot_id = 0
-        RPM_Left = 0
-        RPM_Right = 0
-        Send_RPM_to_Robot()
-        robot_id = 1
-        RPM_Left = 0
-        RPM_Right = 0
-        Send_RPM_to_Robot()
-        robot_id = 2
-        RPM_Left = 0
-        RPM_Right = 0
-        Send_RPM_to_Robot()
+        Send_RPM_to_Robot(0, 0, 0)
+        Send_RPM_to_Robot(0, 0, 1)
+        Send_RPM_to_Robot(0, 0, 2)
         break
     if key == ord('s') and not manualControl:
         df = pd.DataFrame(robot_data, columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d'])
         try:
             df.to_excel('./recordings/data.xlsx', sheet_name='Robot Positions')
             print('Excel Saved')
-            robot_id = 0
-            RPM_Left = 0
-            RPM_Right = 0
-            Send_RPM_to_Robot()
-            robot_id = 1
-            RPM_Left = 0
-            RPM_Right = 0
-            Send_RPM_to_Robot()
-            robot_id = 2
-            RPM_Left = 0
-            RPM_Right = 0
-            Send_RPM_to_Robot()
+            Send_RPM_to_Robot(0, 0, 0)
+            Send_RPM_to_Robot(0, 0, 1)
+            Send_RPM_to_Robot(0, 0, 2)
             break
         except:
             print('Can not save file. Permission denied !!!!!!!')
     if key == ord('w') and manualControl:
-        RPM_Right = 40
-        RPM_Left = 40
-        Send_RPM_to_Robot()
+        Send_RPM_to_Robot(40, 40, robot_id)
     if key == ord('s') and manualControl:
-        RPM_Right= -40
-        RPM_Left = -40
-        Send_RPM_to_Robot()
+        Send_RPM_to_Robot(-40, -40, robot_id)
     if key == ord('a') and manualControl:
-        RPM_Right = 40
-        RPM_Left = -40
-        Send_RPM_to_Robot()
+        Send_RPM_to_Robot(-40, 40, robot_id)
     if key == ord('d') and manualControl:
-        RPM_Right= -40
-        RPM_Left = 40
-        Send_RPM_to_Robot()
+        Send_RPM_to_Robot(40, -40, robot_id)
     if key == ord(' ') and manualControl:
-        RPM_Right= 0
-        RPM_Left = 0
-        Send_RPM_to_Robot()
+        Send_RPM_to_Robot(0, 0, robot_id)
     if key == ord('m'):
         manualControl = not manualControl
-        RPM_Right= 0
-        RPM_Left = 0
-        Send_RPM_to_Robot()
+        Send_RPM_to_Robot(0, 0, 0)
+        Send_RPM_to_Robot(0, 0, 1)
+        Send_RPM_to_Robot(0, 0, 2)
     if key == ord('1'):
         robot_id = 0
     if key == ord('2'):

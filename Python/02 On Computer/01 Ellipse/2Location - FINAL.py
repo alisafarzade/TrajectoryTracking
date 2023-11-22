@@ -136,9 +136,21 @@ ser[1].baudrate = 115200
 ser[2].baudrate = 115200
 ser[0].port = 'COM13'
 ser[1].port = 'COM18'
-ser[2].port = 'COM21'
-robot_id = 0
+ser[2].port = 'COM20'
+robot_id = 2
 
+try:
+    ser[0].open()
+except:
+    pass
+try:
+    ser[1].open()
+except:
+    pass
+try:
+    ser[2].open()
+except:
+    pass
 url = "http://192.168.18.77:8080/shot.jpg"
 
 packet_green = [0, 0, 0, 0]
@@ -187,9 +199,7 @@ def Send_RPM_to_Robot():
     packet_green[3] = int(RPM_Right).to_bytes(2, "little",signed=True)[1]
 
     try:
-        ser[robot_id].open()
         ser[robot_id].write(packet_green)
-        ser[robot_id].close()
     except:
         print(f'Robot {robot_id+1} is not connected !!')
 
@@ -448,9 +458,9 @@ while 1:
             Yd,
             x_Center1 - Xd,
             y_Center1 - Yd,
-            radians(green_angle),
+            radians(angle),
             thetaD,
-            radians(green_angle) - thetaD,
+            radians(angle) - thetaD,
             _x2,
             _x3,
             _x2d,
@@ -534,3 +544,6 @@ while 1:
     
 #cap.release()
 cv2.destroyAllWindows()
+ser[0].close()
+ser[1].close()
+ser[2].close()
