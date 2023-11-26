@@ -185,7 +185,7 @@ ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
 ser[0].port = 'COM20'
-ser[1].port = 'COM18'
+ser[1].port = 'COM13'
 ser[2].port = 'COM29'
 robot_id = 0
 
