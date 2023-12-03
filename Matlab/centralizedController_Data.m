@@ -228,6 +228,9 @@ W3{1} = ones(neurons, 2);
 
 
 tau = (1/ku1) * [0.1*sin(tspan); 0.1*cos(tspan)];
+data_set_1 = zeros(6, length(tspan));
+data_set_2 = zeros(6, length(tspan));
+data_set_3 = zeros(6, length(tspan));
 
 for q = 1 : length(tspan)
     q
@@ -267,8 +270,11 @@ for q = 1 : length(tspan)
 
     
     inputVec1 = [Xidotvirtual1(:,q);  XiVirtual1(:,q); x13dot(q); x13(q)];
+    data_set_1(:,q) = inputVec1;
     inputVec2 = [Xidotvirtual2(:,q);  XiVirtual2(:,q); x23dot(q); x23(q)];
+    data_set_2(:,q) = inputVec2;
     inputVec3 = [Xidotvirtual3(:,q);  XiVirtual3(:,q); x33dot(q); x33(q)];
+    data_set_3(:,q) = inputVec3;
        
     
     
