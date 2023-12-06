@@ -419,7 +419,7 @@ int main(void)
 		Xi1 = _wd + (k3 * (_thetad - angle));
 		z1 = _x3d - _x3;
 		A = pow(le1,2) - pow(z1,2);
-		alpha = _x2d + (A * k1 * z1 * _wd);
+		alpha = _x2d + (A * k1 * z1 * _wd) ;
 		z2 = alpha - _x2;
 		B = pow(le2,2) - pow(z2,2);
 
@@ -428,7 +428,7 @@ int main(void)
 			derivationFlag = 0;
 			lastalpha = alpha;
 		}	
-		Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * k5 * z1 * _wd);
+		Xi2 = alphadot + (B * k2 * z2 * pow(_wd,2)) + ((B / A) * k5 * z1 * _wd); 
 		V = _x3 * Xi1 + k4 * Xi2;
 		w = Xi1;
 		

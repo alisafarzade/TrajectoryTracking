@@ -442,8 +442,8 @@ while 1:
 
 
     # -------------- Controller
-    x_1 = (x_Center1 - center_x)/100
-    y_1 = (y_Center1 - center_y)/100
+    x_1 = (x_Center1 - center_x)/100.0
+    y_1 = (y_Center1 - center_y)/100.0
     angle_1 = unwrap(angle_1, radians(green_angle))
     t1 = time.time() - beginTime
 
@@ -476,7 +476,8 @@ while 1:
     RPM_Right = ((V_1 + (width*w_1))/r) * 9.55
     RPM_Left = ((V_1 - (width*w_1))/r) * 9.55
 
-    # print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
+    print(f"V:{V_1} \tw:{w_1} \tRPM_R:{RPM_Right} \tRPM_L:{RPM_Left} \t")
+    # print(f"V:{V_1} \tw:{w_1} \t angle:{angle_1} \tthetaD:{_thetad_1}")
 
     # -------------- Sending Data To MCU
     if not manualControl:
@@ -494,14 +495,14 @@ while 1:
             t1, 
             x_Center1, 
             y_Center1, 
-            angle_1,
+            degrees(angle_1),
             Xd, 
             Yd,
             x_Center1 - Xd,
             y_Center1 - Yd,
-            radians(angle_1),
+            angle_1,
             thetaD,
-            radians(angle_1) - thetaD,
+            angle_1 - thetaD,
             _x2_1,
             _x3_1,
             _x2d_1,

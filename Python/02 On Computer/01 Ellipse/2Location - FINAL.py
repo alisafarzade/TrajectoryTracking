@@ -134,7 +134,7 @@ ser = [
 ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
-ser[0].port = 'COM13'
+ser[0].port = 'COM21'
 ser[1].port = 'COM18'
 ser[2].port = 'COM20'
 robot_id = 2
@@ -435,6 +435,7 @@ while 1:
     RPM_Right = ((V + (width*w))/r) * 9.55
     RPM_Left = ((V - (width*w))/r) * 9.55
 
+    print(f"V:{V} \tw:{w} \tRPM_R:{RPM_Right} \tRPM_L:{RPM_Left} \t")
     # print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
 
     # -------------- Sending Data To MCU
