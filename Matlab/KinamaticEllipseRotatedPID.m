@@ -13,14 +13,15 @@ le32 = 1.2;
 k1 = 1.5;
 k2 = 1.5;
 k3 = 1.3;
-k41 = 2;
-k42 = 2;
-Kv1 = diag([50 50]);
-ks1 = 0.1;
+% k41 = 2;
+% k42 = 2;
+% Kv1 = diag([50 50]);
+% ks1 = 0.1;
 
+R = 0.25;
+r = 0.06;
 
-
-dt = 0.001;
+dt = 0.01;
 tspan = 0:dt:200;
 
 
@@ -39,13 +40,13 @@ x13 = zeros(1, length(tspan));
 
 
 
-xc1d = 0.45 * cos(tspan);
-yc1d = 0.3 * sin(tspan);
-theta1d = unwrap(atan2(0.3 * cos(tspan), -0.45 * sin(tspan)));
+xc1d = 0.3 * cos(tspan);
+yc1d = 0.45 * sin(tspan);
+theta1d = unwrap(atan2(0.45 * cos(tspan), -0.3 * sin(tspan)));
 
 % v1d = sqrt((-0.8*sin(tspan)).^2 + (cos(tspan)).^2);
 % w1d = (-sin(tspan).*(-0.8 * sin(tspan)) - (-0.8 * cos(tspan)).*cos(tspan))./((-0.8*sin(tspan)).^2 + (cos(tspan)).^2);
-w1d = 6 *( ((sin(tspan).^2) + (cos(tspan).^2))./(9*(sin(tspan)).^2 + 4*(cos(tspan)).^2) );
+w1d = 6 *( ((sin(tspan).^2) + (cos(tspan).^2))./(4*(sin(tspan)).^2 + 9*(cos(tspan)).^2) );
 
 x11d = theta1d;
 x12d = xc1d .* cos(theta1d) + yc1d .* sin(theta1d);
@@ -54,17 +55,17 @@ x13d = xc1d .* sin(theta1d) - yc1d .* cos(theta1d);
 
 
 NoiseRatio = 1;
-xNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
-yNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
-wNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/100;
+xNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/1000;
+yNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/1000;
+wNoise = randi([-NoiseRatio NoiseRatio],1,length(tspan))/1000;
 
 
 x11(1) = pi/2;
 x12(1) = 0;
-x13(1) = 0.65;
+x13(1) = 0.50;
 
 yc1(1) = 0;
-xc1(1) = 0.65;
+xc1(1) = 0.50;
 Xi11(1) = 0;
 Xi12(1) = 0;
 alpha1(1) = 0;
@@ -85,9 +86,12 @@ for q = 1 : length(tspan)
     v1(q) = (x13(q) * Xi11(q + 1)) + Xi12(q + 1);
     w1(q) = Xi11(q + 1);
     
-    xc1(q + 1) = xc1(q) + dt * v1(q) * cos(x11(q));%+ xNoise(q);
-    yc1(q + 1) = yc1(q) + dt * v1(q) * sin(x11(q));%+ yNoise(q);    
-    x11(q + 1) = x11(q) + dt * w1(q);% + wNoise(q);
+%     rpmR = (v1(q) + (R/2)*w1(q))/r;
+%     rpmL = (v1(q) - (R/2)*w1(q))/r;
+
+    xc1(q + 1) = xc1(q) + dt * v1(q) * cos(x11(q))+ xNoise(q);
+    yc1(q + 1) = yc1(q) + dt * v1(q) * sin(x11(q))+ yNoise(q);    
+    x11(q + 1) = x11(q) + dt * w1(q) + wNoise(q);
     
     
     x12(q + 1) = xc1(q + 1) * cos(x11(q + 1)) + yc1(q + 1) * sin(x11(q + 1));
@@ -110,14 +114,12 @@ plot(x12, x13,'.-r', x12d, x13d, 'blue');
 grid on
 title('homeomorphism mapped');
 
-
 subplot(1, 2, 2);
 plot(xc1, yc1, '.-r', xc1d, yc1d, 'blue');
 grid on
 title('real coordinates');
-xlim([-0.7 0.7])
-ylim([-0.7 0.7])
-
+xlim([-0.5 0.5])
+ylim([-0.5 0.5])
 
 % figure(1);
 % subplot(1, 2, 1);
@@ -145,8 +147,8 @@ plot(tspan, yc1e(1:length(tspan)));
 grid on
 title('yc1e');
 
-V = max(max(v1), abs(min(v1)))
-W = max(max(w1), abs(min(w1)))
+V = max(max(v1), abs(min(v1)));
+W = max(max(w1), abs(min(w1)));
 
 ((V + (0.13*W))/0.06) * 9.55
 

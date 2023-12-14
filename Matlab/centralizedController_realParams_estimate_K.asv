@@ -22,8 +22,8 @@ k3 = 1.5;
 GAMAofW = diag(50*ones(2160,1));
 
 RHO = 2
-GAMAofbeta = [0.0 , 0;
-                0 , 0.0];
+GAMAofbeta = [0.000001 , 0;
+                0 , 0.000005];
 neurons = 2160;
 centers = cartesian(linspace(-1.5, 1.5, 4), linspace(-2, 2, 5), linspace(0, 2, 3), linspace(-1.5, 1.5, 4), linspace(-1, 1, 3), linspace(0, 2, 3));
 % LANDA = [x13(q), 1; 1, 0];
@@ -244,10 +244,10 @@ result_ok = 1;
 
 results = zeros(10^6, 5);
 cnt = 1;
-for ks1 = 0.1:0.1:1
-    for k41 = 0.5:2:20
-        for k42 = 0.5:2:20
-            for kv1 = 20:5:100
+for ks1 = 0.1:1:5
+    for k41 = 0.5:3:20
+        for k42 = 0.5:3:3.5=
+            for kv1 = 40:1:60
                 Kv1 = diag([kv1 kv1]);
                 result_ok = 1;
                 for q = 1 : length(tspan)
