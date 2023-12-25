@@ -39,12 +39,12 @@ centers = cartesian(linspace(-1.5, 1.5, 4), linspace(-2, 2, 5), linspace(0, 2, 3
 
 
 m = 4;
-J = 0.062;
+J = 2.06;
 R = 0.125;
 r = 0.06;
 ng = 60.5;
 kt = 0.3;
-kb = 20.475;
+kb = 0.020475;
 ra= 23.5;
 
 
@@ -52,7 +52,7 @@ ku1 = (ng*kt)/ra;
 ku2 = ng*kb*ku1;
              
 dt = 0.01;
-tspan = 0:dt:5;
+tspan = 0:dt:200;
 
 %% i = 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -95,9 +95,9 @@ x31d = theta3d;
 x32d = xc3d .* cos(theta3d) + yc3d .* sin(theta3d);
 x33d = xc3d .* sin(theta3d) - yc3d .* cos(theta3d);
 
-figure(1)
-plot(x12d, x13d, 'red', x22d, x23d , 'blue', x32d, x33d, 'black');
-title('x12d vs x13d, x22d  vs  x23d, x32d vs x33d');
+% figure(1)
+% plot(x12d, x13d, 'red', x22d, x23d , 'blue', x32d, x33d, 'black');
+% title('x12d vs x13d, x22d  vs  x23d, x32d vs x33d');
 
 %% Preallocations
 % i = 1

@@ -24,9 +24,14 @@ Line_y = 145
 circle_radius_x = 45
 circle_radius_y = 30
 x_Center1 = 0
+x_Center2 = 0
+x_Center3 = 0
 y_Center1 = 0
+y_Center2 = 0
+y_Center3 = 0
 green_angle = 0
-
+yellow_angle = 0
+pink_angle = 0
 # --------- Kinematic Variables
 t1 = 0
 derivationFlag_1 = 0
