@@ -225,8 +225,8 @@ ser = [
 ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
-ser[0].port = 'COM20'
-ser[1].port = 'COM13'
+ser[0].port = '/dev/ttyUSB0'
+ser[1].port = '/dev/ttyUSB1'
 ser[2].port = 'COM18'
 robot_id = 2
 
