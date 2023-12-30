@@ -344,7 +344,7 @@ int main(void)
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
 	
 	
-	HAL_UART_Receive_IT(&huart1, Rx_data, USART_BUFFER_SIZE);
+	HAL_UART_Receive_IT(&huart5, Rx_data, USART_BUFFER_SIZE);
 	
 	LED1_OFF;
 	LED2_OFF;
@@ -414,7 +414,7 @@ int main(void)
 			Tx_data[4] = _V & 0xFF;
 			Tx_data[5] = _V >> 8;
 			
-			HAL_UART_Transmit(&huart1, Tx_data, USART_BUFFER_SIZE, 100);
+			HAL_UART_Transmit(&huart5, Tx_data, USART_BUFFER_SIZE, 100);
 			/*
 			got_x = Rx_data[0];
 			got_x |= Rx_data[1]<<8;
@@ -426,7 +426,7 @@ int main(void)
 			got_angle |= Rx_data[5]<<8;
 			angle = unwrap(angle, ((float) got_angle) * pi / 180);
 			*/
-			HAL_UART_Receive_IT(&huart1, Rx_data, USART_BUFFER_SIZE);
+			HAL_UART_Receive_IT(&huart5, Rx_data, USART_BUFFER_SIZE);
 			locFlag = 0;
 		}
 		
