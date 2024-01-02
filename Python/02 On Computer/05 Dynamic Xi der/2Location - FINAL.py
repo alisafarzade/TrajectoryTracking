@@ -177,36 +177,22 @@ def absf(input):
 
 # --------- Kinematic Functions
 def xcd():
-    return 0.45 * cos(t1 * speed)
-
-
+	return 0.30 * cos(t1*speed)
 def ycd():
-    return 0.30 * sin(t1 * speed)
-
-
+	return 0.45 * sin(t1*speed)
 def thetad():
-    theta = atan2(0.30 * cos(t1 * speed), -0.45 * sin(t1 * speed))
-    return unwrap(_thetad, theta)
-
-
+	theta = atan2(0.45*cos(t1*speed), -0.30*sin(t1*speed))
+	return unwrap(_thetad, theta)
 def wd():
-    return (6 * speed * (sin2(t1 * speed) + cos2(t1 * speed))) / (9 * sin2(t1 * speed) + 4 * cos2(t1 * speed))
-
-
+	return (6*speed * (sin2(t1*speed) +   cos2(t1*speed))) /	(4*sin2(t1*speed) + 9*cos2(t1*speed))
 def x2d():
-    return (_xcd * cos(_thetad)) + (_ycd * sin(_thetad))
-
-
+	return (_xcd * cos(_thetad)) + (_ycd * sin(_thetad))
 def x3d():
-    return (_xcd * sin(_thetad)) - (_ycd * cos(_thetad))
-
-
+	return (_xcd * sin(_thetad)) - (_ycd * cos(_thetad))
 def x2(xc, yc):
-    return (xc * cos(angle)) + (yc * sin(angle))
-
-
+	return (xc * cos(angle)) + (yc * sin(angle))
 def x3(xc, yc):
-    return (xc * sin(angle)) - (yc * cos(angle))
+	return (xc * sin(angle)) - (yc * cos(angle))
 
 
 # --------- Dynamic Function
@@ -227,10 +213,10 @@ ser = [
 ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
-ser[0].port = '/dev/ttyUSB0'
-ser[1].port = '/dev/ttyUSB1'
+ser[0].port = 'COM10'
+ser[1].port = 'COM11'
 ser[2].port = 'COM18'
-robot_id = 1
+robot_id = 0
 
 try:
     ser[0].open()
@@ -600,7 +586,6 @@ while 1:
                    )))
     # print(u1)
     # XiActual1 =  XiActual1 + dt * np.matmul(np.linalg.inv((1/ku1) * np.array([[m * _x3**2 + J, m * _x3], [m * _x3, m]])) , (np.matmul(np.array([[(_x3 + R)/r, (_x3 - R)/r], [1/r, 1/r]]), u1) - (1/ku1) * np.matmul(np.array([[m * _x3 * x13_dot, 0], [m * x13_dot, 0]]), XiActual1) - ((2*ku2)/(ku1*r**2)) * np.matmul(np.array([[_x3**2 + R**2, _x3], [_x3, 1]]), XiActual1) - np.matmul(np.array([[_x3, 1], [1, 0]]), np.array([[30 * V + 4 * np.sign(V)], [30 * w + 4 * np.sign(w)]])) - (1/ku1) * np.matmul(np.array([[_x3, 1], [1, 0]]), np.array([[0.1*sin(t1)], [0.1*cos(t1)]]))))
-
     lastalpha = alpha
     last_Xi11 = Xi1
     last_Xi12 = Xi2
@@ -611,6 +596,7 @@ while 1:
     last_x3 = _x3
     # -------------- Prints:
 
+    print(f"u1:{round(u1[0][0], 2)}\t u2:{round(u1[1][0], 2)}\t")
     # print(f"V:{V}\t w:{w}\t theta:{round(angle, 2)}\t thetaD:{round(_thetad, 2)}\t dt:{round(dt, 2)}\t u1[0]:{round(u1[0][0], 2)}\t u1[1]:{round(u1[1][0],2)}")
     # print(f"z1:{round(z1, 2)}  \tz2:{round(z2, 2)}  \tz13:[{round(z13[0][0], 2)}, {round(z13[1][0], 2)}]")
     # print(f"Xidotvirtual1:[{round(Xidotvirtual1[0][0],2)}, {round(Xidotvirtual1[1][0],2)}] \t XiVirtual1:[{round(XiVirtual1[0][0],2)}, {round(XiVirtual1[1][0],2)}]")
@@ -655,6 +641,9 @@ while 1:
     # print()
 
     # -------------- Event Handlers
+    imageFrame = cv2.ellipse(imageFrame, (int((center_x-90)/0.489), int(480 - center_y/0.489)), (int(30/0.489), int(45/0.489)), 0, 0, 360, (0, 188, 255), 2) 
+    imageFrame = cv2.ellipse(imageFrame, (int(center_x/0.489), int(480 - center_y/0.489)), (int(30/0.489), int(45/0.489)), 0, 0, 360, (255, 0, 0), 2) 
+    imageFrame = cv2.ellipse(imageFrame, (int((center_x+90)/0.489), int(480 - center_y/0.489)), (int(30/0.489), int(45/0.489)), 0, 0, 360, (0, 0, 255), 2) 
     cv2.imshow("Multiple Color Detection in Real-TIme", imageFrame)
     key = cv2.waitKey(1)
     # Program Termination

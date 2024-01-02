@@ -39,7 +39,7 @@ centers = cartesian(linspace(-1.5, 1.5, 4), linspace(-2, 2, 5), linspace(0, 2, 3
 
 
 m = 4;
-J = 2.06;
+J = 0.062;
 R = 0.125;
 r = 0.06;
 ng = 60.5;
@@ -242,12 +242,13 @@ W3{1} = ones(neurons, 2);
 tau = (1/ku1) * [0.1*sin(tspan); 0.1*cos(tspan)];
 result_ok = 1;
 
-results = zeros(10^6, 5);
+results = zeros(10^6, 6);
 cnt = 1;
 for ks1 = 0.1:0.1:1
     for k41 = 0.5:2:20
         for k42 = 0.5:2:20
             for kv1 = 20:5:100
+                for J = 0.01:0.01:5
                 Kv1 = diag([kv1 kv1]);
                 result_ok = 1;
                 for q = 1 : length(tspan)
@@ -399,9 +400,11 @@ for ks1 = 0.1:0.1:1
                 results(cnt,2) = k41;
                 results(cnt,3) = k42;
                 results(cnt,4) = kv1;
-                results(cnt,5) = result_ok;
-                results(cnt,1:5)
+                results(cnt,5) = J;
+                results(cnt,6) = result_ok;
+                results(cnt,1:6)
                 cnt = cnt + 1;
+                end
             end
         end
     end
