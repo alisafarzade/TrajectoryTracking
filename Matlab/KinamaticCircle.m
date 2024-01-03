@@ -20,7 +20,7 @@ ks1 = 0.1;
 
 
 
-dt = 0.2;
+dt = 0.0001;
 tspan = 0:dt:400;
 
 
@@ -39,9 +39,9 @@ x13 = zeros(1, length(tspan));
 
 
 
-xc1d = 0.3 * cos(tspan*0.5);
-yc1d = 0.3 * sin(tspan*0.5);
-theta1d = unwrap(atan2(cos(tspan*0.5), -sin(tspan*0.5)));
+xc1d = 0.3 * cos(tspan);
+yc1d = 0.3 * sin(tspan);
+theta1d = unwrap(atan2(cos(tspan), -sin(tspan)));
 
 % v1d = sqrt((-0.8*sin(tspan)).^2 + (cos(tspan)).^2);
 w1d = ones(1, length(tspan));%(-sin(tspan).*(-0.8 * sin(tspan)) - (-0.8 * cos(tspan)).*cos(tspan))./((-0.8*sin(tspan)).^2 + (cos(tspan)).^2);
@@ -84,9 +84,9 @@ for q = 1 : length(tspan)
     v1(q) = (x13(q) * Xi11(q + 1)) + Xi12(q + 1);
     w1(q) = Xi11(q + 1);
     
-    xc1(q + 1) = xc1(q) + dt * v1(q) * cos(x11(q))+ xNoise(q);
-    yc1(q + 1) = yc1(q) + dt * v1(q) * sin(x11(q))+ yNoise(q);    
-    x11(q + 1) = x11(q) + dt * w1(q) + wNoise(q);
+    xc1(q + 1) = xc1(q) + dt * v1(q) * cos(x11(q));%+ xNoise(q);
+    yc1(q + 1) = yc1(q) + dt * v1(q) * sin(x11(q));%+ yNoise(q);    
+    x11(q + 1) = x11(q) + dt * w1(q);% + wNoise(q);
     
     
     x12(q + 1) = xc1(q + 1) * cos(x11(q + 1)) + yc1(q + 1) * sin(x11(q + 1));
@@ -114,7 +114,9 @@ subplot(1, 2, 2);
 plot(xc1, yc1, '.-r', xc1d, yc1d, 'blue');
 grid on
 title('real coordinates');
-
+xlim([-0.4 0.6]);
+ylim([-0.5 0.5]);
+legend('actual', 'desired');
 
 % figure(1);
 % subplot(1, 2, 1);
@@ -130,6 +132,7 @@ title('real coordinates');
 
 xc1e = xc1(1:length(xc1)-1) - xc1d;
 yc1e = yc1(1:length(yc1)-1) - yc1d;
+x11e = x11(1:length(x11)-1) - x11d;
 
 figure(2);
 subplot(1, 2, 1);
@@ -141,6 +144,29 @@ subplot(1, 2, 2);
 plot(tspan, yc1e(1:length(tspan)));
 grid on
 title('yc1e');
+
+
+
+x12e = x12(1:length(xc1)-1) - x12d;
+x13e = x13(1:length(yc1)-1) - x13d;
+
+figure(3);
+subplot(1, 3, 1);
+plot(tspan, x11e(1:length(tspan)));
+grid on
+title('x11e');
+
+subplot(1, 3, 2);
+plot(tspan, x12e(1:length(tspan)));
+grid on
+title('x12e');
+
+subplot(1, 3, 3);
+plot(tspan, x13e(1:length(tspan)));
+grid on
+title('x13e');
+
+
 
 V = max(max(v1), abs(min(v1)))
 W = max(max(w1), abs(min(w1)))
