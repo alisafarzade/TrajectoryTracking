@@ -9,6 +9,8 @@ import time
 import serial
 import pandas as pd
 from itertools import product
+import os
+os.system('cls' if os.name == 'nt' else 'clear')
 
 manualControl = False
 df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d'])
@@ -225,23 +227,23 @@ ser = [
 ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
-ser[0].port = 'COM10'
-ser[1].port = 'COM11'
-ser[2].port = 'COM18'
+ser[0].port = 'COM13'
+ser[1].port = 'COM18'
+ser[2].port = 'COM20'
 robot_id = 2
 
 try:
     ser[0].open()
 except:
-    pass
+    print(f'Robot 1 is not connected !!')
 try:
     ser[1].open()
 except:
-    pass
+    print(f'Robot 2 is not connected !!')
 try:
     ser[2].open()
 except:
-    pass
+    print(f'Robot 3 is not connected !!')
 url = "http://192.168.18.77:8080/shot.jpg"
 
 packet_green = [0, 0, 0, 0]
@@ -296,7 +298,8 @@ def Send_RPM_to_Robot(RPM_L, RPM_R, id):
     try:
         ser[id].write(packet_green)
     except:
-        print(f'Robot {id+1} is not connected !!')
+        pass
+        # print(f'Robot {id+1} is not connected !!')
 
 # Start a while loop
 while 1:
@@ -611,6 +614,8 @@ while 1:
 
     # print(f"V_1:{round(V_1,2)} \tw:{round(w_1,2)} \tRPM_R:{round(RPM_Right_1,2)} \tRPM_L:{round(RPM_Left_1,2)} \t")
     # print(f"V_1:{round(V_1,2)} \tw:{round(w_1,2)} \t angle_1:{round(angle_1,2)} \tthetaD:{round(_thetad_1,2)}")
+    # print(f"x_1:{round(x_1,2)} \y_1:{round(y_1,2)} \t angle_1:{round(angle_1,2)}")
+    # print(f"x_2:{round(x_2,2)} \y_2:{round(y_2,2)} \t angle_2:{round(angle_2,2)}")
 
     # -------------- Sending Data To MCU
     if not manualControl:
@@ -725,13 +730,13 @@ while 1:
         except:
             print('Can not save file. Permission denied !!!!!!!')
     if key == ord('w') and manualControl:
-        Send_RPM_to_Robot(40, 40, robot_id)
+        Send_RPM_to_Robot(30, 30, robot_id)
     if key == ord('s') and manualControl:
-        Send_RPM_to_Robot(-40, -40, robot_id)
+        Send_RPM_to_Robot(-30, -30, robot_id)
     if key == ord('a') and manualControl:
-        Send_RPM_to_Robot(-40, 40, robot_id)
+        Send_RPM_to_Robot(-30, 30, robot_id)
     if key == ord('d') and manualControl:
-        Send_RPM_to_Robot(40, -40, robot_id)
+        Send_RPM_to_Robot(30, -30, robot_id)
     if key == ord(' ') and manualControl:
         Send_RPM_to_Robot(0, 0, robot_id)
     if key == ord('m'):
