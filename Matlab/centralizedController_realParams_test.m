@@ -21,11 +21,11 @@ Kv1 = diag([20 20]);
 ks1 = 0.1;
 GAMAofW = diag(50*ones(2160,1));
 
-RHO = 2
+RHO = 2;
 GAMAofbeta = [0 , 0;
                 0 , 0];
 neurons = 2160;
-centers = cartesian(linspace(-1.5, 1.5, 4), linspace(-2, 2, 5), linspace(0, 2, 3), linspace(-1.5, 1.5, 4), linspace(-1, 1, 3), linspace(0, 2, 3));
+centers = cartesian(linspace(-1.2, 1.2, 4), linspace(-0.4, 0.4, 5), linspace(0.5, 1.6, 3), linspace(0.6, 1.5, 4), linspace(0.5, 1.5, 3), linspace(1, 2, 3));
 % centers = cartesian(linspace(-1.5, 1.5, 3), linspace(-2, 2, 3), linspace(0, 2, 3), linspace(-1.5, 1.5, 3), linspace(-1, 1, 2), linspace(0, 2, 2));
 % LANDA = [x13(q), 1; 1, 0];
 
@@ -40,7 +40,7 @@ centers = cartesian(linspace(-1.5, 1.5, 4), linspace(-2, 2, 5), linspace(0, 2, 3
 
 m = 4;
 % J = 2.06;
-J = 0.062;
+J = 1.00;
 R = 0.125;
 r = 0.06;
 ng = 60.5;
@@ -52,7 +52,7 @@ ku1 = (ng*kt)/ra;
 ku2 = ng*kb*ku1;
              
 dt = 0.01;
-tspan = 0:dt:200;
+tspan = 0:dt:100;
 
 %% i = 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -185,6 +185,10 @@ PHIvec3 = zeros(neurons, 1);
 NNoutput3 = zeros(2, length(tspan));
 beta3 = zeros(2, length(tspan));
 
+inputVec1 = zeros(6, length(tspan));
+inputVec2 = zeros(6, length(tspan));
+inputVec3 = zeros(6, length(tspan));
+
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % i = 1
@@ -284,9 +288,9 @@ for q = 1 : length(tspan)
     Xidotvirtual3(:,q) = [Xi31dot(q); Xi32dot(q)];
 
     
-    inputVec1 = [Xidotvirtual1(:,q);  XiVirtual1(:,q); x13dot(q); x13(q)];
-    inputVec2 = [Xidotvirtual2(:,q);  XiVirtual2(:,q); x23dot(q); x23(q)];
-    inputVec3 = [Xidotvirtual3(:,q);  XiVirtual3(:,q); x33dot(q); x33(q)];
+    inputVec1(:,q) = [Xidotvirtual1(:,q);  XiVirtual1(:,q); x13dot(q); x13(q)];
+    inputVec2(:,q) = [Xidotvirtual2(:,q);  XiVirtual2(:,q); x23dot(q); x23(q)];
+    inputVec3(:,q) = [Xidotvirtual3(:,q);  XiVirtual3(:,q); x33dot(q); x33(q)];
        
     
     
@@ -320,9 +324,9 @@ for q = 1 : length(tspan)
            
     for o = 1 : neurons
         
-        PHIvec1(o, 1) = PHI(inputVec1, centers(o, :));
-        PHIvec2(o, 1) = PHI(inputVec2, centers(o, :));
-        PHIvec3(o, 1) = PHI(inputVec3, centers(o, :));
+        PHIvec1(o, 1) = PHI(inputVec1(:,q), centers(o, :));
+        PHIvec2(o, 1) = PHI(inputVec2(:,q), centers(o, :));
+        PHIvec3(o, 1) = PHI(inputVec3(:,q), centers(o, :));
         
     end
     
@@ -442,36 +446,36 @@ title('x3e');
 
 figure(6);
 subplot(1, 2, 1);
-plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f1(1,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput1(1,ceil(9*length(tspan)/10):length(tspan)));
+plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f1(1,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput1(1,ceil(9*length(tspan)/10):length(tspan)), 'b');
 grid on
 title('f1 and NNoutput');
 legend('f1', 'NNoutput');
 subplot(1, 2, 2);
-plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f1(2,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput1(2,ceil(9*length(tspan)/10):length(tspan)));
+plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f1(2,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput1(2,ceil(9*length(tspan)/10):length(tspan)), 'b');
 grid on
 title('f2 and NNoutput');
 legend('f2', 'NNoutput');
 
 figure(7);
 subplot(1, 2, 1);
-plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f2(1,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput2(1,ceil(9*length(tspan)/10):length(tspan)));
+plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f2(1,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput2(1,ceil(9*length(tspan)/10):length(tspan)), 'b');
 grid on
 title('f1 and NNoutput');
 legend('f1', 'NNoutput');
 subplot(1, 2, 2);
-plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f2(2,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput2(2,ceil(9*length(tspan)/10):length(tspan)));
+plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f2(2,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput2(2,ceil(9*length(tspan)/10):length(tspan)), 'b');
 grid on
 title('f2 and NNoutput');
 legend('f2', 'NNoutput');
 
 figure(8);
 subplot(1, 2, 1);
-plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f3(1,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput3(1,ceil(9*length(tspan)/10):length(tspan)));
+plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f3(1,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput3(1,ceil(9*length(tspan)/10):length(tspan)), 'b');
 grid on
 title('f1 and NNoutput');
 legend('f1', 'NNoutput');
 subplot(1, 2, 2);
-plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f3(2,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput3(2,ceil(9*length(tspan)/10):length(tspan)));
+plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f3(2,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput3(2,ceil(9*length(tspan)/10):length(tspan)), 'b');
 grid on
 title('f2 and NNoutput');
 legend('f2', 'NNoutput');
@@ -543,7 +547,7 @@ function a = funF(Xidotvirtual, Xivirtual, XiActual, x13dot, x13, v1, w1)
 %     ku2 = ng*kb*ku1;
     m = 4;
 %     J = 2.06;
-    J = 0.062;
+    J = 1.00;
     R = 0.125;
     r = 0.06;
     ng = 60.5;
