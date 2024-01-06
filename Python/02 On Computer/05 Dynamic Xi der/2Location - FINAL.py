@@ -213,7 +213,7 @@ ser = [
 ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
-ser[0].port = 'COM10'
+ser[0].port = 'COM7'
 ser[1].port = 'COM11'
 ser[2].port = 'COM18'
 robot_id = 0
@@ -596,10 +596,12 @@ while 1:
     last_x3 = _x3
     # -------------- Prints:
 
-    print(f"u1:{round(u1[0][0], 2)}\t u2:{round(u1[1][0], 2)}\t")
+    # print(f"u1:{round(u1[0][0], 2)}\t u2:{round(u1[1][0], 2)}\t")
     # print(f"V:{V}\t w:{w}\t theta:{round(angle, 2)}\t thetaD:{round(_thetad, 2)}\t dt:{round(dt, 2)}\t u1[0]:{round(u1[0][0], 2)}\t u1[1]:{round(u1[1][0],2)}")
     # print(f"z1:{round(z1, 2)}  \tz2:{round(z2, 2)}  \tz13:[{round(z13[0][0], 2)}, {round(z13[1][0], 2)}]")
     # print(f"Xidotvirtual1:[{round(Xidotvirtual1[0][0],2)}, {round(Xidotvirtual1[1][0],2)}] \t XiVirtual1:[{round(XiVirtual1[0][0],2)}, {round(XiVirtual1[1][0],2)}]")
+    print(f'{round(inputVec1[0], 2)},{round(inputVec1[1], 2)},{round(inputVec1[2], 2)},{round(inputVec1[3], 2)},{round(inputVec1[4], 2)},{round(inputVec1[5], 2)}')
+
 
     # -------------- Sending Data To MCU
     if not manualControl:
