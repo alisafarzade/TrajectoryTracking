@@ -45,8 +45,8 @@ R = 0.125;
 r = 0.06;
 ng = 60.5;
 kt = 0.3;
-kb = 0.020475;
-ra= 23.5;
+kb = 0.03;
+ra= 30.85;
 
 ku1 = (ng*kt)/ra;
 ku2 = ng*kb*ku1;
@@ -552,8 +552,8 @@ function a = funF(Xidotvirtual, Xivirtual, XiActual, x13dot, x13, v1, w1)
     r = 0.06;
     ng = 60.5;
     kt = 0.3;
-    kb = 0.020475;
-    ra= 23.5;
+    kb = 0.03;
+    ra= 30.85;
     ku1 = (ng*kt)/ra;
     ku2 = ng*kb*ku1;
 
