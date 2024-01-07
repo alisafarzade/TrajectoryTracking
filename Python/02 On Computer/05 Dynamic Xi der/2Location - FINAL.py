@@ -110,7 +110,7 @@ Xi1_Actual1 = 0
 Xi2_Actual1 = 0
 
 XidotActual1 = np.zeros((2, 1), float)
-neurons = 200
+neurons = centers.shape[0]
 PHIvec1 = np.zeros((neurons, 1), float)
 z13 = np.array([[0], [0]])
 U1 = 0
