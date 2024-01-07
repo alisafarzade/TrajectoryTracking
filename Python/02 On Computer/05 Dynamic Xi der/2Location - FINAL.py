@@ -221,15 +221,17 @@ robot_id = 0
 try:
     ser[0].open()
 except:
-    pass
+    print(f'Robot {1} is not connected !!')
+
 try:
     ser[1].open()
 except:
-    pass
+    print(f'Robot {2} is not connected !!')
+
 try:
     ser[2].open()
 except:
-    pass
+    print(f'Robot {3} is not connected !!')
 
 packet_green = [0, 0, 0, 0, 0, 0]
 x_Center1, x_orange_center, y_orange_center, x_red_center, x_blue_center, y_red_center = (
@@ -290,11 +292,9 @@ def Send_RPM_to_Robot(u1_1, u1_2, robot_id):  # (right, left)
     u1_2 *= 100
     packet_green[4] = int(abs(u1_2)).to_bytes(2, "little", signed=True)[0]
     packet_green[5] = int(abs(u1_2)).to_bytes(2, "little", signed=True)[1]
-    try:
-        ser[robot_id].open()
-        ser[robot_id].write(packet_green)
-    except:
-        print(f'Robot {robot_id + 1} is not connected !!')
+
+    ser[robot_id].write(packet_green)
+
     if not manualControl:
         data = ser[robot_id].read(6)
         w_rec = 0
@@ -309,10 +309,6 @@ def Send_RPM_to_Robot(u1_1, u1_2, robot_id):  # (right, left)
         Xi1_Actual1 = w_rec
         Xi2_Actual1 = V_rec - _x3 * w_rec
         XiActual1 = np.array([[Xi1_Actual1], [Xi2_Actual1]])
-    try:
-        ser[robot_id].close()
-    except:
-        pass
     # print(f"V: {V_rec}   w: {w_rec}")
 
 
@@ -686,3 +682,6 @@ while 1:
 
 # cap.release()
 cv2.destroyAllWindows()
+ser[0].close()
+ser[1].close()
+ser[2].close()
