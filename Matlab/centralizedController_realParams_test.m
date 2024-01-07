@@ -25,7 +25,8 @@ RHO = 2;
 GAMAofbeta = [0 , 0;
                 0 , 0];
 neurons = 2160;
-centers = cartesian(linspace(-1.2, 1.2, 4), linspace(-0.4, 0.4, 5), linspace(0.5, 1.6, 3), linspace(0.6, 1.5, 4), linspace(0.5, 1.5, 3), linspace(1, 2, 3));
+% centers = cartesian(linspace(-1.2, 1.2, 4), linspace(-0.4, 0.4, 5), linspace(0.5, 1.6, 3), linspace(0.6, 1.5, 4), linspace(0.5, 1.5, 3), linspace(1, 2, 3));
+centers = cartesian(linspace(-20, 20, 4), linspace(-1000, 1000, 5), linspace(-10, 10, 3), linspace(-40, 40, 4), linspace(-50, 50, 3), linspace(-10, 10, 3));
 % centers = cartesian(linspace(-1.5, 1.5, 3), linspace(-2, 2, 3), linspace(0, 2, 3), linspace(-1.5, 1.5, 3), linspace(-1, 1, 2), linspace(0, 2, 2));
 % LANDA = [x13(q), 1; 1, 0];
 
