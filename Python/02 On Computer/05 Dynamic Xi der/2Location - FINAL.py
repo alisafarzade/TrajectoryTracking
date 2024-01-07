@@ -16,6 +16,9 @@ df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X',
 robot_data = []
 beginTime = time.time()
 last_step_time = time.time()
+prev_start = 0
+fps = "None"
+
 center_x = 155
 center_y = 90
 Line_x = 35
@@ -80,12 +83,12 @@ M_2PI = 2 * pi
 # dim4_range = np.linspace(-1.5, 1.5, 4)
 # dim5_range = np.linspace(-1, 1, 3)
 # dim6_range = np.linspace(0, 2, 3)
-dim1_range = np.linspace(-2, 2, 2)  ######
-dim2_range = np.linspace(-15, 8, 4)  ######
+dim1_range = np.linspace(-2, 2, 4)  ######
+dim2_range = np.linspace(-15, 8, 5)  ######
 dim3_range = np.linspace(-10, 7, 3)  ######
-dim4_range = np.linspace(-250, 250, 3)  ######
-dim5_range = np.linspace(-3, 2.5, 2)
-dim6_range = np.linspace(0, 2, 2)
+dim4_range = np.linspace(-250, 250, 4)  ######
+dim5_range = np.linspace(-3, 2.5, 3)
+dim6_range = np.linspace(0, 2, 3)
 centers = np.array(list(product(dim1_range, dim2_range, dim3_range, dim4_range, dim5_range, dim6_range)))
 Xi11_dot = 0
 Xi12_dot = 0
@@ -355,6 +358,7 @@ while 1:
                 (0, 0, 255),
             )
 
+    
     # -------------- green
     contours, hierarchy = cv2.findContours(green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -380,14 +384,15 @@ while 1:
             green_angle = 360 - green_angle
             cv2.putText(
                 imageFrame,
-                "Green "
+                "1 "
                 + str(x_Center1)
                 + " "
                 + str(y_Center1)
                 + " "
-                + str(int(green_angle))
+                
+                + str(round(time.time() - beginTime, 1))
                 + " "
-                + str(round(time.time() - beginTime, 1)),
+                + fps,
                 (50, 50),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 1.0,
@@ -507,6 +512,10 @@ while 1:
                 (127, 157, 255),
             )
 
+    fps = str(int(1/(start - prev_start)))
+    prev_start = start
+
+
     # -------------- Controller
     x = (x_Center1 - center_x) / 100
     y = (y_Center1 - center_y) / 100
@@ -592,11 +601,11 @@ while 1:
     last_x3 = _x3
     # -------------- Prints:
 
-    # print(f"u1:{round(u1[0][0], 2)}\t u2:{round(u1[1][0], 2)}\t")
+    print(f"u1:{round(u1[0][0], 2)},u2:{round(u1[1][0], 2)}\t")
     # print(f"V:{V}\t w:{w}\t theta:{round(angle, 2)}\t thetaD:{round(_thetad, 2)}\t dt:{round(dt, 2)}\t u1[0]:{round(u1[0][0], 2)}\t u1[1]:{round(u1[1][0],2)}")
     # print(f"z1:{round(z1, 2)}  \tz2:{round(z2, 2)}  \tz13:[{round(z13[0][0], 2)}, {round(z13[1][0], 2)}]")
     # print(f"Xidotvirtual1:[{round(Xidotvirtual1[0][0],2)}, {round(Xidotvirtual1[1][0],2)}] \t XiVirtual1:[{round(XiVirtual1[0][0],2)}, {round(XiVirtual1[1][0],2)}]")
-    print(f'{round(inputVec1[0], 2)},{round(inputVec1[1], 2)},{round(inputVec1[2], 2)},{round(inputVec1[3], 2)},{round(inputVec1[4], 2)},{round(inputVec1[5], 2)}')
+    # print(f'{round(inputVec1[0], 2)},{round(inputVec1[1], 2)},{round(inputVec1[2], 2)},{round(inputVec1[3], 2)},{round(inputVec1[4], 2)},{round(inputVec1[5], 2)}')
 
 
     # -------------- Sending Data To MCU
@@ -659,19 +668,20 @@ while 1:
             break
         except:
             print('Can not save file. Permission denied !!!!!!!')
+
+    if key == ord('m'):
+        manualControl = not manualControl
+        Send_RPM_to_Robot(0, 0, robot_id)
     if manualControl:
         if key == ord('w') :
-            Send_RPM_to_Robot(12, 12, robot_id)
+            Send_RPM_to_Robot(24, 24, robot_id)
         if key == ord('s') :
-            Send_RPM_to_Robot(-12, -12, robot_id)
+            Send_RPM_to_Robot(-24, -24, robot_id)
         if key == ord('a') :
-            Send_RPM_to_Robot(12, -12, robot_id)
+            Send_RPM_to_Robot(24, -24, robot_id)
         if key == ord('d') :
-            Send_RPM_to_Robot(-12, 12, robot_id)
+            Send_RPM_to_Robot(-24, 24, robot_id)
         if key == ord(' ') :
-            Send_RPM_to_Robot(0, 0, robot_id)
-        if key == ord('m'):
-            manualControl = not manualControl
             Send_RPM_to_Robot(0, 0, robot_id)
         if key == ord('1'):
             robot_id = 0
