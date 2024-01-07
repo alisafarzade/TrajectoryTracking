@@ -663,25 +663,26 @@ while 1:
             break
         except:
             print('Can not save file. Permission denied !!!!!!!')
-    if key == ord('w') and manualControl:
-        Send_RPM_to_Robot(12, 12, robot_id)
-    if key == ord('s') and manualControl:
-        Send_RPM_to_Robot(-12, -12, robot_id)
-    if key == ord('a') and manualControl:
-        Send_RPM_to_Robot(12, -12, robot_id)
-    if key == ord('d') and manualControl:
-        Send_RPM_to_Robot(-12, 12, robot_id)
-    if key == ord(' ') and manualControl:
-        Send_RPM_to_Robot(0, 0, robot_id)
-    if key == ord('m'):
-        manualControl = not manualControl
-        Send_RPM_to_Robot(0, 0, robot_id)
-    if key == ord('1'):
-        robot_id = 0
-    if key == ord('2'):
-        robot_id = 1
-    if key == ord('3'):
-        robot_id = 2
+    if manualControl:
+        if key == ord('w') :
+            Send_RPM_to_Robot(12, 12, robot_id)
+        if key == ord('s') :
+            Send_RPM_to_Robot(-12, -12, robot_id)
+        if key == ord('a') :
+            Send_RPM_to_Robot(12, -12, robot_id)
+        if key == ord('d') :
+            Send_RPM_to_Robot(-12, 12, robot_id)
+        if key == ord(' ') :
+            Send_RPM_to_Robot(0, 0, robot_id)
+        if key == ord('m'):
+            manualControl = not manualControl
+            Send_RPM_to_Robot(0, 0, robot_id)
+        if key == ord('1'):
+            robot_id = 0
+        if key == ord('2'):
+            robot_id = 1
+        if key == ord('3'):
+            robot_id = 2
 
 # cap.release()
 cv2.destroyAllWindows()
