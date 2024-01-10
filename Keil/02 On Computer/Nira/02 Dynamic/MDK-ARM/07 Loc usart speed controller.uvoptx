@@ -155,6 +155,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>Rx_data</ItemText>
         </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>rpmRight</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>rpmLeft</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

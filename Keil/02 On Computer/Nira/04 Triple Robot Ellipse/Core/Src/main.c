@@ -449,8 +449,8 @@ int main(void)
 		else							 LED1_OFF;
 		
 		
-//		rpmRightD = 15;
-//		rpmLeftD = 15;
+//		rpmRightD = 40;
+//		rpmLeftD = 40;
 		
 		
 		

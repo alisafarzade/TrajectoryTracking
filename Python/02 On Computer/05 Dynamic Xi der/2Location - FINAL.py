@@ -16,6 +16,9 @@ df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X',
 robot_data = []
 beginTime = time.time()
 last_step_time = time.time()
+prev_start = 0
+fps = "None"
+
 center_x = 155
 center_y = 90
 Line_x = 35
@@ -81,10 +84,10 @@ M_2PI = 2 * pi
 # dim5_range = np.linspace(-1, 1, 3)
 # dim6_range = np.linspace(0, 2, 3)
 dim1_range = np.linspace(-2, 2, 4)  ######
-dim2_range = np.linspace(-5, 5, 5)  ######
-dim3_range = np.linspace(-0.5, 0.5, 3)  ######
-dim4_range = np.linspace(-0.5, 0.5, 4)  ######
-dim5_range = np.linspace(-1, 1, 3)
+dim2_range = np.linspace(-15, 8, 5)  ######
+dim3_range = np.linspace(-10, 7, 3)  ######
+dim4_range = np.linspace(-250, 250, 4)  ######
+dim5_range = np.linspace(-3, 2.5, 3)
 dim6_range = np.linspace(0, 2, 3)
 centers = np.array(list(product(dim1_range, dim2_range, dim3_range, dim4_range, dim5_range, dim6_range)))
 Xi11_dot = 0
@@ -110,7 +113,7 @@ Xi1_Actual1 = 0
 Xi2_Actual1 = 0
 
 XidotActual1 = np.zeros((2, 1), float)
-neurons = 200
+neurons = centers.shape[0]
 PHIvec1 = np.zeros((neurons, 1), float)
 z13 = np.array([[0], [0]])
 U1 = 0
@@ -213,7 +216,7 @@ ser = [
 ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
-ser[0].port = 'COM10'
+ser[0].port = 'COM7'
 ser[1].port = 'COM11'
 ser[2].port = 'COM18'
 robot_id = 0
@@ -221,15 +224,17 @@ robot_id = 0
 try:
     ser[0].open()
 except:
-    pass
+    print(f'Robot {1} is not connected !!')
+
 try:
     ser[1].open()
 except:
-    pass
+    print(f'Robot {2} is not connected !!')
+
 try:
     ser[2].open()
 except:
-    pass
+    print(f'Robot {3} is not connected !!')
 
 packet_green = [0, 0, 0, 0, 0, 0]
 x_Center1, x_orange_center, y_orange_center, x_red_center, x_blue_center, y_red_center = (
@@ -290,11 +295,9 @@ def Send_RPM_to_Robot(u1_1, u1_2, robot_id):  # (right, left)
     u1_2 *= 100
     packet_green[4] = int(abs(u1_2)).to_bytes(2, "little", signed=True)[0]
     packet_green[5] = int(abs(u1_2)).to_bytes(2, "little", signed=True)[1]
-    try:
-        ser[robot_id].open()
-        ser[robot_id].write(packet_green)
-    except:
-        print(f'Robot {robot_id + 1} is not connected !!')
+
+    ser[robot_id].write(packet_green)
+
     if not manualControl:
         data = ser[robot_id].read(6)
         w_rec = 0
@@ -309,10 +312,6 @@ def Send_RPM_to_Robot(u1_1, u1_2, robot_id):  # (right, left)
         Xi1_Actual1 = w_rec
         Xi2_Actual1 = V_rec - _x3 * w_rec
         XiActual1 = np.array([[Xi1_Actual1], [Xi2_Actual1]])
-    try:
-        ser[robot_id].close()
-    except:
-        pass
     # print(f"V: {V_rec}   w: {w_rec}")
 
 
@@ -359,6 +358,7 @@ while 1:
                 (0, 0, 255),
             )
 
+    
     # -------------- green
     contours, hierarchy = cv2.findContours(green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
@@ -384,14 +384,15 @@ while 1:
             green_angle = 360 - green_angle
             cv2.putText(
                 imageFrame,
-                "Green "
+                "1 "
                 + str(x_Center1)
                 + " "
                 + str(y_Center1)
                 + " "
-                + str(int(green_angle))
+                
+                + str(round(time.time() - beginTime, 1))
                 + " "
-                + str(round(time.time() - beginTime, 1)),
+                + fps,
                 (50, 50),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 1.0,
@@ -511,6 +512,10 @@ while 1:
                 (127, 157, 255),
             )
 
+    fps = str(int(1/(start - prev_start)))
+    prev_start = start
+
+
     # -------------- Controller
     x = (x_Center1 - center_x) / 100
     y = (y_Center1 - center_y) / 100
@@ -596,10 +601,12 @@ while 1:
     last_x3 = _x3
     # -------------- Prints:
 
-    print(f"u1:{round(u1[0][0], 2)}\t u2:{round(u1[1][0], 2)}\t")
+    print(f"u1:{round(u1[0][0], 2)},u2:{round(u1[1][0], 2)}\t")
     # print(f"V:{V}\t w:{w}\t theta:{round(angle, 2)}\t thetaD:{round(_thetad, 2)}\t dt:{round(dt, 2)}\t u1[0]:{round(u1[0][0], 2)}\t u1[1]:{round(u1[1][0],2)}")
     # print(f"z1:{round(z1, 2)}  \tz2:{round(z2, 2)}  \tz13:[{round(z13[0][0], 2)}, {round(z13[1][0], 2)}]")
     # print(f"Xidotvirtual1:[{round(Xidotvirtual1[0][0],2)}, {round(Xidotvirtual1[1][0],2)}] \t XiVirtual1:[{round(XiVirtual1[0][0],2)}, {round(XiVirtual1[1][0],2)}]")
+    # print(f'{round(inputVec1[0], 2)},{round(inputVec1[1], 2)},{round(inputVec1[2], 2)},{round(inputVec1[3], 2)},{round(inputVec1[4], 2)},{round(inputVec1[5], 2)}')
+
 
     # -------------- Sending Data To MCU
     if not manualControl:
@@ -661,25 +668,30 @@ while 1:
             break
         except:
             print('Can not save file. Permission denied !!!!!!!')
-    if key == ord('w') and manualControl:
-        Send_RPM_to_Robot(12, 12, robot_id)
-    if key == ord('s') and manualControl:
-        Send_RPM_to_Robot(-12, -12, robot_id)
-    if key == ord('a') and manualControl:
-        Send_RPM_to_Robot(12, -12, robot_id)
-    if key == ord('d') and manualControl:
-        Send_RPM_to_Robot(-12, 12, robot_id)
-    if key == ord(' ') and manualControl:
-        Send_RPM_to_Robot(0, 0, robot_id)
+
     if key == ord('m'):
         manualControl = not manualControl
         Send_RPM_to_Robot(0, 0, robot_id)
-    if key == ord('1'):
-        robot_id = 0
-    if key == ord('2'):
-        robot_id = 1
-    if key == ord('3'):
-        robot_id = 2
+    if manualControl:
+        if key == ord('w') :
+            Send_RPM_to_Robot(24, 24, robot_id)
+        if key == ord('s') :
+            Send_RPM_to_Robot(-24, -24, robot_id)
+        if key == ord('a') :
+            Send_RPM_to_Robot(24, -24, robot_id)
+        if key == ord('d') :
+            Send_RPM_to_Robot(-24, 24, robot_id)
+        if key == ord(' ') :
+            Send_RPM_to_Robot(0, 0, robot_id)
+        if key == ord('1'):
+            robot_id = 0
+        if key == ord('2'):
+            robot_id = 1
+        if key == ord('3'):
+            robot_id = 2
 
 # cap.release()
 cv2.destroyAllWindows()
+ser[0].close()
+ser[1].close()
+ser[2].close()

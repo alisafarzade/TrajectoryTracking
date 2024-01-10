@@ -25,7 +25,8 @@ RHO = 2;
 GAMAofbeta = [0 , 0;
                 0 , 0];
 neurons = 2160;
-centers = cartesian(linspace(-1.2, 1.2, 4), linspace(-0.4, 0.4, 5), linspace(0.5, 1.6, 3), linspace(0.6, 1.5, 4), linspace(0.5, 1.5, 3), linspace(1, 2, 3));
+% centers = cartesian(linspace(-1.2, 1.2, 4), linspace(-0.4, 0.4, 5), linspace(0.5, 1.6, 3), linspace(0.6, 1.5, 4), linspace(0.5, 1.5, 3), linspace(1, 2, 3));
+centers = cartesian(linspace(-20, 20, 4), linspace(-1000, 1000, 5), linspace(-10, 10, 3), linspace(-40, 40, 4), linspace(-50, 50, 3), linspace(-10, 10, 3));
 % centers = cartesian(linspace(-1.5, 1.5, 3), linspace(-2, 2, 3), linspace(0, 2, 3), linspace(-1.5, 1.5, 3), linspace(-1, 1, 2), linspace(0, 2, 2));
 % LANDA = [x13(q), 1; 1, 0];
 
@@ -40,13 +41,13 @@ centers = cartesian(linspace(-1.2, 1.2, 4), linspace(-0.4, 0.4, 5), linspace(0.5
 
 m = 4;
 % J = 2.06;
-J = 1.00;
+J = 0.3;
 R = 0.125;
 r = 0.06;
 ng = 60.5;
 kt = 0.3;
-kb = 0.020475;
-ra= 23.5;
+kb = 0.03;
+ra= 30.85;
 
 ku1 = (ng*kt)/ra;
 ku2 = ng*kb*ku1;
@@ -346,9 +347,9 @@ for q = 1 : length(tspan)
     f2(:,q) = funF(Xidotvirtual2(:,q), XiVirtual2(:,q), XiActual2(:,q), x23dot(q), x23(q), v2(q), w2(q));
     f3(:,q) = funF(Xidotvirtual3(:,q), XiVirtual3(:,q), XiActual3(:,q), x33dot(q), x33(q), v3(q), w3(q));
 %     [(x13(q) + R)/r, (x13(q) - R)/r; 1/r, 1/r]
-    u1(:,q + 1) = B1hat1 \ ( f1(:,q) + Kv1*z13(:,q) + ks1*sign(z13(:,q)) + ((pinv(z13(:,q).')) * ( (z13(1,q)*(Xidotvirtual1(1,q) - XidotActual1(1,q))/(le31^2 - z13(1,q)^2)) + (z13(2,q)*(Xidotvirtual1(2,q) - XidotActual1(2,q))/(le32^2 - z13(2,q)^2)) + ((k41*z13(1,q)^2)/(le31^2 - z13(1,q)^2)) + ((k42*z13(2,q)^2)/(le32^2 - z13(2,q)^2))  )));
-    u2(:,q + 1) = B1hat2 \ ( f2(:,q) + Kv1*z23(:,q) + ks1*sign(z23(:,q)) + ((pinv(z23(:,q).')) * ( (z23(1,q)*(Xidotvirtual2(1,q) - XidotActual2(1,q))/(le31^2 - z23(1,q)^2)) + (z23(2,q)*(Xidotvirtual2(2,q) - XidotActual2(2,q))/(le32^2 - z23(2,q)^2)) + ((k41*z23(1,q)^2)/(le31^2 - z23(1,q)^2)) + ((k42*z23(2,q)^2)/(le32^2 - z23(2,q)^2))  )));
-    u3(:,q + 1) = B1hat3 \ ( f3(:,q) + Kv1*z33(:,q) + ks1*sign(z33(:,q)) + ((pinv(z33(:,q).')) * ( (z33(1,q)*(Xidotvirtual3(1,q) - XidotActual3(1,q))/(le31^2 - z33(1,q)^2)) + (z33(2,q)*(Xidotvirtual3(2,q) - XidotActual3(2,q))/(le32^2 - z33(2,q)^2)) + ((k41*z33(1,q)^2)/(le31^2 - z33(1,q)^2)) + ((k42*z33(2,q)^2)/(le32^2 - z33(2,q)^2))  )));
+    u1(:,q + 1) = B1hat1 \ ( NNoutput1(:,q) + Kv1*z13(:,q) + ks1*sign(z13(:,q)) + ((pinv(z13(:,q).')) * ( (z13(1,q)*(Xidotvirtual1(1,q) - XidotActual1(1,q))/(le31^2 - z13(1,q)^2)) + (z13(2,q)*(Xidotvirtual1(2,q) - XidotActual1(2,q))/(le32^2 - z13(2,q)^2)) + ((k41*z13(1,q)^2)/(le31^2 - z13(1,q)^2)) + ((k42*z13(2,q)^2)/(le32^2 - z13(2,q)^2))  )));
+    u2(:,q + 1) = B1hat2 \ ( NNoutput2(:,q) + Kv1*z23(:,q) + ks1*sign(z23(:,q)) + ((pinv(z23(:,q).')) * ( (z23(1,q)*(Xidotvirtual2(1,q) - XidotActual2(1,q))/(le31^2 - z23(1,q)^2)) + (z23(2,q)*(Xidotvirtual2(2,q) - XidotActual2(2,q))/(le32^2 - z23(2,q)^2)) + ((k41*z23(1,q)^2)/(le31^2 - z23(1,q)^2)) + ((k42*z23(2,q)^2)/(le32^2 - z23(2,q)^2))  )));
+    u3(:,q + 1) = B1hat3 \ ( NNoutput3(:,q) + Kv1*z33(:,q) + ks1*sign(z33(:,q)) + ((pinv(z33(:,q).')) * ( (z33(1,q)*(Xidotvirtual3(1,q) - XidotActual3(1,q))/(le31^2 - z33(1,q)^2)) + (z33(2,q)*(Xidotvirtual3(2,q) - XidotActual3(2,q))/(le32^2 - z33(2,q)^2)) + ((k41*z33(1,q)^2)/(le31^2 - z33(1,q)^2)) + ((k42*z33(2,q)^2)/(le32^2 - z33(2,q)^2))  )));
     
     XiActual1(:,q + 1) =  XiActual1(:,q) + dt * ( ((1/ku1) * ([m * x13(q)^2 + J, m * x13(q); m * x13(q), m])) \ ([(x13(q) + R)/r, (x13(q) - R)/r; 1/r, 1/r] * u1(:,q + 1) - (1/ku1) * ([m * x13(q) * x13dot(q), 0; m * x13dot(q), 0]) * XiActual1(:,q) - ((2*ku2)/(ku1*r^2)) * ([x13(q)^2 + R^2, x13(q); x13(q), 1]) * XiActual1(:,q) - [x13(q), 1; 1, 0] * [30 * v1(q) + 4 * sign(v1(q)); 30 * w1(q) + 4 * sign(w1(q))] - (1/ku1) * [x13(q), 1; 1, 0] * [0.1*sin(tspan(q)); 0.1*cos(tspan(q))]));
     XiActual2(:,q + 1) =  XiActual2(:,q) + dt * ( ((1/ku1) * ([m * x23(q)^2 + J, m * x23(q); m * x23(q), m])) \ ([(x23(q) + R)/r, (x23(q) - R)/r; 1/r, 1/r] * u2(:,q + 1) - (1/ku1) * ([m * x23(q) * x23dot(q), 0; m * x23dot(q), 0]) * XiActual2(:,q) - ((2*ku2)/(ku1*r^2)) * ([x23(q)^2 + R^2, x23(q); x23(q), 1]) * XiActual2(:,q) - [x23(q), 1; 1, 0] * [30 * v2(q) + 4 * sign(v2(q)); 30 * w2(q) + 4 * sign(w2(q))] - (1/ku1) * [x23(q), 1; 1, 0] * [0.1*sin(tspan(q)); 0.1*cos(tspan(q))]));
@@ -547,13 +548,13 @@ function a = funF(Xidotvirtual, Xivirtual, XiActual, x13dot, x13, v1, w1)
 %     ku2 = ng*kb*ku1;
     m = 4;
 %     J = 2.06;
-    J = 1.00;
+    J = 0.3;
     R = 0.125;
     r = 0.06;
     ng = 60.5;
     kt = 0.3;
-    kb = 0.020475;
-    ra= 23.5;
+    kb = 0.03;
+    ra= 30.85;
     ku1 = (ng*kt)/ra;
     ku2 = ng*kb*ku1;
 

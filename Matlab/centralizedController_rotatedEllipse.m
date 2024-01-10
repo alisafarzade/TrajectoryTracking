@@ -40,15 +40,15 @@ ku1 = (ng*kt)/ra;
 ku2 = ng*kb*ku1;
              
 dt = 0.01;
-tspan = 0:dt:20;
+tspan = 0:dt:60;
 
 %% i = 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 tic
 
 xc1d = 0.30 * cos(tspan);
-yc1d = 0.45 * sin(tspan);
-theta1d = unwrap(atan2(0.45 * cos(tspan), -0.3 * sin(tspan)));
+yc1d = 0.70 * sin(tspan);
+theta1d = unwrap(atan2(0.70 * cos(tspan), -0.3 * sin(tspan)));
 
 % v1d = sqrt((-0.8*sin(tspan)).^2 + (cos(tspan)).^2);
 w1d = 6 *( ((sin(tspan).^2) + (cos(tspan).^2))./(4*(sin(tspan)).^2 + 9*(cos(tspan)).^2) );
@@ -83,9 +83,9 @@ x31d = theta3d;
 x32d = xc3d .* cos(theta3d) + yc3d .* sin(theta3d);
 x33d = xc3d .* sin(theta3d) - yc3d .* cos(theta3d);
 
-figure(1)
-plot(x12d, x13d, 'red', x22d, x23d , 'blue', x32d, x33d, 'black');
-title('x12d vs x13d, x22d  vs  x23d, x32d vs x33d');
+% figure(1)
+% plot(x12d, x13d, 'red', x22d, x23d , 'blue', x32d, x33d, 'black');
+% title('x12d vs x13d, x22d  vs  x23d, x32d vs x33d');
 
 %% Preallocations
 % i = 1
@@ -195,11 +195,11 @@ W1{1} = ones(neurons, 2);
 % i = 2
 x21(1) = pi/2;
 x22(1) = 0;
-x23(1) = 0.5;
+x23(1) = 0.45;
 x23dot(1) = 0;
 
 yc2(1) = 0;
-xc2(1) = 0.5;
+xc2(1) = 0.45;
 Xi21(1) = 0;
 Xi22(1) = 0;
 XiActual2(1:2, 1) = [0; 0];
@@ -212,11 +212,11 @@ W2{1} = ones(neurons, 2);
 % i = 3
 x31(1) = pi/2;
 x32(1) = 0;
-x33(1) = 0.5;
+x33(1) = 0.4;
 x33dot(1) = 0;
 
 yc3(1) = 0;
-xc3(1) = 0.5;
+xc3(1) = 0.4;
 Xi31(1) = 0;
 Xi32(1) = 0;
 XiActual3(1:2, 1) = [0; 0];
@@ -230,6 +230,7 @@ W3{1} = ones(neurons, 2);
 tau = (1/ku1) * [0.1*sin(tspan); 0.1*cos(tspan)];
 
 for q = 1 : length(tspan)
+    q
     Xi11(q + 1) = w1d(q) + (k3 * (x11d(q) - x11(q)));
     Xi21(q + 1) = w2d(q) + (k3 * (x21d(q) - x21(q)));
     Xi31(q + 1) = w3d(q) + (k3 * (x31d(q) - x31(q)));
