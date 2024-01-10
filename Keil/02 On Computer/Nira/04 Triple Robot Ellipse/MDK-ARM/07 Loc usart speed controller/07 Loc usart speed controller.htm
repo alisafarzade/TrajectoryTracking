@@ -3,7 +3,7 @@
 <title>Static Call Graph - [07 Loc usart speed controller\07 Loc usart speed controller.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image 07 Loc usart speed controller\07 Loc usart speed controller.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Jan 04 11:32:06 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Wed Jan 10 10:52:06 2024
 <BR><P>
 <H3>Maximum Stack Usage =        168 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -505,7 +505,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
 </UL>
 
-<P><STRONG><a name="[60]"></a>HAL_GPIO_EXTI_Callback</STRONG> (Thumb, 126 bytes, Stack size 8 bytes, main.o(i.HAL_GPIO_EXTI_Callback))
+<P><STRONG><a name="[60]"></a>HAL_GPIO_EXTI_Callback</STRONG> (Thumb, 102 bytes, Stack size 8 bytes, main.o(i.HAL_GPIO_EXTI_Callback))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = HAL_GPIO_EXTI_Callback &rArr; __aeabi_fadd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
@@ -890,7 +890,7 @@ Global Symbols
 <P><STRONG><a name="[6]"></a>MemManage_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f1xx_it.o(i.MemManage_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[ad]"></a>Motor_PWM_Left</STRONG> (Thumb, 66 bytes, Stack size 8 bytes, main.o(i.Motor_PWM_Left))
+<P><STRONG><a name="[ad]"></a>Motor_PWM_Left</STRONG> (Thumb, 78 bytes, Stack size 8 bytes, main.o(i.Motor_PWM_Left))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Motor_PWM_Left
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -898,7 +898,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[ae]"></a>Motor_PWM_Right</STRONG> (Thumb, 66 bytes, Stack size 8 bytes, main.o(i.Motor_PWM_Right))
+<P><STRONG><a name="[ae]"></a>Motor_PWM_Right</STRONG> (Thumb, 78 bytes, Stack size 8 bytes, main.o(i.Motor_PWM_Right))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Motor_PWM_Right
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -1010,7 +1010,7 @@ Global Symbols
 <P><STRONG><a name="[8]"></a>UsageFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f1xx_it.o(i.UsageFault_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[56]"></a>main</STRONG> (Thumb, 1326 bytes, Stack size 24 bytes, main.o(i.main))
+<P><STRONG><a name="[56]"></a>main</STRONG> (Thumb, 1334 bytes, Stack size 24 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = main &rArr; SystemClock_Config &rArr; HAL_RCC_ClockConfig &rArr; HAL_InitTick &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Receive_IT
