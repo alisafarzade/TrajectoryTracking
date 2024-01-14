@@ -22,30 +22,30 @@ ks1 = 0.1;
 GAMAofW = diag(50*ones(2160,1));
 
 RHO = 2
-GAMAofbeta = [0 , 0;
-                0 , 0];
+GAMAofbeta = [0.00001 , 0;
+                0 , 0.00001];
 neurons = 2160;
 centers = cartesian(linspace(-1.5, 1.5, 4), linspace(-2, 2, 5), linspace(0, 2, 3), linspace(-1.5, 1.5, 4), linspace(-1, 1, 3), linspace(0, 2, 3));
 % centers = cartesian(linspace(-1.5, 1.5, 3), linspace(-2, 2, 3), linspace(0, 2, 3), linspace(-1.5, 1.5, 3), linspace(-1, 1, 2), linspace(0, 2, 2));
 % LANDA = [x13(q), 1; 1, 0];
 
-% m = 9;
-% J = 5;
-% R = 0.2;
-% r = 0.05;
-% % ng = 10;
-% kt = 0.2639;
-% kb = 0.019;
-% ra= 1.6;
+m = 9;
+J = 5;
+R = 0.2;
+r = 0.05;
+ng = 10;
+kt = 0.2639;
+kb = 0.019;
+ra= 1.6;
 
-    m = 4;
-    J = 0.062;
-    R = 0.125;
-    r = 0.06;
-    ng = 60.5;
-    kt = 0.3;
-    kb = 0.03;
-    ra= 30.85;
+%     m = 4;
+%     J = 0.062;
+%     R = 0.125;
+%     r = 0.06;
+%     ng = 60.5;
+%     kt = 0.3;
+%     kb = 0.03;
+%     ra= 30.85;
 
 ku1 = (ng*kt)/ra;
 ku2 = ng*kb*ku1;
@@ -530,23 +530,23 @@ end
 
 function a = funF(Xidotvirtual, Xivirtual, XiActual, x13dot, x13, v1, w1)
 
-%     m = 9;
-%     J = 5;
-%     R = 0.2;
-%     r = 0.05;
-%     ng = 10;
-%     kt = 0.2639;
-%     kb = 0.019;
-%     ra= 1.6;
+    m = 9;
+    J = 5;
+    R = 0.2;
+    r = 0.05;
+    ng = 10;
+    kt = 0.2639;
+    kb = 0.019;
+    ra= 1.6;
     
-    m = 4;
-    J = 0.062;
-    R = 0.125;
-    r = 0.06;
-    ng = 60.5;
-    kt = 0.3;
-    kb = 0.03;
-    ra= 30.85;
+%     m = 4;
+%     J = 0.062;
+%     R = 0.125;
+%     r = 0.06;
+%     ng = 60.5;
+%     kt = 0.3;
+%     kb = 0.03;
+%     ra= 30.85;
     ku1 = (ng*kt)/ra;
     ku2 = ng*kb*ku1;
 
