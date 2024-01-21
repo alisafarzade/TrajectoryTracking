@@ -29,7 +29,7 @@ centers = cartesian(linspace(-1.5, 1.5, 4), linspace(-2, 2, 5), linspace(0, 2, 3
 % centers = cartesian(linspace(-1.5, 1.5, 3), linspace(-2, 2, 3), linspace(0, 2, 3), linspace(-1.5, 1.5, 3), linspace(-1, 1, 2), linspace(0, 2, 2));
 % LANDA = [x13(q), 1; 1, 0];
 
-% m = 9;
+m = 9;
 % J = 2.2;
 J = 5;
 R = 0.2;
@@ -37,7 +37,7 @@ r = 0.05;
 ng = 60.5;
 kt = 0.3;
 kb = 0.01;
-ra= 10;
+ra = 10;
 
 
 % ng = 10;
@@ -47,8 +47,8 @@ ra= 10;
 
 
 
-    m = 4;
-%     J = 0.3;
+%     m = 4;
+%     J = 0.062;
 %     R = 0.125;
 %     r = 0.06;
 %     ng = 60.5;
@@ -542,8 +542,8 @@ function a = funF(Xidotvirtual, Xivirtual, XiActual, x13dot, x13, v1, w1)
     
 %     J = 2.2;
 
-%     m = 9;
-%     J = 5;
+    m = 9;
+    J = 5;
     R = 0.2;
     r = 0.05;
     
@@ -558,8 +558,8 @@ function a = funF(Xidotvirtual, Xivirtual, XiActual, x13dot, x13, v1, w1)
 %     kb = 0.019;
 %     ra= 1.6;
     
-    m = 4;
-    J = 0.3;
+%     m = 4;
+%     J = 0.062;
 %     R = 0.125;
 %     r = 0.06;
 %     ng = 60.5;
