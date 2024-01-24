@@ -308,9 +308,9 @@ for q = 1 : length(tspan)
            
     for o = 1 : neurons
         
-        PHIvec1(o, 1) = PHI(inputVec1, centers(o, :));
-        PHIvec2(o, 1) = PHI(inputVec2, centers(o, :));
-        PHIvec3(o, 1) = PHI(inputVec3, centers(o, :));
+        PHIvec1(o, 1) = PHI(inputVec1(:,q), centers(o, :));
+        PHIvec2(o, 1) = PHI(inputVec2(:,q), centers(o, :));
+        PHIvec3(o, 1) = PHI(inputVec3(:,q), centers(o, :));
         
     end
     
@@ -396,13 +396,13 @@ yc2e = yc2(1:length(yc2)-1) - yc2d;
 xc3e = xc3(1:length(xc3)-1) - xc3d;
 yc3e = yc3(1:length(yc3)-1) - yc3d;
 
-
 figure(2);
 subplot(3, 1, 1);
 plot(tspan, x11(1:length(x11)-1), 'red', tspan, x11d, 'blue');
 grid on
 title('x11 and x11d');
-legend('x11', 'x11d');
+
+
 subplot(3, 1, 2);
 plot(tspan, x21(1:length(x21)-1), 'red', tspan, x21d, 'blue');
 grid on
@@ -419,6 +419,9 @@ subplot(1, 2, 1);
 plot(x12, x13,'.-r', x12d, x13d, 'blue');
 grid on
 title('homeomorphism mapped');
+xlabel('x12 (m)')
+ylabel('x13 (m)')
+legend('actual', 'desired');
 
 subplot(1, 2, 2);
 plot(xc1, yc1, '.-r', xc1d, yc1d, 'blue');
@@ -426,13 +429,18 @@ grid on
 title('real coordinates');
 xlim([-1.5 1.5]);
 ylim([-1.5 1.5]);
-
+xlabel('x (m)')
+ylabel('y (m)')
+legend('actual', 'desired');
 
 figure(4);
 subplot(1, 2, 1);
 plot(x22, x23,'.-r', x22d, x23d, 'blue');
 grid on
 title('homeomorphism mapped');
+xlabel('x12 (m)')
+ylabel('x13 (m)')
+legend('actual', 'desired');
 
 subplot(1, 2, 2);
 plot(xc2, yc2, '.-r', xc2d, yc2d, 'blue');
@@ -440,13 +448,18 @@ grid on
 title('real coordinates');
 xlim([-1.5 1.5]);
 ylim([-1.5 1.5]);
-
+xlabel('x (m)')
+ylabel('y (m)')
+legend('actual', 'desired');
 
 figure(5);
 subplot(1, 2, 1);
 plot(x32, x33,'.-r', x32d, x33d, 'blue');
 grid on
 title('homeomorphism mapped');
+xlabel('x12 (m)')
+ylabel('x13 (m)')
+legend('actual', 'desired');
 
 subplot(1, 2, 2);
 plot(xc3, yc3, '.-r', xc3d, yc3d, 'blue');
@@ -454,16 +467,25 @@ grid on
 title('real coordinates');
 xlim([-1.5 1.5]);
 ylim([-1.5 1.5]);
+xlabel('x (m)')
+ylabel('y (m)')
+legend('actual', 'desired');
 
 figure(6);
 plot(tspan, x12e, 'red', tspan, x22e, 'blue', tspan, x32e ,'black');
+legend('robot1', 'robot2', 'robot3');
 grid on
 title('x2e');
+ylabel('x2 Error (m)')
+xlabel('time (s)')
 
 figure(7);
 plot(tspan, x13e, 'red', tspan, x23e, 'blue', tspan, x33e ,'black');
+legend('robot1', 'robot2', 'robot3');
 grid on
 title('x3e');
+ylabel('x3 Error (m)')
+xlabel('time (s)')
 
 figure(8);
 subplot(1, 2, 1);
@@ -471,11 +493,16 @@ plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f1(1,ceil(9*length(tspan)/10
 grid on
 title('f1 and NNoutput');
 legend('f1', 'NNoutput');
+ylabel('f & PHI')
+xlabel('time (s)')
+
 subplot(1, 2, 2);
 plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f1(2,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput1(2,ceil(9*length(tspan)/10):length(tspan)));
 grid on
 title('f2 and NNoutput');
 legend('f2', 'NNoutput');
+ylabel('f & PHI')
+xlabel('time (s)')
 
 figure(9);
 subplot(1, 2, 1);
@@ -483,11 +510,16 @@ plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f2(1,ceil(9*length(tspan)/10
 grid on
 title('f1 and NNoutput');
 legend('f1', 'NNoutput');
+ylabel('f & PHI')
+xlabel('time (s)')
+
 subplot(1, 2, 2);
 plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f2(2,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput2(2,ceil(9*length(tspan)/10):length(tspan)));
 grid on
 title('f2 and NNoutput');
 legend('f2', 'NNoutput');
+ylabel('f & PHI')
+xlabel('time (s)')
 
 figure(10);
 subplot(1, 2, 1);
@@ -495,12 +527,16 @@ plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f3(1,ceil(9*length(tspan)/10
 grid on
 title('f1 and NNoutput');
 legend('f1', 'NNoutput');
+ylabel('f & PHI')
+xlabel('time (s)')
+
 subplot(1, 2, 2);
 plot(tspan(ceil(9*length(tspan)/10):length(tspan)), f3(2,ceil(9*length(tspan)/10):length(tspan)), 'r', tspan(ceil(9*length(tspan)/10):length(tspan)), NNoutput3(2,ceil(9*length(tspan)/10):length(tspan)));
 grid on
 title('f2 and NNoutput');
 legend('f2', 'NNoutput');
-
+ylabel('f & PHI')
+xlabel('time (s)')
 
 
 figure(11);
@@ -541,6 +577,21 @@ plot(tspan, yc2e(1:length(tspan)));
 grid on
 title('yc2e');
 ylim([-0.1 0.05]);
+
+figure(14);
+plot(tspan(ceil(9*length(tspan)/10):length(tspan)), inputVec1(:,ceil(9*length(tspan)/10):length(tspan)));
+legend('Xidotvirtual1', 'Xidotvirtual2', 'Xitvirtual1',  'Xivirtual2', 'x3dot', 'x3');
+xlabel('time (s)')
+
+figure(15);
+plot(tspan(ceil(9*length(tspan)/10):length(tspan)), inputVec2(:,ceil(9*length(tspan)/10):length(tspan)));
+legend('Xidotvirtual1', 'Xidotvirtual2', 'Xitvirtual1',  'Xivirtual2', 'x3dot', 'x3');
+xlabel('time (s)')
+
+figure(16);
+plot(tspan(ceil(9*length(tspan)/10):length(tspan)), inputVec3(:,ceil(9*length(tspan)/10):length(tspan)));
+legend('Xidotvirtual1', 'Xidotvirtual2', 'Xitvirtual1',  'Xivirtual2', 'x3dot', 'x3');
+xlabel('time (s)')
 
 
 sum(abs(x12e))

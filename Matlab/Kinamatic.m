@@ -211,6 +211,9 @@ subplot(1, 2, 1);
 plot(x12, x13,'.-r', x12d, x13d, 'blue');
 grid on
 title('homeomorphism mapped');
+xlabel('x12 (m)')
+ylabel('x13 (m)')
+legend('actual', 'desired');
 
 subplot(1, 2, 2);
 plot(xc1, yc1, '.-r', xc1d, yc1d, 'blue');
@@ -218,12 +221,19 @@ grid on
 title('real coordinates');
 xlim([-1.5 1.5]);
 ylim([-1.5 1.5]);
+xlabel('x (m)')
+ylabel('y (m)')
+legend('actual', 'desired');
 
 figure(2);
 subplot(1, 2, 1);
 plot(x22, x23,'.-r', x22d, x23d, 'blue');
 grid on
 title('homeomorphism mapped');
+xlabel('x22 (m)')
+ylabel('x23 (m)')
+legend('actual', 'desired');
+
 
 subplot(1, 2, 2);
 plot(xc2, yc2, '.-r', xc2d, yc2d, 'blue');
@@ -231,12 +241,18 @@ grid on
 title('real coordinates');
 xlim([-1.5 1.5]);
 ylim([-1.5 1.5]);
+xlabel('x (m)')
+ylabel('y (m)')
+legend('actual', 'desired');
 
 figure(3);
 subplot(1, 2, 1);
 plot(x32, x33,'.-r', x32d, x33d, 'blue');
 grid on
 title('homeomorphism mapped');
+xlabel('x32 (m)')
+ylabel('x33 (m)')
+legend('actual', 'desired');
 
 subplot(1, 2, 2);
 plot(xc3, yc3, '.-r', xc3d, yc3d, 'blue');
@@ -244,6 +260,9 @@ grid on
 title('real coordinates');
 xlim([-1.5 1.5]);
 ylim([-1.5 1.5]);
+xlabel('x (m)')
+ylabel('y (m)')
+legend('actual', 'desired');
 
 % figure(1);
 % subplot(1, 2, 1);
@@ -272,41 +291,48 @@ plot(tspan, xc1e(1:length(tspan)));
 grid on
 title('xc1e');
 ylim([-0.1 0.25]);
+xlabel('time (s)')
+ylabel('x Error (m)')
 
 subplot(3, 2, 2);
 plot(tspan, yc1e(1:length(tspan)));
 grid on
 title('yc1e');
 ylim([-0.1 0.05]);
-
+xlabel('time (s)')
+ylabel('y Error (m)')
 
 subplot(3, 2, 3);
 plot(tspan, xc2e(1:length(tspan)));
 grid on
 title('xc2e');
 ylim([-0.1 0.25]);
-
+xlabel('time (s)')
+ylabel('x Error (m)')
 
 subplot(3, 2, 4);
 plot(tspan, yc2e(1:length(tspan)));
 grid on
 title('yc2e');
 ylim([-0.1 0.05]);
-
+xlabel('time (s)')
+ylabel('y Error (m)')
 
 subplot(3, 2, 5);
 plot(tspan, xc3e(1:length(tspan)));
 grid on
 title('xc3e');
 ylim([-0.1 0.25]);
-
+xlabel('time (s)')
+ylabel('x Error (m)')
 
 subplot(3, 2, 6);
 plot(tspan, yc3e(1:length(tspan)));
 grid on
 title('yc3e');
 ylim([-0.1 0.05]);
-
+xlabel('time (s)')
+ylabel('y Error (m)')
 
 figure(5);
 plot(tspan, x11d(1:length(tspan)), tspan, x11(1:length(tspan)));
@@ -314,6 +340,8 @@ grid on
 title('Theta');
 legend( 'desired', 'actual');
 xlim([0 10]);
+xlabel('time (s)')
+ylabel('Theta (rad)')
 
 figure(6);
 plot(tspan, x21d(1:length(tspan)), tspan, x21(1:length(tspan)));
@@ -321,6 +349,8 @@ grid on
 title('Theta');
 legend( 'desired', 'actual');
 xlim([0 10]);
+xlabel('time (s)')
+ylabel('Theta (rad)')
 
 figure(7);
 plot(tspan, x31d(1:length(tspan)), tspan, x31(1:length(tspan)));
@@ -328,7 +358,8 @@ grid on
 title('Theta');
 legend( 'desired', 'actual');
 xlim([0 10]);
-
+xlabel('time (s)')
+ylabel('Theta (rad)')
 
 V = max(max(v1), abs(min(v1)))
 W = max(max(w1), abs(min(w1)))
