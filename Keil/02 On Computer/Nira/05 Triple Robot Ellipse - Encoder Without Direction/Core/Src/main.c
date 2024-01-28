@@ -448,9 +448,9 @@ int main(void)
 		if(rpmLeftD > 90)  LED1_ON;
 		else							 LED1_OFF;
 		
-		
-//		rpmRightD = 15;
-//		rpmLeftD = 15;
+//		
+//		rpmRightD = 30;
+//		rpmLeftD = 30;
 		
 		
 		
