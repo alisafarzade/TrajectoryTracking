@@ -52,7 +52,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
- I2C_HandleTypeDef hi2c2;
+I2C_HandleTypeDef hi2c2;
 
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim4;
@@ -104,6 +104,7 @@ int got_x, got_y, got_angle;
 // ------- Kinematic Variables
 float time=0;
 char derivationFlag=0;
+int cnt = 0;
 /*
 float x = 0.55, y = 0, angle=3.14/2;
 float Xi1, Xi2;
@@ -255,7 +256,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	/////////// Right //////////
 	if(GPIO_Pin == GPIO_PIN_7){
-		if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6)){
+		if(forwardR == 1){ //HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6)){
 			counterRight++;
 //			forwardR = 1;
 		}
@@ -265,8 +266,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 		}
 	}
 	/////////// Left //////////
-	if(GPIO_Pin == GPIO_PIN_1){
-		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0)){
+	if(GPIO_Pin == GPIO_PIN_0){
+		if(forwardL == 1){ //!HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1)){
 			counterLeft++;
 //			forwardL = 1;
 		}
@@ -391,7 +392,8 @@ int main(void)
 			LED1_OFF;
 			rpmLeftD = ((Rx_data[0] | (Rx_data[1]<<8)) - 9000)/100.0;
 			rpmRightD= ((Rx_data[2] | (Rx_data[3]<<8)) - 9000)/100.0;
-			
+			if(rpmRight > 5)  rpmRightD -= 5;
+			if(rpmRight < -5) rpmRightD += 5;
 			/*
 			got_x = Rx_data[0];
 			got_x |= Rx_data[1]<<8;
@@ -449,9 +451,18 @@ int main(void)
 		else							 LED1_OFF;
 		
 		
-//		rpmRightD = 15;
-//		rpmLeftD = 15;
-		
+//		rpmRightD = 55;
+//		rpmLeftD = 60;
+//		if(cnt < 100000){
+//			rpmRightD = 15;
+//			rpmLeftD = 15;
+//		}
+//		else if(cnt < 200000){
+//			rpmRightD = 80;
+//			rpmLeftD = 80;
+//		}
+//		else cnt = 0;
+//		cnt++;
 		
 		
 		/////////////////////////////////////////////////// PID Farhan
@@ -851,6 +862,8 @@ static void MX_USART1_UART_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOD_CLK_ENABLE();
@@ -864,14 +877,14 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PB0 */
   GPIO_InitStruct.Pin = GPIO_PIN_0;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB1 */
   GPIO_InitStruct.Pin = GPIO_PIN_1;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PB12 PB13 */
@@ -901,12 +914,14 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
