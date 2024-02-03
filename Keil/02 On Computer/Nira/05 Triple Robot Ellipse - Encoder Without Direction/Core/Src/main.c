@@ -450,6 +450,7 @@ int main(void)
 		if(rpmLeftD > 90)  LED1_ON;
 		else							 LED1_OFF;
 		
+<<<<<<< HEAD
 		
 //		rpmRightD = 55;
 //		rpmLeftD = 60;
@@ -463,6 +464,12 @@ int main(void)
 //		}
 //		else cnt = 0;
 //		cnt++;
+=======
+//		
+//		rpmRightD = 30;
+//		rpmLeftD = 30;
+		
+>>>>>>> 8b32d7389a836a28a1c2a065bc894082e6c592b3
 		
 		
 		/////////////////////////////////////////////////// PID Farhan

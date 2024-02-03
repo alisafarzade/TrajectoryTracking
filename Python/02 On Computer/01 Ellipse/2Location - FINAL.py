@@ -121,7 +121,7 @@ with open("data.json", "r") as openfile:
     # Reading from json file
     hsvColors = json.load(openfile)
 # Capturing video through webcam
-webcam = cv2.VideoCapture(0)
+webcam = cv2.VideoCapture(2)
 
 # ser = serial.Serial()
 # ser.baudrate = 115200
@@ -313,7 +313,7 @@ while 1:
     contours, hierarchy = cv2.findContours(yellow_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
-        if area > 600 and area<900:
+        if area > 300:
             rect = cv2.minAreaRect(contour)
             box = cv2.boxPoints(rect)
             box = np.intp(box)
@@ -435,7 +435,7 @@ while 1:
     RPM_Right = ((V + (width*w))/r) * 9.55
     RPM_Left = ((V - (width*w))/r) * 9.55
 
-    print(f"V:{V} \tw:{w} \tRPM_R:{RPM_Right} \tRPM_L:{RPM_Left} \t")
+    # print(f"V:{V} \tw:{w} \tRPM_R:{RPM_Right} \tRPM_L:{RPM_Left} \t")
     # print(f"V:{V} \tw:{w} \t angle:{angle} \tthetaD:{_thetad}")
 
     # -------------- Sending Data To MCU

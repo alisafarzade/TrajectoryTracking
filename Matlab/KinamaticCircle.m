@@ -108,12 +108,16 @@ subplot(1, 2, 1);
 plot(x12, x13,'.-r', x12d, x13d, 'blue');
 grid on
 title('homeomorphism mapped');
-
+xlabel('x12 (m)')
+ylabel('x13 (m)')
+legend('actual', 'desired');
 
 subplot(1, 2, 2);
 plot(xc1, yc1, '.-r', xc1d, yc1d, 'blue');
 grid on
 title('real coordinates');
+xlabel('x (m)')
+ylabel('y (m)')
 xlim([-0.4 0.6]);
 ylim([-0.5 0.5]);
 legend('actual', 'desired');
@@ -139,12 +143,15 @@ subplot(1, 2, 1);
 plot(tspan, xc1e(1:length(tspan)));
 grid on
 title('xc1e');
+xlabel('time (s)')
+ylabel('x Error (m)')
 
 subplot(1, 2, 2);
 plot(tspan, yc1e(1:length(tspan)));
 grid on
 title('yc1e');
-
+xlabel('time (s)')
+ylabel('y Error (m)')
 
 
 x12e = x12(1:length(xc1)-1) - x12d;
@@ -155,16 +162,22 @@ subplot(1, 3, 1);
 plot(tspan, x11e(1:length(tspan)));
 grid on
 title('x11e');
+xlabel('time (s)')
+ylabel('Theta Error (rad)')
 
 subplot(1, 3, 2);
 plot(tspan, x12e(1:length(tspan)));
 grid on
 title('x12e');
+xlabel('time (s)')
+ylabel('x12 Error (m)')
 
 subplot(1, 3, 3);
 plot(tspan, x13e(1:length(tspan)));
 grid on
 title('x13e');
+xlabel('time (s)')
+ylabel('x13 Error (m)')
 
 
 

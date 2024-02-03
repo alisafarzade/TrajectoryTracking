@@ -120,12 +120,12 @@ def hsv_save(color):
 
 
 def setColorBar(color):
-    cv2.setTrackbarPos("LR", winname, data[color_select]["lower"]["h"])
-    cv2.setTrackbarPos("UR", winname, data[color_select]["upper"]["h"])
-    cv2.setTrackbarPos("LG", winname, data[color_select]["lower"]["s"])
-    cv2.setTrackbarPos("UG", winname, data[color_select]["upper"]["s"])
-    cv2.setTrackbarPos("LB", winname, data[color_select]["lower"]["v"])
-    cv2.setTrackbarPos("UB", winname, data[color_select]["upper"]["v"])
+    cv2.setTrackbarPos("LH", winname, data[color_select]["lower"]["h"])
+    cv2.setTrackbarPos("HH", winname, data[color_select]["upper"]["h"])
+    cv2.setTrackbarPos("LS", winname, data[color_select]["lower"]["s"])
+    cv2.setTrackbarPos("Hs", winname, data[color_select]["upper"]["s"])
+    cv2.setTrackbarPos("LV", winname, data[color_select]["lower"]["v"])
+    cv2.setTrackbarPos("HV", winname, data[color_select]["upper"]["v"])
 
 
 # keyboard.on_press(on_key_press)
@@ -140,22 +140,22 @@ if __name__ == "__main__":
     # cv2.createButton("set_red", red_save, None, cv2.QT_CHECKBOX, 0)
     # cv2.createTrackbar("Color", winname, 0, 360, color_range)
     cv2.createTrackbar(
-        "LR", winname, data[color_select]["lower"]["h"], 255, h_lower_range
+        "LH", winname, data[color_select]["lower"]["h"], 255, h_lower_range
     )
     cv2.createTrackbar(
-        "UR", winname, data[color_select]["upper"]["h"], 255, h_upper_range
+        "HH", winname, data[color_select]["upper"]["h"], 255, h_upper_range
     )
     cv2.createTrackbar(
-        "LG", winname, data[color_select]["lower"]["s"], 255, s_lower_range
+        "LS", winname, data[color_select]["lower"]["s"], 255, s_lower_range
     )
     cv2.createTrackbar(
-        "UG", winname, data[color_select]["upper"]["s"], 255, s_upper_range
+        "Hs", winname, data[color_select]["upper"]["s"], 255, s_upper_range
     )
     cv2.createTrackbar(
-        "LB", winname, data[color_select]["lower"]["v"], 255, v_lower_range
+        "LV", winname, data[color_select]["lower"]["v"], 255, v_lower_range
     )
     cv2.createTrackbar(
-        "UB", winname, data[color_select]["upper"]["v"], 255, v_upper_range
+        "HV", winname, data[color_select]["upper"]["v"], 255, v_upper_range
     )
     # Iterate until the user presses ESC key
     while True:

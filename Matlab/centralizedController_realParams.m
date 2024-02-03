@@ -22,36 +22,45 @@ ks1 = 0.1;
 GAMAofW = diag(50*ones(2160,1));
 
 RHO = 2
-GAMAofbeta = [0 , 0;
-                0 , 0];
+GAMAofbeta = [0.00001 , 0;
+                0 , 0.00001];
 neurons = 2160;
 centers = cartesian(linspace(-1.5, 1.5, 4), linspace(-2, 2, 5), linspace(0, 2, 3), linspace(-1.5, 1.5, 4), linspace(-1, 1, 3), linspace(0, 2, 3));
 % centers = cartesian(linspace(-1.5, 1.5, 3), linspace(-2, 2, 3), linspace(0, 2, 3), linspace(-1.5, 1.5, 3), linspace(-1, 1, 2), linspace(0, 2, 2));
 % LANDA = [x13(q), 1; 1, 0];
 
-% m = 9;
-% J = 5;
-% R = 0.2;
-% r = 0.05;
-% % ng = 10;
+m = 9;
+% J = 2.2;
+J = 5;
+R = 0.2;
+r = 0.05;
+ng = 60.5;
+kt = 0.3;
+kb = 0.01;
+ra = 10;
+
+
+% ng = 10;
 % kt = 0.2639;
 % kb = 0.019;
 % ra= 1.6;
 
-    m = 4;
-    J = 0.062;
-    R = 0.125;
-    r = 0.06;
-    ng = 60.5;
-    kt = 0.3;
-    kb = 0.03;
-    ra= 30.85;
+
+
+%     m = 4;
+%     J = 0.062;
+%     R = 0.125;
+%     r = 0.06;
+%     ng = 60.5;
+%     kt = 0.3;
+%     kb = 0.03;
+%     ra= 30.85;
 
 ku1 = (ng*kt)/ra;
 ku2 = ng*kb*ku1;
              
 dt = 0.01;
-tspan = 0:dt:200;
+tspan = 0:dt:20;
 
 %% i = 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -94,9 +103,9 @@ x31d = theta3d;
 x32d = xc3d .* cos(theta3d) + yc3d .* sin(theta3d);
 x33d = xc3d .* sin(theta3d) - yc3d .* cos(theta3d);
 
-figure(1)
-plot(x12d, x13d, 'red', x22d, x23d , 'blue', x32d, x33d, 'black');
-title('x12d vs x13d, x22d  vs  x23d, x32d vs x33d');
+% figure(1)
+% plot(x12d, x13d, 'red', x22d, x23d , 'blue', x32d, x33d, 'black');
+% title('x12d vs x13d, x22d  vs  x23d, x32d vs x33d');
 
 %% Preallocations
 % i = 1
@@ -209,12 +218,12 @@ W1{1} = ones(neurons, 2);
 x21(1) = pi/2;
 x22(1) = 0;
 % x23(1) = 1.2;
-x23(1) = 0.45;
+x23(1) = 0.47;
 x23dot(1) = 0;
 
 yc2(1) = 0;
 % xc2(1) = 1.2;
-xc2(1) = 0.45;
+xc2(1) = 0.47;
 Xi21(1) = 0;
 Xi22(1) = 0;
 XiActual2(1:2, 1) = [0; 0];
@@ -228,12 +237,12 @@ W2{1} = ones(neurons, 2);
 x31(1) = pi/2;
 x32(1) = 0;
 % x33(1) = 1.4;
-x33(1) = 0.4;
+x33(1) = 0.45;
 x33dot(1) = 0;
 
 yc3(1) = 0;
 % xc3(1) = 1.4;
-xc3(1) = 0.4;
+xc3(1) = 0.45;
 Xi31(1) = 0;
 Xi32(1) = 0;
 XiActual3(1:2, 1) = [0; 0];
@@ -398,22 +407,22 @@ x23e = x23(1:length(x23)-1) - x23d;
 x32e = x32(1:length(x32)-1) - x32d;
 x33e = x33(1:length(x33)-1) - x33d;
 
-figure(2);
-subplot(3, 1, 1);
-plot(tspan, x11(1:length(x11)-1), 'red', tspan, x11d, 'blue');
-grid on
-title('x11 and x11d');
-legend('x11', 'x11d');
-subplot(3, 1, 2);
-plot(tspan, x21(1:length(x21)-1), 'red', tspan, x21d, 'blue');
-grid on
-title('x21 and x21d');
-legend('x21', 'x21d');
-subplot(3, 1, 3);
-plot(tspan, x31(1:length(x31)-1), 'red', tspan, x31d, 'blue');
-grid on
-title('x31 and x31d');
-legend('x31', 'x31d');
+% figure(2);
+% subplot(3, 1, 1);
+% plot(tspan, x11(1:length(x11)-1), 'red', tspan, x11d, 'blue');
+% grid on
+% title('x11 and x11d');
+% legend('x11', 'x11d');
+% subplot(3, 1, 2);
+% plot(tspan, x21(1:length(x21)-1), 'red', tspan, x21d, 'blue');
+% grid on
+% title('x21 and x21d');
+% legend('x21', 'x21d');
+% subplot(3, 1, 3);
+% plot(tspan, x31(1:length(x31)-1), 'red', tspan, x31d, 'blue');
+% grid on
+% title('x31 and x31d');
+% legend('x31', 'x31d');
 
 figure(3);
 subplot(1, 3, 1);
@@ -530,23 +539,33 @@ end
 
 function a = funF(Xidotvirtual, Xivirtual, XiActual, x13dot, x13, v1, w1)
 
-%     m = 9;
-%     J = 5;
-%     R = 0.2;
-%     r = 0.05;
+    
+%     J = 2.2;
+
+    m = 9;
+    J = 5;
+    R = 0.2;
+    r = 0.05;
+    
+    ng = 60.5;
+    kt = 0.3;
+    kb = 0.01;
+    ra= 10;
+    
+    
 %     ng = 10;
 %     kt = 0.2639;
 %     kb = 0.019;
 %     ra= 1.6;
     
-    m = 4;
-    J = 0.062;
-    R = 0.125;
-    r = 0.06;
-    ng = 60.5;
-    kt = 0.3;
-    kb = 0.03;
-    ra= 30.85;
+%     m = 4;
+%     J = 0.062;
+%     R = 0.125;
+%     r = 0.06;
+%     ng = 60.5;
+%     kt = 0.3;
+%     kb = 0.03;
+%     ra= 30.85;
     ku1 = (ng*kt)/ra;
     ku2 = ng*kb*ku1;
 
