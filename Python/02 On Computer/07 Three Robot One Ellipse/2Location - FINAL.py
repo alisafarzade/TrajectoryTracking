@@ -65,8 +65,8 @@ le32 = 1.2
 # k2 = 50.0
 # k3 = 2.0
 
-k1_1 = 40.0
-k2_1 = 40.0
+k1_1 = 70.0
+k2_1 = 50.0
 k3_1 = 2.0
 
 k1_2 = 40.0
@@ -133,9 +133,9 @@ _x3d_2 = 0
 _x2_2 = 0
 _x3_2 = 0
 
-x_3 = 0
-y_3 = 0.55
-angle_3 = 3.14
+x_3 = -0.90
+y_3 = 0.0
+angle_3 = 3.14*1.5
 Xi1_3 = 0
 Xi2_3 = 0
 lastalpha_3=0
@@ -147,7 +147,7 @@ V_3 = 0
 w_3 = 0
 _xcd_3 = 0
 _ycd_3 = 0
-_thetad_3 = 3.14
+_thetad_3 = 3.14*1.5
 _wd_3 = 0
 _x2d_3 = 0
 _x3d_3 = 0
@@ -228,17 +228,17 @@ def x3_2(xc, yc):
 
 # Robot 3 = Orange
 def xcd_3():
-	return rx/100 * cos((t1+30)*speed)
+	return rx/100 * cos((t1+60)*speed)
 def ycd_3():
-	return ry/100 * sin((t1+30)*speed)
+	return ry/100 * sin((t1+60)*speed)
 def thetad_3():
-	theta = atan2(ry/100*cos((t1+30)*speed), -rx/100*sin((t1+30)*speed))
+	theta = atan2(ry/100*cos((t1+60)*speed), -rx/100*sin((t1+60)*speed))
 	return unwrap(_thetad_3, theta)
 def wd_3():
     a = ry/100
     b = rx/100
     v = speed
-    return (a*b*v*(sin2(v*(t1+30))+cos2(v*(t1+30))))/(b**2*sin2(v*(t1+30))+a**2*cos2(v*(t1+30)))
+    return (a*b*v*(sin2(v*(t1+60))+cos2(v*(t1+60))))/(b**2*sin2(v*(t1+60))+a**2*cos2(v*(t1+60)))
 	# return (6*speed * (sin2(t1*speed) +   cos2(t1*speed))) /	(4*sin2(t1*speed) + 9*cos2(t1*speed))
 def x2d_3():
 	return (_xcd_3 * cos(_thetad_3)) + (_ycd_3 * sin(_thetad_3))
@@ -269,9 +269,9 @@ ser = [
 ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
-ser[0].port = 'COM113'
-ser[1].port = 'COM120'
-ser[2].port = 'COM18'
+ser[0].port = 'COM13'
+ser[1].port = 'COM118'
+ser[2].port = 'COM120'
 robot_id = 2
 
 try:
@@ -637,6 +637,9 @@ while 1:
     _x3d_3 = x3d_3()
     _x2_3 = x2_3(x_3, y_3)
     _x3_3 = x3_3(x_3, y_3)
+
+    
+
 
     Xi1_3 = _wd_3 + (k3_3 * (_thetad_3 - angle_3))
     z1_3 = _x3d_3 - _x3_3

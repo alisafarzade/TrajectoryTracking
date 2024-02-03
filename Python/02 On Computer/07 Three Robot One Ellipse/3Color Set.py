@@ -134,15 +134,16 @@ def setColorBar(color):
 
 if __name__ == "__main__":
     readFrame()
-    show = "show"
+    show = "Detected Color"
     cv2.namedWindow(show)
     # create trackbar for color change
     winname = "Color Detector"
     cv2.namedWindow(winname)
+    cv2.resizeWindow(winname, 450, 350)
     # cv2.createButton("set_red", red_save, None, cv2.QT_CHECKBOX, 0)
     # cv2.createTrackbar("Color", winname, 0, 360, color_range)
-    cv2.createTrackbar("LH", winname, data[color_select]["lower"]["h"], 255, h_lower_range)
-    cv2.createTrackbar("UH", winname, data[color_select]["upper"]["h"], 255, h_upper_range)
+    cv2.createTrackbar("LH", winname, data[color_select]["lower"]["h"], 179, h_lower_range)
+    cv2.createTrackbar("UH", winname, data[color_select]["upper"]["h"], 179, h_upper_range)
     cv2.createTrackbar("LS", winname, data[color_select]["lower"]["s"], 255, s_lower_range)
     cv2.createTrackbar("US", winname, data[color_select]["upper"]["s"], 255, s_upper_range)
     cv2.createTrackbar("LV", winname, data[color_select]["lower"]["v"], 255, v_lower_range)
@@ -162,7 +163,7 @@ if __name__ == "__main__":
         # Convert the HSV colorspace
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         
-
+        # print(hsv[50][50])
         # Threshold the HSV image to get only desired color
         # [h, s, v] = colorsys.rgb_to_hsv(red_lower, green_lower, blue_lower)
         lower = np.array([h_lower, s_lower, v_lower])
@@ -175,27 +176,53 @@ if __name__ == "__main__":
         cv2.imshow("Original image", frame)
       
         cv2.imshow(show, res)
-        cv2.imshow(winname, res)
+        cv2.imshow("Mask", mask)
+        # cv2.imshow(winname, res)
+        # cv2.resizeWindow(winname, 500, 200)
 
-        histh = cv2.calcHist([hsv],[0],mask,[256],[5,255])  
-        hists = cv2.calcHist([hsv],[1],mask,[256],[5,250])  
-        histv = cv2.calcHist([hsv],[2],mask,[256],[5,250])  
+
+        histh = cv2.calcHist([hsv],[0],mask,[179],[0,179])  
+        hists = cv2.calcHist([hsv],[1],mask,[255],[0,255])  
+        histv = cv2.calcHist([hsv],[2],mask,[255],[0,255])  
         histh_list = [val[0] for val in histh]
         hists_list = [val[0] for val in hists]
         histv_list = [val[0] for val in histv]
-        max_h = histh_list.index(max(histh_list))
-        max_s = hists_list.index(max(hists_list))
-        max_v = histv_list.index(max(histv_list))
-        # h_lower = max_h - 5
-        # h_upper = max_h + 5
-        s_lower = max_s - 40
-        s_upper = max_s + 40
-        v_lower = max_v - 40
-        v_upper = max_v + 40
-        
-        plt.plot(histh, 'r') 
-        plt.plot(hists, 'g') 
-        plt.plot(histv, 'b') 
+        # if(max(histh_list) > 200):
+        #     max_h = histh_list.index(max(histh_list))
+        #     # h_lower = max_h - 5
+        #     # h_upper = max_h + 5
+        # if(max(hists_list) > 200):
+        #     max_s = hists_list.index(max(hists_list))
+        #     s_lower = max_s - 40
+        #     s_upper = max_s + 40
+        # if(max(histv_list) > 200):
+        #     max_v = histv_list.index(max(histv_list))
+        #     v_lower = max_v - 40
+        #     v_upper = max_v + 40
+        plt.figure(num="Histogram")
+
+        plt.subplot(3, 1, 1)
+        plt.plot(histh_list, 'r') 
+        plt.title('Hue')
+        plt.ylabel('Pixel Count')
+        plt.xlabel('Hue (°)')
+
+        plt.subplot(3, 1, 2)
+        plt.plot(hists_list, 'g') 
+        plt.title('Saturation')
+        plt.ylabel('Pixel Count')
+        plt.xlabel('Saturation (%)')
+
+        plt.subplot(3, 1, 3)
+        plt.plot(histv_list, 'b') 
+        plt.title('Value')
+        plt.ylabel('Pixel Count')
+        plt.xlabel('Value (%)')
+
+        plt.subplots_adjust(hspace=0.7)
+        # plt.legend(['Hue', 'Saturation', 'Value'])
+
+
         # plt.show() 
 
 
@@ -224,5 +251,8 @@ if __name__ == "__main__":
         if key == 115:
             hsv_save(color_select)
             print("saved")
+        if key == ord('a'):
+            plt.show() 
+
     cv2.destroyAllWindows()
     #cap.release()

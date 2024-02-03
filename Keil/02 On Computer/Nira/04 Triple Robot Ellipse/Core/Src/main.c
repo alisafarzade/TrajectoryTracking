@@ -392,6 +392,7 @@ int main(void)
 			rpmLeftD = ((Rx_data[0] | (Rx_data[1]<<8)) - 9000)/100.0;
 			rpmRightD= ((Rx_data[2] | (Rx_data[3]<<8)) - 9000)/100.0;
 			
+			
 			/*
 			got_x = Rx_data[0];
 			got_x |= Rx_data[1]<<8;
