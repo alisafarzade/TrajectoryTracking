@@ -271,8 +271,8 @@ ser[0].baudrate = 115200
 ser[1].baudrate = 115200
 ser[2].baudrate = 115200
 ser[0].port = 'COM18'
-ser[1].port = 'COM13'
-ser[2].port = 'COM20'
+ser[1].port = 'COM113'
+ser[2].port = 'COM120'
 robot_id = 2
 
 try:
@@ -463,22 +463,23 @@ while 1:
             green_lower[2] = max_v - 40
             green_upper[2] = max_v + 40
 
-        if(max(blue_histh_list) > 500 or max(blue_histh_list) < 200):
+        if(max(blue_histh_list) > 500 or max(blue_histh_list) < 50):
             blue_lower = colorSetHSV("blue", "lower")
             blue_upper = colorSetHSV("blue", "upper")
         elif(max(blue_histh_list) > 200 and max(blue_histh_list) < 500):
             max_h = blue_histh_list.index(max(blue_histh_list))
             blue_lower[0] = max_h - 50
             blue_upper[0] = max_h + 50
-        if(max(blue_hists_list) > 40):
+        if(max(blue_hists_list) > 30):
             max_s = blue_hists_list.index(max(blue_hists_list))
-            blue_lower[1] = max_s - 70
+            blue_lower[1] = max_s - 150
             blue_upper[1] = max_s + 40
+            if blue_lower[1] < 0: blue_lower[1] = 0
+            if blue_upper[1] < 0: blue_upper[1] = 0
         if(max(blue_histv_list) > 30):
             max_v = blue_histv_list.index(max(blue_histv_list))
             blue_lower[2] = max_v - 70
             blue_upper[2] = max_v + 70
-        
             
         # print([max(blue_histh_list), max(blue_hists_list), max(blue_histv_list)])
 
@@ -522,6 +523,7 @@ while 1:
             pink_lower[2] = max_v - 40
             pink_upper[2] = max_v + 40
 
+    # print(f'Hue: {(blue_lower[0], blue_upper[0])}\tSaturation: {(blue_lower[1], blue_upper[1])}\tValue: {(blue_lower[2], blue_upper[2])}')
     
 
     # -------------- red
@@ -910,6 +912,8 @@ while 1:
     # imageFrame = cv2.ellipse(imageFrame, (int((center_x-90)/0.489), int(480 - center_y/0.489)), (int(orange_rx/0.489), int(orange_ry/0.489)), 0, 0, 360, orange_color, 2) 
     # imageFrame = cv2.ellipse(imageFrame, (int(center_x/0.489), int(480 - center_y/0.489)), (int(blue_rx/0.489), int(blue_ry/0.489)), 0, 0, 360, blue_color, 2) 
     # imageFrame = cv2.ellipse(imageFrame, (int((center_x+90)/0.489), int(480 - center_y/0.489)), (int(red_rx/0.489), int(red_ry/0.489)), 0, 0, 360, red_color, 2) 
+    
+    
     imageFrame = cv2.ellipse(imageFrame, (int(center_x/0.489), int(480 - center_y/0.489)), (int(rx/0.489), int(ry/0.489)), 0, 0, 360, (0, 0, 0), 2) 
 
     cv2.imshow("Multiple Color Detection in Real-TIme", imageFrame)
