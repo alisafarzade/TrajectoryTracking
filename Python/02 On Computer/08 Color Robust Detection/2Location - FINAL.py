@@ -25,7 +25,7 @@ orange_ry = 40
 rx = 90
 ry = 55
 
-manualControl = True
+manualControl = False
 useRobustColorDetection = True
 df = pd.DataFrame([], columns=['time', 'X', 'Y', 'theta', 'Xd', 'Yd', 'Error X', 'Error Y', 'Theta Rad', 'ThetaD', 'Error Theta', 'x2', 'x3', 'x2d', 'x3d'])
 robot_data_1 = []
@@ -66,8 +66,8 @@ le32 = 1.2
 # k2 = 50.0
 # k3 = 2.0
 
-k1_1 = 70.0
-k2_1 = 50.0
+k1_1 = 100.0
+k2_1 = 100.0
 k3_1 = 2.0
 
 k1_2 = 40.0
@@ -87,7 +87,7 @@ r = 0.06
 A = 0
 B = 0
 # speed = 0.1
-speed = pi/60
+speed = pi/120
 M_PI = pi
 M_2PI = 2*pi
 
@@ -334,6 +334,19 @@ def Send_RPM_to_Robot(RPM_L, RPM_R, id):
     if RPM_L <-90: RPM_L = -90
     if RPM_R > 90: RPM_R = 90
     if RPM_R <-90: RPM_R = -90
+
+    # if RPM_L > 0 and RPM_L <= 1: RPM_L = 1
+    # if RPM_L < 0 and RPM_L >= -1: RPM_L = 1
+    # if RPM_R > 0 and RPM_R <= 1: RPM_R = 1
+    # if RPM_R < 0 and RPM_R >= -1: RPM_R = 1
+    
+    # if RPM_L > 0: RPM_L += 2
+    # if RPM_L < 0: RPM_L -= 2
+    # if RPM_R > 0: RPM_R += 2
+    # if RPM_R < 0: RPM_R -= 2
+    
+    
+
     RPM_L  = round(RPM_L, 2) * 100 + 9000
     RPM_R = round(RPM_R, 2 ) * 100 + 9000
     packet_green[0] = int(RPM_L).to_bytes(2, "little",signed=True)[0]
@@ -353,18 +366,18 @@ def Send_RPM_to_Robot(RPM_L, RPM_R, id):
 
 
 
-red_lower = colorSetHSV("red", "lower")
-red_upper = colorSetHSV("red", "upper")
-green_lower = colorSetHSV("green", "lower")
-green_upper = colorSetHSV("green", "upper")
-blue_lower = colorSetHSV("blue", "lower")
-blue_upper = colorSetHSV("blue", "upper")
+red_lower    = colorSetHSV("red", "lower")
+red_upper    = colorSetHSV("red", "upper")
+green_lower  = colorSetHSV("green", "lower")
+green_upper  = colorSetHSV("green", "upper")
+blue_lower   = colorSetHSV("blue", "lower")
+blue_upper   = colorSetHSV("blue", "upper")
 yellow_lower = colorSetHSV("yellow", "lower")
 yellow_upper = colorSetHSV("yellow", "upper")
 orange_lower = colorSetHSV("orange", "lower")
 orange_upper = colorSetHSV("orange", "upper")
-pink_lower = colorSetHSV("pink", "lower")
-pink_upper = colorSetHSV("pink", "upper")
+pink_lower   = colorSetHSV("pink", "lower")
+pink_upper   = colorSetHSV("pink", "upper")
 
 while 1:
     start = time.time()
@@ -449,12 +462,15 @@ while 1:
             max_v = red_histv_list.index(max(red_histv_list))
             red_lower[2] = max_v - 40
             red_upper[2] = max_v + 40
-
+        
+        if(max(green_histh_list) > 500 or max(green_histh_list) < 50):
+            green_lower = colorSetHSV("green", "lower")
+            green_upper = colorSetHSV("green", "upper")
         # if(max(green_histh_list) > 200):
         #     max_h = green_histh_list.index(max(green_histh_list))
         #     green_lower[0] = max_h - 5
         #     green_upper[0] = max_h + 5
-        if(max(green_hists_list) > 40):
+        elif(max(green_hists_list) > 40):
             max_s = green_hists_list.index(max(green_hists_list))
             green_lower[1] = max_s - 40
             green_upper[1] = max_s + 40
