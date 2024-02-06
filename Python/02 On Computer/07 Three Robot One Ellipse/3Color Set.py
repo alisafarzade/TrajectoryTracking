@@ -187,18 +187,19 @@ if __name__ == "__main__":
         histh_list = [val[0] for val in histh]
         hists_list = [val[0] for val in hists]
         histv_list = [val[0] for val in histv]
-        # if(max(histh_list) > 200):
-        #     max_h = histh_list.index(max(histh_list))
-        #     # h_lower = max_h - 5
-        #     # h_upper = max_h + 5
-        # if(max(hists_list) > 200):
-        #     max_s = hists_list.index(max(hists_list))
-        #     s_lower = max_s - 40
-        #     s_upper = max_s + 40
-        # if(max(histv_list) > 200):
-        #     max_v = histv_list.index(max(histv_list))
-        #     v_lower = max_v - 40
-        #     v_upper = max_v + 40
+        if(max(histh_list) > 200):
+            max_h = histh_list.index(max(histh_list))
+            h_lower = max_h - 15
+            h_upper = max_h + 15
+        if(max(hists_list) > 200):
+            max_s = hists_list.index(max(hists_list))
+            s_lower = max_s - 60
+            s_upper = max_s + 60
+        if(max(histv_list) > 200):
+            max_v = histv_list.index(max(histv_list))
+            v_lower = max_v - 60
+            v_upper = max_v + 60
+        print([max(histh_list), max(hists_list), max(histv_list)])
         plt.figure(num="Histogram")
 
         plt.subplot(3, 1, 1)
