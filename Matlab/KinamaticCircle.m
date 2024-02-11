@@ -161,9 +161,9 @@ figure(3);
 subplot(1, 3, 1);
 plot(tspan, x11e(1:length(tspan)));
 grid on
-title('x11e');
+title('Theta Error');
 xlabel('time (s)')
-ylabel('Theta Error (rad)')
+ylabel('Theta (rad)')
 
 subplot(1, 3, 2);
 plot(tspan, x12e(1:length(tspan)));

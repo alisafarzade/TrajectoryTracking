@@ -285,6 +285,11 @@ yc2e = yc2(1:length(yc2)-1) - yc2d;
 xc3e = xc3(1:length(xc3)-1) - xc3d;
 yc3e = yc3(1:length(yc3)-1) - yc3d;
 
+x11e = x11(1:length(x11)-1) - x11d;
+x12e = x12(1:length(xc1)-1) - x12d;
+x13e = x13(1:length(yc1)-1) - x13d;
+
+
 figure(4);
 subplot(3, 2, 1);
 plot(tspan, xc1e(1:length(tspan)));
@@ -360,6 +365,29 @@ legend( 'desired', 'actual');
 xlim([0 10]);
 xlabel('time (s)')
 ylabel('Theta (rad)')
+
+figure(8);
+subplot(1, 3, 1);
+plot(tspan, x11e(1:length(tspan)));
+grid on
+title('Theta Error');
+xlabel('time (s)')
+ylabel('Theta (rad)')
+
+subplot(1, 3, 2);
+plot(tspan, x12e(1:length(tspan)));
+grid on
+title('x12e');
+xlabel('time (s)')
+ylabel('x12 Error (m)')
+
+subplot(1, 3, 3);
+plot(tspan, x13e(1:length(tspan)));
+grid on
+title('x13e');
+xlabel('time (s)')
+ylabel('x13 Error (m)')
+
 
 V = max(max(v1), abs(min(v1)))
 W = max(max(w1), abs(min(w1)))
